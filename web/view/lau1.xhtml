@@ -1,0 +1,202 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:tsp="tsp/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>TSPSupport</title>
+    </h:head>
+    <h:body>
+        <ui:include src="./../resources/plantillas/menu_arriba.xhtml"/>
+
+        <div class="container contenedor row">
+            <tsp:menuIzq/>
+            <div class="col m9">
+                <p:messages autoUpdate="true" closable="true"/>
+                <div class="contenido">
+                    <tsp:encabezadoProyecto/>
+                    <div class="contenidoReal">
+                        <p:panelGrid class="ui-datatable ui-widget tablaNormal">
+                            <f:facet name="header">
+                                <p:row>
+                                    <p:column rowspan="1" colspan="3" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                        #{mensajes['lau1.info1']}
+                                    </p:column>
+                                </p:row>
+                            </f:facet>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['lau1.info2']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['lau1.info3']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['lau1.info4']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    <ul>
+                                        <li>#{mensajes['lau1.info5']}</li>
+                                        <li>#{mensajes['lau1.info6']}</li>                                      
+                                    </ul>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['lau1.info7']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['lau1.info8']}
+                                    <ul>
+                                        <li>#{mensajes['lau1.info9']}</li>
+                                        <li>#{mensajes['lau1.info10']}</li> 
+                                        <li>#{mensajes['lau1.info11']}</li>
+                                    </ul>
+                                    #{mensajes['lau1.info12']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['lau1.info13']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['lau1.info14']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['lau1.info15']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['lau1.info16']}
+                                    <ul>
+                                        <li>#{mensajes['lau1.info17']}</li>
+                                        <li>#{mensajes['lau1.info18']}</li> 
+                                        <li>#{mensajes['lau1.info19']}</li>
+                                        <li>#{mensajes['lau1.info20']}</li>
+                                    </ul>                                    
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['lau1.info21']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['lau1.info22']}
+                                    <ul>
+                                        <li>#{mensajes['lau1.info23']}</li>
+                                        <li>#{mensajes['lau1.info24']}</li>
+                                    </ul>
+                                    #{mensajes['lau1.info25']}
+                                    <ul>
+                                        <li>#{mensajes['lau1.info26']}</li>
+                                        <li>#{mensajes['lau1.info27']}</li>
+                                        <li>#{mensajes['lau1.info28']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['lau1.info29']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['lau1.info30']}
+                                    <ul>
+                                        <li>#{mensajes['lau1.info31']}</li>
+                                        <li>#{mensajes['lau1.info32']}</li>
+                                        <li>#{mensajes['lau1.info33']}</li>
+                                    </ul>                                    
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['lau1.info34']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['lau1.info35']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['lau1.info36']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['lau1.info37']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['lau1.info38']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['lau1.info39']}
+                                    <ul>
+                                        <li>#{mensajes['lau1.info40']}</li>
+                                        <li>#{mensajes['lau1.info41']}</li>                                        
+                                    </ul>
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['lau1.info42']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['lau1.info43']}
+                                    <ul>
+                                        <li>#{mensajes['lau1.info44']}</li>
+                                        <li>#{mensajes['lau1.info45']}</li>
+                                        <li>#{mensajes['lau1.info46']}</li>
+                                        <li>#{mensajes['lau1.info47']}</li>                                        
+                                    </ul>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['lau1.info48']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['lau1.info49']}
+                                    <ul>
+                                        <li>#{mensajes['lau1.info50']}</li>
+                                        <li>#{mensajes['lau1.info51']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['lau1.info52']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['lau1.info53']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['lau1.info54']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    <ul>
+                                        <li>#{mensajes['lau1.info55']}</li>
+                                        <li>#{mensajes['lau1.info56']}</li>
+                                        <li>#{mensajes['lau1.info57']}</li>
+                                        <li>#{mensajes['lau1.info58']}</li>
+                                        <li>#{mensajes['lau1.info59']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>                            
+                        </p:panelGrid>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <tsp:pie/>
+    </h:body>
+</html>
+

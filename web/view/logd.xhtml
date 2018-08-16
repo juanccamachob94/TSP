@@ -1,0 +1,243 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:tsp="tsp/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>TSPSupport</title>
+    </h:head>
+    <h:body>
+        <ui:include src="./../resources/plantillas/menu_arriba.xhtml"/>
+        <div class="container contenedor row">
+            <tsp:menuIzq/>
+            <div class="col m9">
+                <p:messages autoUpdate="true" closable="true"/>
+                <div class="contenido">
+                    <tsp:encabezadoProyecto/>
+                    <div class="contenidoReal">
+                        <f:metadata>
+                            <f:viewAction action="#{estrategiaBean.cargarProductos}"/>
+                            <f:viewAction action="#{defectosBean.cargarLOGDFiltroParte}"/>
+                        </f:metadata>
+
+                        <!-- Exportar a hoja de cálculo -->
+                        <h:form>
+                            <a onclick="$('.btnExportarExcel').click(); return false;" style="float:right">
+                                <div class="iconoExcel" style="width: 25px; height: 30px"/>
+                            </a>
+                            <p:commandButton class="btnExportarExcel" value="#{mensajes['generarExcel']}" ajax="false" actionListener="#{reportesBean.exportarFormatoExcel(defectosBean.logd,false)}" style="display:none">
+                                <p:fileDownload value="#{reportesBean.archivoExcel}" />
+                            </p:commandButton>
+                            <div class="corte"/>
+                        </h:form>
+                        <h:form onkeypress="if (event.keyCode == 13)
+                                    return false;" id="formLOGD">
+                            <h:panelGroup id="pgLOGD">
+                                <p:panelGrid class="ui-datatable ui-widget tablaNormal">
+                                    <f:facet name="header">
+                                        <p:row>
+                                            <p:column rowspan="1" colspan="12" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                #{mensajes['formatoLogd']}
+                                            </p:column>
+                                        </p:row>
+                                    </f:facet>
+                                    <p:row>
+                                        <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['parte']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="10">
+                                            <h:panelGroup id="pgParteLOGD">
+                                                <h:selectOneMenu class="browser-default selectPequenio" value="#{defectosBean.parteFiltro}">
+                                                    <f:selectItem itemLabel="#{generalBean.mensajeSeleccion}" itemValue="#{null}"/>
+                                                    <f:selectItems value="#{estrategiaBean.partesProductos}" var="producto" itemValue="#{producto.nombre}" itemLabel="#{producto.nombre}"/>
+                                                    <f:ajax event="change" execute="@this" render=":formLOGD" listener="#{defectosBean.cargarLOGDFiltroParte}" onevent="PF('bloqueoLogd').show()"/>
+                                                </h:selectOneMenu>
+                                            </h:panelGroup>
+                                        </p:column>
+                                    </p:row>
+                                    <c:set value="#{defectosBean.logd.getAtributo('contenido iterable').atributos}" var="registros"/>
+                                    <ui:repeat value="#{registros}" var="registro">
+                                        <c:set value="#{registro.getSubAtributo('autor')}" var="autor"/>
+                                        <!-- título -->
+                                        <p:row>
+                                            <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                #{mensajes['fecha']}
+                                            </p:column>
+                                            <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                #{mensajes['numero']}
+                                            </p:column>
+                                            <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                #{mensajes['tipo']}
+                                            </p:column>
+                                            <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                #{mensajes['etapaDeInyeccion']}
+                                            </p:column>
+                                            <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                #{mensajes['etapaDeRemocion']}
+                                            </p:column>
+                                            <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                #{mensajes['tiempoDeArreglo']}
+                                            </p:column>
+                                            <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                #{mensajes['defectoArreglado']}
+                                            </p:column>
+                                        </p:row>
+                                        <!-- contenido -->
+                                        <p:row>
+                                            <p:column rowspan="1" colspan="1">
+                                                <c:set value="#{registro.getSubAtributo('fecha')}" var="fecha"/>
+                                                <h:inputText value="#{fecha.valor}" disabled="true"/>
+                                            </p:column>
+                                            <p:column rowspan="1" colspan="1">
+                                                <c:set value="#{registro.getSubAtributo('numero')}" var="numero"/>
+                                                <h:inputText value="#{numero.valor}" disabled="true"/>
+                                            </p:column>
+                                            <p:column rowspan="1" colspan="1">
+                                                <c:set value="#{registro.getSubAtributo('tipo')}" var="tipo"/>
+                                                <h:panelGroup rendered="#{defectosBean.esAutor(autor)}">
+                                                    <h:selectOneMenu class="browser-default selectorTabla" value="#{tipo.valor}">
+                                                        <f:selectItems value="#{defectosBean.defectos}" var="defecto" itemValue="#{defecto}" itemLabel="#{defecto}"/>
+                                                    </h:selectOneMenu>
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{!defectosBean.esAutor(autor)}">
+                                                    <h:selectOneMenu class="browser-default selectorTabla" value="#{tipo.valor}" disabled="true">
+                                                        <f:selectItems value="#{defectosBean.defectos}" var="defecto" itemValue="#{defecto}" itemLabel="#{defecto}"/>
+                                                    </h:selectOneMenu>
+                                                </h:panelGroup>
+                                            </p:column>
+                                            <p:column rowspan="1" colspan="1">
+                                                <c:set value="#{registro.getSubAtributo('etapa inyección')}" var="inyeccion"/>
+                                                <h:panelGroup rendered="#{defectosBean.esAutor(autor)}">
+                                                    <h:selectOneMenu class="browser-default selectorTabla" value="#{inyeccion.valor}">
+                                                        <f:selectItems value="#{defectosBean.etapas}" var="etapa" itemValue="#{etapa}" itemLabel="#{etapa}"/>
+                                                    </h:selectOneMenu>
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{!defectosBean.esAutor(autor)}">
+                                                    <h:selectOneMenu class="browser-default selectorTabla" value="#{inyeccion.valor}" disabled="true">
+                                                        <f:selectItems value="#{defectosBean.etapas}" var="etapa" itemValue="#{etapa}" itemLabel="#{etapa}"/>
+                                                    </h:selectOneMenu>
+                                                </h:panelGroup>
+                                            </p:column>
+                                            <p:column rowspan="1" colspan="1">
+                                                <c:set value="#{registro.getSubAtributo('etapa remoción')}" var="remocion"/>
+                                                <h:panelGroup rendered="#{defectosBean.esAutor(autor)}">
+                                                    <h:selectOneMenu class="browser-default selectorTabla" value="#{remocion.valor}">
+                                                        <f:selectItem itemLabel="#{generalBean.mensajeSeleccion}" itemValue="#{null}"/>
+                                                        <f:selectItems value="#{defectosBean.etapas}" var="etapa" itemValue="#{etapa}" itemLabel="#{etapa}"/>
+                                                    </h:selectOneMenu>
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{!defectosBean.esAutor(autor)}">
+                                                    <h:selectOneMenu class="browser-default selectorTabla" value="#{remocion.valor}" disabled="true">
+                                                        <f:selectItem itemLabel="#{generalBean.mensajeSeleccion}" itemValue="#{null}"/>
+                                                        <f:selectItems value="#{defectosBean.etapas}" var="etapa" itemValue="#{etapa}" itemLabel="#{etapa}"/>
+                                                    </h:selectOneMenu>
+                                                </h:panelGroup>
+                                            </p:column>
+                                            <p:column rowspan="1" colspan="1">
+                                                <c:set value="#{registro.getSubAtributo('tiempo arreglo')}" var="tiempoArreglo"/>
+                                                <h:panelGroup rendered="#{defectosBean.esAutor(autor)}">
+                                                    <h:inputText value="#{tiempoArreglo.valor}" a:type="number" a:step="any">
+                                                        <f:ajax render="@this" execute="@this" listener="#{generalBean.hacerPositivo(tiempoArreglo)}"/>
+                                                    </h:inputText>
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{!defectosBean.esAutor(autor)}">
+                                                    <h:inputText value="#{tiempoArreglo.valor}" a:type="number" a:step="any" disabled="true">
+                                                        <f:ajax render="@this" execute="@this" listener="#{generalBean.hacerPositivo(tiempoArreglo)}"/>
+                                                    </h:inputText>
+                                                </h:panelGroup>
+                                            </p:column>
+                                            <p:column rowspan="1" colspan="1">
+                                                <c:set value="#{registro.getSubAtributo('defecto arreglado')}" var="defectoArreglado"/>
+                                                <h:panelGroup rendered="#{defectosBean.esAutor(autor)}">
+                                                    <h:selectOneMenu class="browser-default selectorTabla" value="#{defectoArreglado.valor}">
+                                                        <f:selectItem value="#{null}" itemLabel="#{generalBean.mensajeSeleccion}"/>
+                                                        <f:selectItems value="#{defectosBean.numerosDefecto}" var="numeroDefecto" itemValue="#{numeroDefecto}" itemLabel="#{numeroDefecto}"/>
+                                                    </h:selectOneMenu>
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{!defectosBean.esAutor(autor)}">
+                                                    <h:selectOneMenu class="browser-default selectorTabla" value="#{defectoArreglado.valor}" disabled="true">
+                                                        <f:selectItem value="#{null}" itemLabel="#{generalBean.mensajeSeleccion}"/>
+                                                        <f:selectItems value="#{defectosBean.numerosDefecto}" var="numeroDefecto" itemValue="#{numeroDefecto}" itemLabel="#{numeroDefecto}"/>
+                                                    </h:selectOneMenu>
+                                                </h:panelGroup>
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column rowspan="1" colspan="12" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                #{mensajes['descripcion']}
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column rowspan="1" colspan="12">
+                                                <c:set value="#{registro.getSubAtributo('descripción')}" var="descripcion"/>
+                                                <h:panelGroup rendered="#{defectosBean.esAutor(autor)}">
+                                                    <h:inputTextarea value="#{descripcion.valor}"/>
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{!defectosBean.esAutor(autor)}">
+                                                    <h:inputTextarea value="#{descripcion.valor}" disabled="true"/>
+                                                </h:panelGroup>
+                                            </p:column>
+                                        </p:row>
+                                    </ui:repeat>
+                                </p:panelGrid>
+                            </h:panelGroup>
+                            <div class="corte"/>
+                            <h:panelGroup id="pgNuevoDefecto">
+                                <h:panelGroup rendered="#{not empty defectosBean.parteFiltro}">
+                                    <h:commandLink class="btn btn-floating right" action="#{defectosBean.cargarModalNuevoRegistroLogd}">
+                                        <i class="material-icons">add</i>
+                                        <f:ajax execute="pgNuevoDefecto" render=":formLOGD :formNuevoRegistroLOGD"/>
+                                    </h:commandLink>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                            <br/>
+                            <h:panelGroup rendered="#{not empty defectosBean.parteFiltro}">
+                                <h:commandButton  value="#{mensajes['actualizarFormatoLOGD']}" class="boton center-block" action="#{defectosBean.actualizarLogd}">
+                                    <f:ajax render=":formLOGD" execute="@form" onevent="PF('bloqueoLogd').show()"/>
+                                </h:commandButton>
+                            </h:panelGroup>
+                            <tsp:carg objeto="formLOGD" elemento="bloqueoLogd"/>
+                        </h:form>
+                        <a class="modal-trigger linkModalNuevoRegistroLOGD" href="#modalNuevoRegistroLOGD"></a>
+                        <div id="modalNuevoRegistroLOGD" class="modal modal-fixed-footer">
+                            <h:form onkeypress="if (event.keyCode == 13)
+                                        return false;" id="formNuevoRegistroLOGD">
+                                <h:panelGroup id="pgNuevoRegistroLOGD">
+                                    <div class="modal-content row">
+                                        <h5>#{mensajes['nuevoRegistroDeDefecto']}</h5>
+                                        <c:set value="#{defectosBean.registroLOGD.getSubAtributo('tipo')}" var="registroLogd_tipo"/>
+                                        <tsp:select id="registroLogd_tipo" texto="#{mensajes['tipoDeDefecto']}" valor="#{registroLogd_tipo.valor}" lista="#{defectosBean.defectos}" variable="defecto" itemValor="#{defecto}" itemLabel="#{defecto}" m="8" i="bug_report"/>
+                                        <c:set value="#{defectosBean.registroLOGD.getSubAtributo('etapa inyección')}" var="registroLogd_etapaInyeccion"/>
+                                        <tsp:select id="registroLogd_etapaInyeccion" texto="#{mensajes['etapaDeInyeccion']}" valor="#{registroLogd_etapaInyeccion.valor}" lista="#{defectosBean.etapas}" variable="etapa" itemValor="#{etapa}" itemLabel="#{etapa}" m="8" i="vertical_align_bottom"/>
+                                        <c:set value="#{defectosBean.registroLOGD.getSubAtributo('etapa remoción')}" var="registroLogd_etapaRemocion"/>
+                                        <tsp:select id="registroLogd_etapaRemocion" texto="#{mensajes['etapaDeRemocion']}" valor="#{registroLogd_etapaRemocion.valor}" lista="#{defectosBean.etapas}" variable="etapa" itemValor="#{etapa}" itemLabel="#{etapa}" m="8" i="vertical_align_top"/>
+                                        <c:set value="#{defectosBean.registroLOGD.getSubAtributo('tiempo arreglo')}" var="registroLogd_tiempoArreglo"/>
+                                        <tsp:ent id="registroLogd_tiempoArreglo" texto="#{mensajes['tiempoDeArreglo']}" valor="#{registroLogd_tiempoArreglo.valor}" tipo="decimal" m="6" i="av_timer"/>
+                                        <c:set value="#{defectosBean.registroLOGD.getSubAtributo('defecto arreglado')}" var="registroLogd_defectoArreglado"/>
+                                        <tsp:select id="registroLogd_defectoArreglado" texto="#{mensajes['defectoArreglado']}" valor="#{registroLogd_defectoArreglado.valor}" lista="#{defectosBean.numerosDefecto}" variable="numDefecto" itemValor="#{numDefecto}" itemLabel="#{numDefecto}" m="6" i="format_list_numbered"/>
+                                        <c:set value="#{defectosBean.registroLOGD.getSubAtributo('descripción')}" var="registroLogd_descripcion"/>
+                                        <tsp:text id="registroLogd_descripcion" texto="#{mensajes['descripcion']}" valor="#{registroLogd_descripcion.valor}" tipo="text" m="12" i="description" max="1000"/>
+                                        <tsp:msg boton="btnGuardarRegistroLOGD"/>
+                                        <br/><br/><br/><br/><br/><br/>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <h:commandButton id="btnGuardarRegistroLOGD" binding="#{defectosBean.btnGuardarRegistroLOGD}" value="#{mensajes['agregarRegistroDeDefecto']}" class="btnGuardarRegistroLOGD center-block boton" action="#{defectosBean.agregarRegistroLogd}">
+                                            <f:ajax render="@form :formLOGD" execute="@form"/>
+                                        </h:commandButton>
+                                    </div>
+                                </h:panelGroup>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <tsp:pie/>
+    </h:body>
+</html>
+

@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:tsp="tsp/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>TSPSupport</title>
+    </h:head>
+    <h:body>
+        <ui:include src="./../resources/plantillas/menu_arriba.xhtml"/>
+
+        <div class="container contenedor row">
+            <tsp:menuIzq/>
+            <div class="col m9">
+                <p:messages autoUpdate="true" closable="true"/>
+                <div class="contenido">
+                    <tsp:encabezadoProyecto/>
+                    <div class="contenidoReal">
+                        <div class="row">
+                            <div class="card-panel-panel-titulada tarjeta">
+                                <h5 class="panel-defecto">#{mensajes['plantillaSRSRecomendada']}</h5>
+                                <div id="tarjetaSRS" class="card-panel">
+                                    <div class="col s12 m12 card-panel tarjeta-padding">
+                                        1. #{mensajes['tablaDeContenido']}
+                                    </div>
+                                    <div class="col s12 m12 card-panel tarjeta-padding">
+                                        2. #{mensajes['introduccion']}
+                                        <div class="col s12 m12 card-panel tarjeta-padding">
+                                            2.1 #{mensajes['objetivoDelSRS']}
+                                        </div>
+                                        <div class="col s12 m12 card-panel tarjeta-padding">
+                                            2.2 #{mensajes['declaracionDelProblema']}
+                                        </div>
+                                        <div class="col s12 m12 card-panel tarjeta-padding">
+                                            2.3 #{mensajes['informacionDelProyectoDeEquipo']}
+                                        </div>
+                                    </div>
+                                    <div class="col s12 m12 card-panel tarjeta-padding">
+                                        3. #{mensajes['declaracionDeRequerimientosFuncionales']}
+                                        <div class="col s12 m12 card-panel tarjeta-padding">
+                                            3.1 #{mensajes['descripcionDeLosRequerimientosDeFuncionDelSistema']}
+                                        </div>
+                                        <div class="col s12 m12 card-panel tarjeta-padding">
+                                            3.2 #{mensajes['requerimientosCiclo']} 1
+                                        </div>
+                                        <div class="col s12 m12 card-panel tarjeta-padding">
+                                            3.3 #{mensajes['requerimientosCiclo']} 2
+                                        </div>
+                                        <div class="col s12 m12 card-panel tarjeta-padding">
+                                            3.4 #{mensajes['requerimientosCiclo']} 3
+                                        </div>
+                                        <div class="col s12 m12 card-panel tarjeta-padding">
+                                            3.5 #{mensajes['estrategiaDeArribaAbajo']}
+                                        </div>
+                                    </div>
+                                    <div class="col s12 m12 card-panel tarjeta-padding">
+                                        4. #{mensajes['definicionDeReglasUtilizadasEnLosRequerimientos']}
+                                    </div>
+                                    <div class="col s12 m12 card-panel tarjeta-padding">
+                                        5. #{mensajes['requerimientosDeInterfazExterna']}
+                                    </div>
+                                    <div class="col s12 m12 card-panel tarjeta-padding">
+                                        6. #{mensajes['restriccionesDeDisenioImplementacion']}
+                                    </div>
+                                    <div class="col s12 m12 card-panel tarjeta-padding">
+                                        7. #{mensajes['requerimientosEspecialesDeSistema']}
+                                    </div>
+                                    <div class="col s12 m12 card-panel tarjeta-padding">
+                                        8. #{mensajes['referenciasYFuentesDeInformacion']}
+                                    </div>
+                                    <div class="corte"/>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <tsp:pie/>
+    </h:body>
+</html>
+

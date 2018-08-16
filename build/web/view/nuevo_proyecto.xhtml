@@ -1,0 +1,155 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:tsp="tsp/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>TSPSupport</title>
+    </h:head>
+    <h:body>
+        <ui:include src="./../resources/plantillas/menu_arriba.xhtml"/>
+
+        <div class="container contenedor row">
+            <tsp:menuIzq/>
+            <div class="col m9">
+                <p:messages autoUpdate="true" closable="true"/>
+                <div class="contenido">
+                    <tsp:encabezadoProyecto/>
+                    <div class="contenidoReal">
+
+                        <f:metadata>
+                            <f:viewAction action="#{proyectoBean.cargarNuevoProyecto}"/>
+                        </f:metadata>
+
+                        <h5>#{mensajes['nuevoProyecto']}</h5>
+
+                        <h:form onkeypress="if (event.keyCode == 13)
+                                    return false;" id="formCrearProyecto" enctype="multipart/form-data">
+                            <h:panelGroup id="pgCrearProyecto">
+                                <div class="row">
+                                    <div class="card-panel">
+                                        <h6>#{mensajes['informacionGeneral']}</h6>
+                                        <!-- nombre del proyecto-->
+                                        <tsp:ent id="nuevoProyecto_nombre" texto="#{mensajes['nombre']} *" valor="#{proyectoBean.nuevoProyecto.nombre}" tipo="text" m="12" i="domain"/>
+
+                                        <!-- descripción del proyecto-->
+                                        <tsp:text id="nuevoProyecto_descripcion" texto="#{mensajes['descripcion']} *" valor="#{proyectoBean.nuevoProyecto.descripcion}" tipo="text" m="12" i="description" max="500"/>
+
+                                        <div class="corte"/>
+                                        <h:selectBooleanCheckbox id="fechaInicioEs" value="#{proyectoBean.fechaInicioEspecifica}">
+                                            <f:ajax render="fechaInicio" listener="#{generalBean.actualizar}"/>
+                                        </h:selectBooleanCheckbox>
+                                        <h:outputLabel style="color:#56636A" for="fechaInicioEs">#{mensajes['especificarLaFechaDeCreacionDelProyecto']}</h:outputLabel>
+                                        <div class ="corte"/>
+                                        <h:panelGroup id="fechaInicio">
+                                            <h:panelGroup rendered="#{proyectoBean.fechaInicioEspecifica}">
+                                                <div class="entrada-fecha col m6">
+                                                    <i class="material-icons prefix small">date_range</i>
+                                                    <label for="nuevoProyecto_fechaInicio">#{mensajes['fechaDeInicio']}</label>
+                                                    <h:inputText id="nuevoProyecto_fechaInicio" class="validate nuevoProyecto_fechaInicio" a:type="date" value="#{proyectoBean.fechaEspecificaInicioProyecto}">
+                                                        <f:convertDateTime pattern="yyyy-MM-dd" />
+                                                        <f:ajax event="change" render="@this" execute="@this" listener="#{proyectoBean.validarFechaEspecificaInicioProyecto}"/>
+                                                    </h:inputText>
+                                                </div>
+                                            </h:panelGroup>
+                                        </h:panelGroup>
+                                        <div class ="corte"/>
+                                        <br/>
+                                        <!-- fecha de estimación fin del proyecto -->
+                                        <div class="entrada-fecha col m6">
+                                            <i class="material-icons prefix small">date_range</i>
+                                            <label for="nuevoProyecto_fechaEstFinalizacion">#{mensajes['fechaEstimadaDeFinalizacion']}</label>
+                                            <h:inputText id="nuevoProyecto_fechaEstFinalizacion" class="validate nuevoProyecto_fechaEstFinalizacion" a:type="date" value="#{proyectoBean.nuevoProyecto.FEstFin}">
+                                                <f:convertDateTime pattern="yyyy-MM-dd" />
+                                                <f:ajax event="change" render="@this" execute="@this" listener="#{proyectoBean.actualizarFechaEstimadaFinNuevoProyecto}"/>
+                                            </h:inputText>
+                                        </div>
+
+                                        <!-- Número de ciclos del proyecto-->
+                                        <h:panelGroup id = "pgNCiclosNuevoProyecto">
+                                            <div class="input-field col m12">
+                                                <i class="material-icons prefix">format_list_numbered</i>
+                                                <h:inputText id="nuevoProyecto_nCiclos" class="validate nuevoProyecto_nCiclos" a:type="number" value="#{proyectoBean.nuevoProyecto.NCiclos}">
+                                                    <f:ajax event="change" listener="#{proyectoBean.actualizarNumeroCiclos}" execute="@this" render="@this"/>
+                                                </h:inputText>
+                                                <label for="nuevoProyecto_nCiclos">#{mensajes['numeroDeCiclos']}</label>
+                                            </div>  
+                                        </h:panelGroup>
+                                        <div class="corte"/>
+
+                                    </div>
+
+                                    <!-- Selección del instructor -->
+                                    <div class="card-panel">
+                                        <h6>#{mensajes['seleccionDelInstructor']}</h6>
+                                        <div class="input-field col m12">
+                                            <i class="material-icons prefix">group</i>
+                                            <h:inputText id="inputInstructor" value="#{proyectoBean.instructor.identificacion}" class="validate nuevoProyecto_instructor">
+                                                <f:ajax event="change" listener="#{proyectoBean.consultarInstructor}" render="@this informacionInstructor" execute="@this"/>
+                                            </h:inputText>
+                                            <label>#{mensajes['instructor']} *</label>
+                                        </div>
+                                        <div class="corte"/>
+                                        <h:panelGroup id="informacionInstructor" style="float:right">
+                                            <c:set value="#{proyectoBean.datosInstructor}" var="instructor"/>
+                                            <h:panelGroup rendered="#{not empty instructor}">
+                                                #{instructor.nombre} #{instructor.apellido}
+                                            </h:panelGroup>
+                                        </h:panelGroup>
+                                        
+                                        <div class="corte"/>
+                                        <tsp:text id="observacionRolInstructor" texto="#{mensajes['observacion']}" valor="#{proyectoBean.rlClInstructorNuevoProyecto.observacion}" tipo="text" m="8" i="comments" max="500"/>
+                                        <div class="corte"/>
+                                        <p:tooltip value="#{mensajes['identificacionDelInstructorDelProyecto']}" position="top" for="inputInstructor"/>
+                                    </div>
+                                    <!-- Criterios del proyecto -->
+                                    <div class="card-panel">
+                                        <h6>#{mensajes['criterios']}</h6>
+                                        <ui:repeat value="#{proyectoBean.criteriosNuevoProyecto}" var="pycr">
+                                            <h:panelGroup rendered="#{pycr.criterio.tipo eq 'select'}" id="criterio1">
+                                                <tsp:select id="nuevoProyecto_criterio_#{generalBean.unir(pycr.criterio.nombre)}" texto="#{pycr.criterio.nombre}" valor="#{pycr.valor}" lista="#{proyectoBean.getOpciones(pycr.criterio.nombre)}" variable="opcion" itemValor="#{opcion}" itemLabel="#{opcion}" m="6" i="format_size"/> 
+                                            </h:panelGroup>
+                                            <h:panelGroup rendered="#{not pycr.criterio.tipo eq 'select'}" id="criterio2">
+                                                <tsp:ent id="nuevoProyecto_criterio_#{generalBean.unir(pycr.criterio.nombre)}" texto="#{pycr.criterio.nombre}" valor="#{pycr.valor}" tipo="#{pycr.criterio.tipo}" m="6" i="format_size"/>
+                                            </h:panelGroup>
+                                            <p:tooltip value="#{proyectoBean.mensajeTooltipCriterio(pycr.criterio.nombre)}" position="top" for="criterio1"/>
+                                            <p:tooltip value="#{proyectoBean.mensajeTooltipCriterio(pycr.criterio.nombre)}" position="top" for="criterio2"/>
+                                        </ui:repeat>
+                                        <div class="corte"/>
+                                    </div>
+
+
+                                    <!-- Imagen representativa del proyecto -->
+                                    <div class="card-panel">
+                                        <h6>#{mensajes['logoDelProyecto']}</h6>
+                                        <p:fileUpload id="imgProyecto" label="#{mensajes['seleccionar']}" value="#{proyectoBean.imagenSubidaNuevoProyecto}" mode="simple" skinSimple="true"/>
+                                        <p:tooltip value="#{mensajes['imagenRepresentativaDelProyecto']}" position="top" for="imgProyecto"/>
+                                        <div class="corte"/>
+                                    </div>
+
+                                    <tsp:msg boton="btnCrearProyecto"/>
+
+
+                                    <h:commandButton id="btnCrearProyecto" style="display:none" class="btnCrearProyecto" value="" action="#{proyectoBean.crearProyecto}">
+                                        <f:ajax execute="pgCrearProyecto" render="@form" onevent="PF('bloqueoFormProyecto').show()"/>
+                                    </h:commandButton>
+                                    <tsp:btnConfirm modal="modalConfirmCrearProyecto" texto="#{mensajes['crearProyecto']}" posicion="center-block"/>
+
+                                </div>
+                                    <tsp:carg objeto="formCrearProyecto" elemento="bloqueoFormProyecto"/>
+                            </h:panelGroup>
+                        </h:form>
+                        <tsp:modalConfirm texto="#{mensajes['estasAPuntoDeCrearUnProyecto']}" id="modalConfirmCrearProyecto" validacion="efectuar([1],'btnCrearProyecto','formCrearProyecto');"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <tsp:pie/>
+    </h:body>
+</html>
+

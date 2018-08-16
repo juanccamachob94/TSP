@@ -1,0 +1,166 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:tsp="tsp/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>TSPSupport</title>
+    </h:head>
+    <h:body>
+        <ui:include src="./../resources/plantillas/menu_arriba.xhtml"/>
+
+        <div class="container contenedor row">
+            <tsp:menuIzq/>
+            <div class="col m9">
+                <p:messages autoUpdate="true" closable="true"/>
+                <div class="contenido">
+                    <tsp:encabezadoProyecto/>
+                    <div class="contenidoReal">
+                        <h:form onkeypress="if (event.keyCode == 13)
+                                    return false;" id="formPipsPersonales">
+                            <p:panelGrid class="ui-datatable ui-widget tablaNormal">
+                                <f:facet name="header">
+                                    <p:row>
+                                        <p:column rowspan="1" colspan="4" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['solicitudesDeMejora']} (Ciclo #{proyectoBean.proyectoSesion.cicloActual})
+                                        </p:column>
+                                    </p:row>
+                                </f:facet>
+
+                                <p:row>
+                                    <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                        #{mensajes['fechaDeCreacion']}
+                                    </p:column>
+                                    <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                        #{mensajes['prioridad']}
+                                    </p:column>
+                                    <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                        #{mensajes['fechaDeRevision']}
+                                    </p:column>
+                                    <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                        <i class="material-icons iconoTitulo">remove_red_eye</i>
+                                    </p:column>
+                                </p:row>
+                                <ui:repeat value="#{compBean.pipsPersonales}" var="pipPersonales">
+                                    <p:row>
+                                        <p:column rowspan="1" colspan="1">
+                                            <div class="alineadoCentro">
+                                                #{pipPersonales.fecha}
+                                            </div>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <div class="alineadoCentro">
+                                                #{pipPersonales.getAtributo('Prioridad').valor}
+                                            </div>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <div class="alineadoCentro">
+                                                #{pipSinRevision.getAtributo('Fecha revision').valor}
+                                            </div>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <div class="alineadoCentro">
+                                                <h:commandLink action="#{compBean.cargarPipPersonal(pipPersonales)}">
+                                                    <i class="material-icons small iconoCelda">remove_red_eye</i>
+                                                    <f:ajax render=":formPipRevision" execute="@this"/>
+                                                </h:commandLink>
+                                            </div>
+                                        </p:column>
+                                    </p:row>
+                                </ui:repeat>
+                            </p:panelGrid>
+                        </h:form>
+                        <h:panelGroup rendered="#{empty compBean.pipsPersonales}">
+                            <h6>#{mensajes['noHayPipsPendientesParaElCiclo']}</h6>
+                        </h:panelGroup>
+                        <br/><br/>
+                        <h:form onkeypress="if (event.keyCode == 13)
+                                    return false;" id="formPipRevision">
+                            <h:panelGroup rendered="#{not empty compBean.pipPersonal}">
+                                <h:panelGroup id="pgPIP">
+                                    <p:panelGrid class="ui-datatable ui-widget tablaNormal">
+                                        <f:facet name="header">
+                                            <p:row>
+                                                <p:column rowspan="1" colspan="4" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                    #{mensajes['formatoPipDelCicloActual']} (#{mensajes['ciclo']} #{proyectoBean.proyectoSesion.cicloActual})
+                                                </p:column>
+                                            </p:row>
+                                        </f:facet>
+                                        <p:row>
+                                            <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                #{mensajes['parte']}
+                                            </p:column>
+                                            <p:column rowspan="1" colspan="2">
+                                                <c:set value="#{compBean.pipPersonal.getAtributo('parte')}" var="parte"/>
+                                                <h:inputText disabled="true" value="#{parte.valor}"/>
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                #{mensajes['prioridad']}
+                                            </p:column>
+                                            <p:column rowspan="1" colspan="2">
+                                                <c:set value="#{compBean.pipPersonal.getAtributo('Prioridad')}" var="prioridad"/>
+                                                <h:inputText disabled="true" value="#{prioridad.valor}"/>
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column rowspan="1" colspan="4" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                #{mensajes['descripcionDelProblema']}
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column rowspan="1" colspan="4">
+                                                <c:set value="#{compBean.pipPersonal.getAtributo('Descripción del problema')}" var="descripcionProblema"/>
+                                                <h:inputTextarea disabled="true" class="pip_problema" style="height:100px" value="#{descripcionProblema.valor}"/>
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column rowspan="1" colspan="4" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                #{mensajes['descripcionDeLaPropuesta']}
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column rowspan="1" colspan="4">
+                                                <c:set value="#{compBean.pipPersonal.getAtributo('Descripción de la propuesta')}" var="descripcionPropuesta"/>
+                                                <h:inputTextarea disabled="true" class="pip_propuesta" style="height:100px" value="#{descripcionPropuesta.valor}"/>
+                                            </p:column>
+                                        </p:row>
+
+                                        <p:row>
+                                            <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                #{mensajes['fechaDeRevision']}
+                                            </p:column>
+                                            <p:column rowspan="1" colspan="2">
+                                                <c:set value="#{compBean.pipPersonal.getAtributo('Fecha revision')}" var="fechaRevision"/>
+                                                <h:inputText value="#{fechaRevision.valor}" disabled="true"/>
+                                            </p:column>
+                                        </p:row>
+
+                                        <p:row>
+                                            <p:column rowspan="1" colspan="4" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                #{mensajes['cambios']}
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column rowspan="1" colspan="4">
+                                                <c:set value="#{compBean.pipPersonal.getAtributo('Cambios')}" var="cambios"/>
+                                                <h:inputTextarea style="height:100px" value="#{cambios.valor}" disabled="true"/>
+                                            </p:column>
+                                        </p:row>
+                                    </p:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <tsp:pie/>
+    </h:body>
+</html>

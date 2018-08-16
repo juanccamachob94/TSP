@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 25, 2017 3:30:34 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="c_negocio.a_relacional.Proyecto" table="proyecto" schema="public" optimistic-lock="version">
+        <id name="nombre" type="string">
+            <column name="nombre" length="500" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="usuario" class="c_negocio.a_relacional.Usuario" fetch="select">
+            <column name="creador" length="11" not-null="true" />
+        </many-to-one>
+        <property name="descripcion" type="string">
+            <column name="descripcion" length="500" not-null="true" />
+        </property>
+        <property name="FInicio" type="timestamp">
+            <column name="f_inicio" length="29" not-null="true" />
+        </property>
+        <property name="FFin" type="timestamp">
+            <column name="f_fin" length="29" />
+        </property>
+        <property name="cicloActual" type="java.lang.Byte">
+            <column name="ciclo_actual" precision="2" scale="0" />
+        </property>
+        <property name="faseActual" type="string">
+            <column name="fase_actual" length="50" />
+        </property>
+        <property name="NCiclos" type="short">
+            <column name="n_ciclos" precision="3" scale="0" not-null="true" />
+        </property>
+        <property name="FEstFin" type="timestamp">
+            <column name="f_est_fin" length="29" not-null="true" />
+        </property>
+        <property name="urlImg" type="string">
+            <column name="url_img" length="10000" not-null="true" />
+        </property>
+        <set cascade="save-update" name="ciclos" table="ciclo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="proyecto" length="500" not-null="true" />
+            </key>
+            <one-to-many class="c_negocio.a_relacional.Ciclo" />
+        </set>
+        <set cascade="save-update" name="pyCrs" table="py_cr" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="proyecto" length="500" not-null="true" />
+            </key>
+            <one-to-many class="c_negocio.a_relacional.PyCr" />
+        </set>
+    </class>
+</hibernate-mapping>

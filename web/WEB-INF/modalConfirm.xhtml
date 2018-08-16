@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+    <head>
+        <title>TODO supply a title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <ui:composition>
+            <div id="#{id}" class="modal">
+                <div class="modal-content"><h4>#{mensajes['confirmacion']}</h4><p style="font-weight: bold">#{texto}</p><br/><p class="mensajeConfirmacion">#{mensajes['deseaEjecutarEstaOperacion']}</p>
+                    <a class="boton right btnVolver" onclick="cerrarModal('#{id}');">#{mensajes['volver']}</a><h:outputText value="&#160;"/><a class="boton right btnConfirmar" onclick="#{validacion}; cerrarModal('#{id}');">#{mensajes['confirmar']}</a>
+                </div>
+            </div>
+        </ui:composition>
+    </body>
+</html>

@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:tsp="tsp/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>TSPSupport</title>
+    </h:head>
+    <h:body>
+        <ui:include src="./../resources/plantillas/menu_arriba.xhtml"/>
+
+        <div class="container contenedor row">
+            <tsp:menuIzq/>
+            <div class="col m9">
+                <p:messages autoUpdate="true" closable="true"/>
+                <div class="contenido">
+                    <tsp:encabezadoProyecto/>
+                    <div class="contenidoReal">
+                        <f:metadata>
+                            <f:viewAction action="#{lanzamientoBean.cargarMetasElegidas}"/>
+                        </f:metadata>
+                        <h6>#{mensajes['metasDeProyecto']}</h6>
+                        <h:form onkeypress="if (event.keyCode == 13)
+                                    return false;" id="metasElegidasProyectoCiclo">
+                            <p:dataTable class="tablaNormal" value="#{lanzamientoBean.metasCicloProyectoElegidas}" var="meta">
+                                <p:columnGroup type="header">
+                                    <p:row>
+                                        <p:column rowspan="1" colspan="8" headerText="#{mensajes['meta']}"/>
+                                        <p:column rowspan="1" colspan="2" headerText="#{mensajes['comparativa']}"/>
+                                        <p:column rowspan="1" colspan="1" headerText="#{mensajes['valor']}"/>
+                                        <p:column rowspan="1" colspan="2" headerText="#{mensajes['unidadDeMedida']}"/>
+                                        <p:column rowspan="1" colspan="2" headerText="#{mensajes['logro']}"/>
+                                    </p:row>
+                                </p:columnGroup>
+                                <p:column colspan="8">
+                                    #{meta.id.descripcion}
+                                </p:column>
+                                <p:column colspan="2">
+                                    #{meta.comparativaValor}
+                                </p:column>
+                                <p:column>
+                                    #{meta.valor}
+                                </p:column>
+                                <p:column colspan="2">
+                                    #{meta.unidadValor}
+                                </p:column>
+                                <p:column colspan="2">
+                                    <h:selectOneMenu class="browser-default selectorTabla" value="#{meta.lograda}" disabled="#{meta.automatica}">
+                                        <f:selectItem itemLabel="#{generalBean.mensajeSeleccion}" itemValue="#{null}"/>
+                                        <f:selectItem itemLabel="#{mensajes['lograda']}" itemValue="true"/>
+                                        <f:selectItem itemLabel="#{mensajes['noLograda']}" itemValue="false"/>
+                                    </h:selectOneMenu>
+                                </p:column>
+                            </p:dataTable>
+                            <br/>
+                            <h:panelGroup rendered="#{proyectoBean.proyectoSesion.faseActual eq mensajes['postmortem']}">
+                                <h:panelGroup rendered="#{proyectoBean.poseeRolCicloActual('Instructor')}">
+                                    <h:commandButton value="#{mensajes['guardarLogrosDeCiclo']}" class="boton center-block" action="#{lanzamientoBean.actualizarMetas(lanzamientoBean.metasCicloProyectoElegidas,'proyecto')}">
+                                        <f:ajax render="@form" execute="@form"/>
+                                    </h:commandButton>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                        </h:form>
+
+                        <br/><br/><br/>
+                        <h6>#{mensajes['metasDeRol']}</h6>
+                        <ui:repeat value="#{lanzamientoBean.rolesTSP}" var="rolTSP">
+                            <h:form onkeypress="if (event.keyCode == 13)
+                                    return false;">
+                                <p:panelGrid class="ui-datatable ui-widget tablaNormal">
+                                    <f:facet name="header">
+                                        <p:row>
+                                            <p:column rowspan="1" colspan="8" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                #{rolTSP.nombre}
+                                            </p:column>
+                                        </p:row>
+                                    </f:facet>
+                                </p:panelGrid>
+                                <c:set value="#{lanzamientoBean.metasDeRolExistentes(rolTSP.nombre)}" var="metasRol"/>
+                                <p:dataTable class="tablaNormal" value="#{metasRol}" var="metaRol">
+                                    <p:columnGroup type="header">
+                                        <p:row>
+                                            <p:column rowspan="1" colspan="7" headerText="#{mensajes['meta']}"/>
+                                            <p:column rowspan="1" colspan="2" headerText="#{mensajes['logro']}"/>
+                                        </p:row>
+                                    </p:columnGroup>
+                                    <p:column rowspan="1" colspan="7">
+                                        #{metaRol.id.descripcion}
+                                    </p:column>
+                                    <p:column rowspan="1" colspan="2">
+                                        <h:selectOneMenu class="browser-default selectorTabla" value="#{metaRol.lograda}" disabled="#{metaRol.automatica}">
+                                            <f:selectItem itemLabel="#{generalBean.mensajeSeleccion}" itemValue="#{null}"/>
+                                            <f:selectItem itemLabel="#{mensajes['lograda']}" itemValue="#{true}"/>
+                                            <f:selectItem itemLabel="#{mensajes['noLograda']}" itemValue="#{false}"/>
+                                        </h:selectOneMenu>
+                                    </p:column>
+                                </p:dataTable>
+                                <br/>
+                                <div class="corte"/>
+                                <h:panelGroup rendered="#{proyectoBean.proyectoSesion.faseActual eq mensajes['postmortem']}">
+                                    <h:panelGroup rendered="#{proyectoBean.poseeRolCicloActual(rolTSP.nombre)}">
+                                        <h:commandButton value="#{mensajes['guardarLogrosDe']} #{rolTSP.nombre}" class="boton center-block" action="#{lanzamientoBean.actualizarMetas(metasRol,'rol')}">
+                                            <f:ajax render="@form" execute="@form"/>
+                                        </h:commandButton>
+                                    </h:panelGroup>
+                                </h:panelGroup>
+                            </h:form>
+                            <br/><br/><br/>
+                        </ui:repeat>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <tsp:pie/>
+    </h:body>
+</html>
+

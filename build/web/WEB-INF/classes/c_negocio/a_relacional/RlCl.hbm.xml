@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 25, 2017 3:30:34 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="c_negocio.a_relacional.RlCl" table="rl_cl" schema="public" optimistic-lock="version">
+        <composite-id name="id" class="c_negocio.a_relacional.RlClId">
+            <key-property name="NCiclo" type="byte">
+                <column name="n_ciclo" precision="2" scale="0" />
+            </key-property>
+            <key-property name="proyecto" type="string">
+                <column name="proyecto" length="500" />
+            </key-property>
+            <key-property name="usuario" type="string">
+                <column name="usuario" length="11" />
+            </key-property>
+            <key-property name="rol" type="string">
+                <column name="rol" length="50" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="ciclo" class="c_negocio.a_relacional.Ciclo" update="false" insert="false" fetch="select">
+            <column name="n_ciclo" precision="2" scale="0" not-null="true" />
+            <column name="proyecto" length="500" not-null="true" />
+        </many-to-one>
+        <many-to-one name="rol" class="c_negocio.a_relacional.Rol" update="false" insert="false" fetch="select">
+            <column name="rol" length="50" not-null="true" />
+        </many-to-one>
+        <many-to-one name="usuario" class="c_negocio.a_relacional.Usuario" update="false" insert="false" fetch="select">
+            <column name="usuario" length="11" not-null="true" />
+        </many-to-one>
+        <property name="estado" type="string">
+            <column name="estado" length="50" not-null="true" />
+        </property>
+        <property name="observacion" type="string">
+            <column name="observacion" length="500" />
+        </property>
+        <set name="documentos" table="documento" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="n_ciclo" precision="2" scale="0" not-null="true" />
+                <column name="proyecto" length="500" not-null="true" />
+                <column name="usuario" length="11" not-null="true" />
+                <column name="rol" length="50" not-null="true" />
+            </key>
+            <one-to-many class="c_negocio.a_relacional.Documento" />
+        </set>
+        <set name="metas" table="meta" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="n_ciclo" precision="2" scale="0" />
+                <column name="proyecto" length="500" not-null="true" />
+                <column name="usuario" length="11" not-null="true" />
+                <column name="rol" length="50" not-null="true" />
+            </key>
+            <one-to-many class="c_negocio.a_relacional.Meta" />
+        </set>
+    </class>
+</hibernate-mapping>

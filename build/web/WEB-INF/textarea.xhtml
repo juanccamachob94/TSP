@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+    <head>
+        <title>TODO supply a title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <ui:composition>
+            <div class="input-field col m#{m}">
+                <i class="material-icons prefix">#{i}</i>
+                <h:inputTextarea onkeyup="contar(this,'#{id}',#{max})" id="#{id}" class="validate materialize-textarea #{id}" a:type="#{tipo}" value="#{valor}" disabled="#{deshabilitado}"/>                
+                <label for="#{id}">#{texto}</label>
+                <div id="cantidad_#{id}" class="right-align"></div>
+            </div>  
+        </ui:composition>
+    </body>
+</html>

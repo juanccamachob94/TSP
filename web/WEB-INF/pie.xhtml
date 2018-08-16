@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+    <head>
+        <title>TODO supply a title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <ui:composition>
+            <div class="pie col m12">
+                <h:graphicImage class="logo-ud" value="./../resources/imgs/ud.png" width="52px" height="52px"/>
+                <div class="texto-inferior" style="display:inline-block">
+                    <strong>Universidad Distrital Francisco José de Caldas</strong><br/>
+                    <p><strong>#{mensajes['estudiante']}:</strong> Juan Camilo Camacho Beltrán
+                        <br/>
+                        <strong>#{mensajes['docente']}:</strong> Alba Consuelo Nieto Lemus</p>
+                </div>
+                <h:graphicImage style="float:right" value="../resources/imgs/arquisoft.png" height="52px"/>
+                <div class="corte"/>
+            </div>
+            <h:panelGroup rendered="#{not empty proyectoBean.proyectoSesion}">
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                    });
+                </script>
+            </h:panelGroup>
+        </ui:composition>
+    </body>
+</html>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2/02/2017 03:59:59 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="c_negocio.a_relacional.Opciontsp" table="opciontsp" schema="public" optimistic-lock="version">
+        <id name="nombre" type="string">
+            <column name="nombre" length="500" />
+            <generator class="assigned" />
+        </id>
+        <property name="tipo" type="string">
+            <column name="tipo" length="100" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

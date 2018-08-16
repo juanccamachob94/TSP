@@ -1,0 +1,643 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:tsp="tsp/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>TSPSupport</title>
+    </h:head>
+    <h:body>
+        <ui:include src="./../resources/plantillas/menu_arriba.xhtml"/>
+
+        <div class="container contenedor row">
+            <tsp:menuIzq planeacion="active"/>
+            <div class="col m9">
+                <p:messages autoUpdate="true" closable="true"/>
+                <div class="contenido">
+                    <tsp:encabezadoProyecto/>
+                    <div class="contenidoReal">
+                        <f:metadata>
+                            <f:viewAction action="#{planeacionBean.cargarTask}"/>
+                        </f:metadata>
+
+                        <c:set var="esGerentePlaneacion" value="#{planeacionBean.tieneRol(mensajes['gerenteDePlaneacion'])}"/>
+
+                        
+                        <!-- Exportar a hoja de cálculo -->
+                        <h:form>
+                            <a onclick="$('.btnExportarExcel').click(); return false;" style="float:right">
+                                <div class="iconoExcel" style="width: 25px; height: 30px"/>
+                            </a>
+                            <p:commandButton class="btnExportarExcel" value="#{mensajes['generarExcel']}" ajax="false" actionListener="#{reportesBean.exportarFormatoExcel(planeacionBean.task,true)}" style="display:none">
+                                <p:fileDownload value="#{reportesBean.archivoExcel}" />
+                            </p:commandButton>
+                            <div class="corte"/>
+                        </h:form>
+                        <c:set var="tieneRolGerentePlaneacion" value="#{planeacionBean.tieneRol(mensajes['gerenteDePlaneacion'])}"/>
+                        <h:form onkeypress="if (event.keyCode == 13)return false;" id="formTask">
+                            <h:panelGroup id="pgTask">
+                                <div style="overflow:scroll">
+                                    <p:dataTable id="tableTask" binding="#{table}" class="tablaNormal tableTask" value="#{planeacionBean.etapasTSP}"  var="etapa" scrollable="true" scrollWidth="3100">
+                                        <p:columnGroup type="header">
+                                            <p:row>
+                                                <p:column rowspan="1" colspan="25" headerText="TASK"/>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column rowspan="1" colspan="9" headerText="#{mensajes['tarea']}"/>
+                                                <p:column rowspan="1" colspan="7" headerText="#{mensajes['horasDelPlan']}"/>
+                                                <p:column rowspan="1" colspan="5" headerText="#{mensajes['tamanioValorDelPlan']}"/>
+                                                <p:column rowspan="1" colspan="3" headerText="#{mensajes['real']}"/>
+                                                <p:column rowspan="2" colspan="1">
+                                                    <f:facet name="header">
+                                                        <i class="material-icons iconoTitulo">lightbulb_outline</i>
+                                                    </f:facet>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column rowspan="1" colspan="2" headerText="#{mensajes['etapa']}"/>
+                                                <p:column rowspan="1" colspan="3" headerText="#{mensajes['producto']}"/>
+                                                <p:column rowspan="1" colspan="3" headerText="#{mensajes['nombreDeLaTarea']}"/>
+                                                <p:column rowspan="1" colspan="1" headerText="#{mensajes['NIntegts']}"/>
+                                                <p:column rowspan="1" colspan="1" headerText="#{mensajes['liderDeProyecto']}"/>
+                                                <p:column rowspan="1" colspan="1" headerText="#{mensajes['gerenteDeDesarrollo']}"/>
+                                                <p:column rowspan="1" colspan="1" headerText="#{mensajes['gerenteDePlaneacion']}"/>
+                                                <p:column rowspan="1" colspan="1" headerText="#{mensajes['gerenteDeCalidadProceso']}"/>
+                                                <p:column rowspan="1" colspan="1" headerText="#{mensajes['gerenteDeSoporte']}"/>
+                                                <p:column rowspan="1" colspan="1" headerText="#{mensajes['totalHoras']}"/>
+                                                <p:column rowspan="1" colspan="1" headerText="#{mensajes['acumuladoHoras']}"/>
+                                                <p:column rowspan="1" colspan="1" headerText="#{mensajes['unidadDeTamanio']}"/>
+                                                <p:column rowspan="1" colspan="1" headerText="#{mensajes['tamanio']}"/>
+                                                <p:column rowspan="1" colspan="1" headerText="#{mensajes['numeroDeSemana']}"/>
+                                                <p:column rowspan="1" colspan="1" headerText="#{mensajes['VP']}"/>
+                                                <p:column rowspan="1" colspan="1" headerText="#{mensajes['VPAcumulado']}"/>
+                                                <p:column rowspan="1" colspan="1" headerText="#{mensajes['horas']}"/>
+                                                <p:column rowspan="1" colspan="1" headerText="#{mensajes['horasAcumuladas']}"/>
+                                                <p:column rowspan="1" colspan="1" headerText="#{mensajes['numeroDeSemana']}"/>
+                                            </p:row>
+                                        </p:columnGroup>
+                                        <!-- Etapa-->
+                                        <ui:param name="registrosEtapa" value="#{planeacionBean.registrosEtapa(etapa)}"/>
+                                        <p:column colspan="2" filterBy="#{etapa}">
+                                            #{etapa}
+                                            <h:panelGroup id="agregarRegistroEtapa#{generalBean.unir(etapa)}" rendered="#{esGerentePlaneacion}">
+                                                <h:commandLink action="#{planeacionBean.crearTarea(etapa)}">
+                                                    <f:ajax render=":formTask:pgTask" execute="agregarRegistroEtapa#{generalBean.unir(etapa)}" onevent="PF('bloqueoFormTask').show()"/>
+                                                    <i class="material-icons small iconoCelda">add</i>
+                                                </h:commandLink>
+                                            </h:panelGroup>
+                                        </p:column>
+
+                                        <!-- parte-->
+                                        <p:column colspan="3">
+                                            <h:panelGroup rendered="#{esGerentePlaneacion}">
+                                                <table>
+                                                    <tbody>
+                                                        <ui:repeat value="#{planeacionBean.getAtributos2(registrosEtapa,'Tarea')}" var="atributo2">
+                                                            <tr>
+                                                                <td>
+                                                                    <c:set var="atributo3" value="#{atributo2.getSubAtributo('Parte')}"/>
+                                                                    <h:selectOneMenu class="browser-default selectorTabla" value="#{atributo3.valor}">
+                                                                        <f:selectItem itemLabel="#{generalBean.mensajeSeleccion}" itemValue="#{null}"/>
+                                                                        <f:selectItems value="#{estrategiaBean.partesProductos}" var="producto" itemValue="#{producto.nombre}" itemLabel="#{producto.nombre}"/>
+                                                                        <f:ajax event="change" listener="#{generalBean.actualizar}" execute="@this"/>
+                                                                    </h:selectOneMenu>
+                                                                </td>
+                                                            </tr>
+                                                        </ui:repeat>
+                                                    </tbody>
+                                                </table>
+                                            </h:panelGroup>
+                                            <h:panelGroup rendered="#{!esGerentePlaneacion}">
+                                                <table>
+                                                    <tbody>
+                                                        <ui:repeat value="#{planeacionBean.getAtributos2(registrosEtapa,'Tarea')}" var="atributo2">
+                                                            <tr>
+                                                                <td>
+                                                                    <c:set var="atributo3" value="#{atributo2.getSubAtributo('Parte')}"/>
+                                                                    <h:selectOneMenu class="browser-default selectorTabla" value="#{atributo3.valor}" disabled="true">
+                                                                        <f:selectItem itemLabel="#{generalBean.mensajeSeleccion}" itemValue="#{null}"/>
+                                                                        <f:selectItems value="#{estrategiaBean.partesProductos}" var="producto" itemValue="#{producto.nombre}" itemLabel="#{producto.nombre}"/>
+                                                                        <f:ajax event="change" listener="#{generalBean.actualizar}" execute="@this"/>
+                                                                    </h:selectOneMenu>
+                                                                </td>
+                                                            </tr>
+                                                        </ui:repeat>
+                                                    </tbody>
+                                                </table>
+                                            </h:panelGroup>
+                                        </p:column>
+
+                                        <!--Nombre de la tarea -->
+                                        <p:column colspan="3">
+
+                                            <h:panelGroup rendered="#{esGerentePlaneacion}">
+                                                <table>
+                                                    <tbody>
+                                                        <ui:repeat value="#{planeacionBean.getAtributos2(registrosEtapa,'Tarea')}" var="atributo2">
+                                                            <tr>
+                                                                <td>
+                                                                    <c:set var="atributo3" value="#{atributo2.getSubAtributo('Nombre de la tarea')}"/>
+                                                                    <h:inputText id="idTareaNombreTarea" value="#{atributo3.valor}" a:placeholder="#{mensajes['nombreDeLaTarea']}">
+                                                                        <f:ajax event="change" listener="#{generalBean.actualizar}" execute="@this"/>
+                                                                    </h:inputText>
+                                                                    <p:tooltip value="#{etapa}" position="top" for="idTareaNombreTarea"/>
+                                                                </td>
+                                                            </tr>
+                                                        </ui:repeat>
+                                                    </tbody>
+                                                </table>
+                                            </h:panelGroup>
+                                            <h:panelGroup rendered="#{!esGerentePlaneacion}">
+                                                <table>
+                                                    <tbody>
+                                                        <ui:repeat value="#{planeacionBean.getAtributos2(registrosEtapa,'Tarea')}" var="atributo2">
+                                                            <tr>
+                                                                <td>
+                                                                    <c:set var="atributo3" value="#{atributo2.getSubAtributo('Nombre de la tarea')}"/>
+                                                                    <h:inputText  value="#{atributo3.valor}" a:placeholder="Nombre de la tarea" disabled="true">
+                                                                        <f:ajax event="change" listener="#{generalBean.actualizar}" execute="@this"/>
+                                                                    </h:inputText>
+                                                                </td>
+                                                            </tr>
+                                                        </ui:repeat>
+                                                    </tbody>
+                                                </table>
+                                            </h:panelGroup>
+                                        </p:column>
+
+                                        <!-- Número de integrantes-->
+                                        <p:column colspan="1">
+                                            <table>
+                                                <tbody>
+                                                    <ui:repeat id="repeatNIntegrantes" value="#{planeacionBean.getAtributos2(registrosEtapa,'Tarea')}" var="atributo2">
+                                                        <tr>
+                                                            <td>
+                                                                <c:set var="atributo3" value="#{atributo2.getSubAtributo('N. Integrts.')}"/>
+                                                                <h:inputText id="nIntegrantes" value="#{atributo3.valor}" disabled="true"/>
+                                                            </td>
+                                                        </tr>
+                                                    </ui:repeat>
+                                                </tbody>
+                                            </table>
+                                        </p:column>
+
+
+
+                                        <!-- Horas del plan -->
+
+                                        <!--Líder de proyecto-->
+                                        <p:column colspan="1">
+                                            <table>
+                                                <tbody>
+                                                    <ui:repeat value="#{planeacionBean.getAtributos2(registrosEtapa,'Horas del plan')}" var="atributo2" varStatus="status">
+                                                        <tr>
+                                                            <td>
+                                                                <c:set var="atributo3" value="#{atributo2.getSubAtributo(mensajes['liderDeProyecto'])}"/>
+                                                                <c:set var="tieneRol" value="#{planeacionBean.tieneRol(mensajes['liderDeProyecto'])}"/>
+                                                                <h:panelGroup rendered="#{tieneRol or tieneRolGerentePlaneacion}">
+                                                                    <h:inputText id="idHorasLiderProyecto" value="#{atributo3.valor}" a:type="number" a:step="any">
+                                                                        <f:ajax event="change" listener="#{planeacionBean.actualizarDatos(registrosEtapa,atributo2,atributo3)}" execute="@this" render="formTask:tableTask:#{table.rowIndex + SessionsController.firstRow}:repeatValorPlaneado:#{status.index}:valorPlaneado formTask:tableTask:#{table.rowIndex + SessionsController.firstRow}:repeatNIntegrantes:#{status.index}:nIntegrantes formTask:tableTask:#{table.rowIndex + SessionsController.firstRow}:repeatTotalHoras:#{status.index}:totalHoras #{planeacionBean.horasAcumuladas} @this #{planeacionBean.VPsAcumulados} #{planeacionBean.VPs} formTask:footerTask"/>
+                                                                    </h:inputText>
+                                                                </h:panelGroup>
+                                                                <h:panelGroup rendered="#{!(tieneRol or tieneRolGerentePlaneacion)}">
+                                                                    <h:inputText value="#{atributo3.valor}" a:type="number" a:step="any" disabled="true">
+                                                                        <f:ajax event="change" listener="#{planeacionBean.actualizarDatos(registrosEtapa,atributo2,atributo3)}" execute="@this" render="formTask:tableTask:#{table.rowIndex + SessionsController.firstRow}:repeatValorPlaneado:#{status.index}:valorPlaneado formTask:tableTask:#{table.rowIndex + SessionsController.firstRow}:repeatNIntegrantes:#{status.index}:nIntegrantes formTask:tableTask:#{table.rowIndex + SessionsController.firstRow}:repeatTotalHoras:#{status.index}:totalHoras #{planeacionBean.horasAcumuladas} @this #{planeacionBean.VPsAcumulados} #{planeacionBean.VPs} formTask:footerTask"/>
+                                                                    </h:inputText>                                                                
+                                                                </h:panelGroup>
+                                                                <p:tooltip value="#{etapa}" position="top" for="idHorasLiderProyecto"/>
+                                                            </td>
+                                                        </tr>
+                                                    </ui:repeat>
+                                                </tbody>
+                                            </table>
+                                        </p:column>
+                                        <!-- Gerente de desarrollo -->
+                                        <p:column colspan="1">
+                                            <table>
+                                                <tbody>
+                                                    <ui:repeat value="#{planeacionBean.getAtributos2(registrosEtapa,'Horas del plan')}" var="atributo2" varStatus="status">
+                                                        <tr>
+                                                            <td>
+                                                                <c:set var="atributo3" value="#{atributo2.getSubAtributo(mensajes['gerenteDeDesarrollo'])}"/>
+                                                                <c:set var="tieneRol" value="#{planeacionBean.tieneRol(mensajes['gerenteDeDesarrollo'])}"/>
+                                                                <h:panelGroup rendered="#{tieneRol or tieneRolGerentePlaneacion}">
+                                                                    <h:inputText  value="#{atributo3.valor}" a:type="number" a:step="any" id="idHorasGerenteDesarrollo">
+                                                                        <f:ajax event="change" listener="#{planeacionBean.actualizarDatos(registrosEtapa,atributo2,atributo3)}" execute="@this" render="formTask:tableTask:#{table.rowIndex + SessionsController.firstRow}:repeatNIntegrantes:#{status.index}:nIntegrantes formTask:tableTask:#{table.rowIndex + SessionsController.firstRow}:repeatTotalHoras:#{status.index}:totalHoras #{planeacionBean.horasAcumuladas} @this  #{planeacionBean.VPsAcumulados} #{planeacionBean.VPs} formTask:footerTask"/>
+                                                                    </h:inputText>
+                                                                </h:panelGroup>
+                                                                <h:panelGroup rendered="#{!(tieneRol or tieneRolGerentePlaneacion)}">
+                                                                    <h:inputText  value="#{atributo3.valor}" a:type="number" a:step="any" disabled="true">
+                                                                        <f:ajax event="change" listener="#{planeacionBean.actualizarDatos(registrosEtapa,atributo2,atributo3)}" execute="@this" render="formTask:tableTask:#{table.rowIndex + SessionsController.firstRow}:repeatNIntegrantes:#{status.index}:nIntegrantes formTask:tableTask:#{table.rowIndex + SessionsController.firstRow}:repeatTotalHoras:#{status.index}:totalHoras #{planeacionBean.horasAcumuladas} @this  #{planeacionBean.VPsAcumulados} #{planeacionBean.VPs} formTask:footerTask"/>
+                                                                    </h:inputText>
+                                                                </h:panelGroup>
+                                                                <p:tooltip value="#{etapa}" position="top" for="idHorasGerenteDesarrollo"/>
+                                                            </td>
+                                                        </tr>
+                                                    </ui:repeat>
+                                                </tbody>
+                                            </table>
+                                        </p:column>
+                                        <!-- Gerente de planeación -->
+                                        <p:column colspan="1">
+                                            <table>
+                                                <tbody>
+                                                    <ui:repeat value="#{planeacionBean.getAtributos2(registrosEtapa,'Horas del plan')}" var="atributo2" varStatus="status">
+                                                        <tr>
+                                                            <td>
+                                                                <c:set var="atributo3" value="#{atributo2.getSubAtributo(mensajes['gerenteDePlaneacion'])}"/>
+                                                                <c:set var="tieneRol" value="#{planeacionBean.tieneRol(mensajes['gerenteDePlaneacion'])}"/>
+                                                                <h:panelGroup rendered="#{(tieneRol or tieneRolGerentePlaneacion)}">
+                                                                    <h:inputText id="idHorasGerentePlaneacion"  value="#{atributo3.valor}" a:type="number" a:step="any">
+                                                                        <f:ajax event="change" listener="#{planeacionBean.actualizarDatos(registrosEtapa,atributo2,atributo3)}" execute="@this" render="formTask:tableTask:#{table.rowIndex + SessionsController.firstRow}:repeatNIntegrantes:#{status.index}:nIntegrantes formTask:tableTask:#{table.rowIndex + SessionsController.firstRow}:repeatTotalHoras:#{status.index}:totalHoras #{planeacionBean.horasAcumuladas} @this  #{planeacionBean.VPsAcumulados} #{planeacionBean.VPs} formTask:footerTask"/>
+                                                                    </h:inputText>
+                                                                </h:panelGroup>
+                                                                <h:panelGroup rendered="#{!(tieneRol or tieneRolGerentePlaneacion)}">
+                                                                    <h:inputText  value="#{atributo3.valor}" a:type="number" a:step="any" disabled="true">
+                                                                        <f:ajax event="change" listener="#{planeacionBean.actualizarDatos(registrosEtapa,atributo2,atributo3)}" execute="@this" render="formTask:tableTask:#{table.rowIndex + SessionsController.firstRow}:repeatNIntegrantes:#{status.index}:nIntegrantes formTask:tableTask:#{table.rowIndex + SessionsController.firstRow}:repeatTotalHoras:#{status.index}:totalHoras #{planeacionBean.horasAcumuladas} @this  #{planeacionBean.VPsAcumulados} #{planeacionBean.VPs} formTask:footerTask"/>
+                                                                    </h:inputText>
+                                                                </h:panelGroup>
+                                                                <p:tooltip value="#{etapa}" position="top" for="idHorasGerentePlaneacion"/>
+                                                            </td>
+                                                        </tr>
+                                                    </ui:repeat>
+                                                </tbody>
+                                            </table>
+                                        </p:column>
+                                        <!-- Gerente de calidad/proceso -->
+                                        <p:column colspan="1">
+                                            <table>
+                                                <tbody>
+                                                    <ui:repeat value="#{planeacionBean.getAtributos2(registrosEtapa,'Horas del plan')}" var="atributo2" varStatus="status">
+                                                        <tr>
+                                                            <td>
+                                                                <c:set var="atributo3" value="#{atributo2.getSubAtributo(mensajes['gerenteDeCalidadProceso'])}"/>
+                                                                <c:set var="tieneRol" value="#{planeacionBean.tieneRol(mensajes['gerenteDeCalidadProceso'])}"/>
+                                                                <h:panelGroup rendered="#{(tieneRol or tieneRolGerentePlaneacion)}">
+                                                                    <h:inputText id="idHorasGerenteCalidadProceso"  value="#{atributo3.valor}" a:type="number" a:step="any">
+                                                                        <f:ajax event="change" listener="#{planeacionBean.actualizarDatos(registrosEtapa,atributo2,atributo3)}" execute="@this" render="formTask:tableTask:#{table.rowIndex + SessionsController.firstRow}:repeatNIntegrantes:#{status.index}:nIntegrantes formTask:tableTask:#{table.rowIndex + SessionsController.firstRow}:repeatTotalHoras:#{status.index}:totalHoras #{planeacionBean.horasAcumuladas} @this  #{planeacionBean.VPsAcumulados} #{planeacionBean.VPs} formTask:footerTask"/>
+                                                                    </h:inputText>
+                                                                </h:panelGroup>
+                                                                <h:panelGroup rendered="#{!(tieneRol or tieneRolGerentePlaneacion)}">
+                                                                    <h:inputText  value="#{atributo3.valor}" a:type="number" a:step="any" disabled="true">
+                                                                        <f:ajax event="change" listener="#{planeacionBean.actualizarDatos(registrosEtapa,atributo2,atributo3)}" execute="@this" render="formTask:tableTask:#{table.rowIndex + SessionsController.firstRow}:repeatNIntegrantes:#{status.index}:nIntegrantes formTask:tableTask:#{table.rowIndex + SessionsController.firstRow}:repeatTotalHoras:#{status.index}:totalHoras #{planeacionBean.horasAcumuladas} @this  #{planeacionBean.VPsAcumulados} #{planeacionBean.VPs} formTask:footerTask"/>
+                                                                    </h:inputText>
+                                                                </h:panelGroup>
+                                                                <p:tooltip value="#{etapa}" position="top" for="idHorasGerenteCalidadProceso"/>
+                                                            </td>
+                                                        </tr>
+                                                    </ui:repeat>
+                                                </tbody>
+                                            </table>
+                                        </p:column>
+                                        <!-- Gerente de soporte -->
+                                        <p:column colspan="1">
+                                            <table>
+                                                <tbody>
+                                                    <ui:repeat value="#{planeacionBean.getAtributos2(registrosEtapa,'Horas del plan')}" var="atributo2" varStatus="status">
+                                                        <tr>
+                                                            <td>
+                                                                <c:set var="atributo3" value="#{atributo2.getSubAtributo(mensajes['gerenteDeSoporte'])}"/>
+                                                                <c:set var="tieneRol" value="#{planeacionBean.tieneRol(mensajes['gerenteDeSoporte'])}"/>
+                                                                <h:panelGroup rendered="#{(tieneRol or tieneRolGerentePlaneacion)}">
+                                                                    <h:inputText id="idHorasGerenteSoporte" value="#{atributo3.valor}" a:type="number" a:step="any">
+                                                                        <f:ajax event="change" listener="#{planeacionBean.actualizarDatos(registrosEtapa,atributo2,atributo3)}" execute="@this" render="formTask:tableTask:#{table.rowIndex + SessionsController.firstRow}:repeatNIntegrantes:#{status.index}:nIntegrantes formTask:tableTask:#{table.rowIndex + SessionsController.firstRow}:repeatTotalHoras:#{status.index}:totalHoras #{planeacionBean.horasAcumuladas} @this  #{planeacionBean.VPsAcumulados} #{planeacionBean.VPs} formTask:footerTask"/>
+                                                                    </h:inputText>
+                                                                </h:panelGroup>
+                                                                <h:panelGroup rendered="#{!(tieneRol or tieneRolGerentePlaneacion)}">
+                                                                    <h:inputText  value="#{atributo3.valor}" a:type="number" a:step="any" disabled="true">
+                                                                        <f:ajax event="change" listener="#{planeacionBean.actualizarDatos(registrosEtapa,atributo2,atributo3)}" execute="@this" render="formTask:tableTask:#{table.rowIndex + SessionsController.firstRow}:repeatNIntegrantes:#{status.index}:nIntegrantes formTask:tableTask:#{table.rowIndex + SessionsController.firstRow}:repeatTotalHoras:#{status.index}:totalHoras #{planeacionBean.horasAcumuladas} @this  #{planeacionBean.VPsAcumulados} #{planeacionBean.VPs} formTask:footerTask"/>
+                                                                    </h:inputText>
+                                                                </h:panelGroup>
+                                                                <p:tooltip value="#{etapa}" position="top" for="idHorasGerenteSoporte"/>
+                                                            </td>
+                                                        </tr>
+                                                    </ui:repeat>
+                                                </tbody>
+                                            </table>
+                                        </p:column>
+                                        <!-- Total horas -->
+                                        <p:column colspan="1">
+                                            <table>
+                                                <tbody>
+                                                    <ui:repeat id="repeatTotalHoras" value="#{planeacionBean.getAtributos2(registrosEtapa,'Horas del plan')}" var="atributo2" varStatus="status">
+                                                        <tr>
+                                                            <td>
+                                                                <c:set var="atributo3" value="#{atributo2.getSubAtributo('Total horas')}"/>
+                                                                <h:inputText id="totalHoras"  value="#{atributo3.valor}" disabled="true"/>
+                                                            </td>
+                                                        </tr>
+                                                    </ui:repeat>
+                                                </tbody>
+                                            </table>
+                                        </p:column>
+                                        <!-- Total acumulado horas -->
+                                        <p:column colspan="1">
+                                            <table>
+                                                <tbody>
+                                                    <ui:repeat id="repeatTotalHorasAcumuladas" value="#{planeacionBean.getAtributos2(registrosEtapa,'Horas del plan')}" var="atributo2">
+                                                        <tr>
+                                                            <td>
+                                                                <c:set var="atributo3" value="#{atributo2.getSubAtributo('Acumulado horas')}"/>
+                                                                <h:inputText id="totalHorasAcumuladas" value="#{atributo3.valor}" disabled="true"/>
+                                                            </td>
+                                                        </tr>
+                                                    </ui:repeat>
+                                                </tbody>
+                                            </table>
+                                        </p:column>
+
+
+                                        <!-- Hora y tamaño del plan-->
+
+                                        <!-- Unidad de tamaño-->
+                                        <p:column colspan="1">
+
+                                            <h:panelGroup rendered="#{esGerentePlaneacion}">
+                                                <table>
+                                                    <tbody>
+                                                        <ui:repeat value="#{planeacionBean.getAtributos2(registrosEtapa,'Tamaño del plan')}" var="atributo2">
+                                                            <tr>
+                                                                <td>
+                                                                    <c:set var="atributo3" value="#{atributo2.getSubAtributo('Unidad de tamaño')}"/>
+                                                                    <h:selectOneMenu value="#{atributo3.valor}" class="browser-default selectorTabla">
+                                                                        <f:selectItem itemLabel="#{generalBean.mensajeSeleccion}" itemValue="#{null}"/>
+                                                                        <f:selectItems value="#{planeacionBean.unidadesTamanio}" var="unidadTamanio" itemValue="#{unidadTamanio}" itemLabel="#{unidadTamanio}"/>
+                                                                        <f:ajax event="change" listener="#{generalBean.actualizar}" execute="@this"/>
+                                                                    </h:selectOneMenu>
+                                                                </td>
+                                                            </tr>
+                                                        </ui:repeat>
+                                                    </tbody>
+                                                </table>
+                                            </h:panelGroup>
+                                            <h:panelGroup rendered="#{!esGerentePlaneacion}">
+                                                <table>
+                                                    <tbody>
+                                                        <ui:repeat value="#{planeacionBean.getAtributos2(registrosEtapa,'Tamaño del plan')}" var="atributo2">
+                                                            <tr>
+                                                                <td>
+                                                                    <c:set var="atributo3" value="#{atributo2.getSubAtributo('Unidad de tamaño')}"/>
+                                                                    <h:selectOneMenu value="#{atributo3.valor}" class="browser-default selectorTabla" disabled="true">
+                                                                        <f:selectItem itemLabel="#{generalBean.mensajeSeleccion}" itemValue="#{null}"/>
+                                                                        <f:selectItems value="#{planeacionBean.unidadesTamanio}" var="unidadTamanio" itemValue="#{unidadTamanio}" itemLabel="#{unidadTamanio}"/>
+                                                                        <f:ajax event="change" listener="#{generalBean.actualizar}" execute="@this"/>
+                                                                    </h:selectOneMenu>
+                                                                </td>
+                                                            </tr>
+                                                        </ui:repeat>
+                                                    </tbody>
+                                                </table>
+                                            </h:panelGroup>
+
+                                        </p:column>
+
+                                        <!-- Tamaño -->
+                                        <p:column colspan="1">
+
+                                            <h:panelGroup rendered="#{esGerentePlaneacion}">
+                                                <table>
+                                                    <tbody>
+                                                        <ui:repeat value="#{planeacionBean.getAtributos2(registrosEtapa,'Tamaño del plan')}" var="atributo2">
+                                                            <tr>
+                                                                <td>
+                                                                    <c:set var="atributo3" value="#{atributo2.getSubAtributo('Tamaño')}"/>
+                                                                    <h:inputText id="idTamanioPlan" value="#{atributo3.valor}" a:type="number" a:step="any">
+                                                                        <f:ajax event="change" listener="#{generalBean.hacerPositivo(atributo3)}" execute="@this" render="@this"/>
+                                                                    </h:inputText>
+                                                                    <p:tooltip value="#{etapa}" position="top" for="idTamanioPlan"/>
+                                                                </td>
+                                                            </tr>
+                                                        </ui:repeat>
+                                                    </tbody>
+                                                </table>
+                                            </h:panelGroup>
+                                            <h:panelGroup rendered="#{!esGerentePlaneacion}">
+                                                <table>
+                                                    <tbody>
+                                                        <ui:repeat value="#{planeacionBean.getAtributos2(registrosEtapa,'Tamaño del plan')}" var="atributo2">
+                                                            <tr>
+                                                                <td>
+                                                                    <c:set var="atributo3" value="#{atributo2.getSubAtributo('Tamaño')}"/>
+                                                                    <h:inputText value="#{atributo3.valor}" a:type="number" a:step="any" disabled="true">
+                                                                        <f:ajax event="change" listener="#{generalBean.hacerPositivo(atributo3)}" execute="@this" render="@this"/>
+                                                                    </h:inputText>
+                                                                </td>
+                                                            </tr>
+                                                        </ui:repeat>
+                                                    </tbody>
+                                                </table>
+                                            </h:panelGroup>
+                                        </p:column>
+
+                                        <!-- Número de semana -->
+                                        <p:column colspan="1">
+
+                                            <h:panelGroup rendered="#{esGerentePlaneacion}">
+                                                <table>
+                                                    <tbody>
+                                                        <ui:repeat value="#{planeacionBean.getAtributos2(registrosEtapa,'Tamaño del plan')}" var="atributo2">
+                                                            <tr>
+                                                                <td>
+                                                                    <c:set var="atributo3" value="#{atributo2.getSubAtributo('N. Semana')}"/>
+                                                                    <h:inputText id="idNumSemana" value="#{atributo3.valor}" a:type="number">
+                                                                        <f:ajax event="change" listener="#{planeacionBean.validarSemanaPlan(registrosEtapa,atributo2)}" execute="@this" render="@this"/>
+                                                                    </h:inputText>
+                                                                    <p:tooltip value="#{etapa}" position="top" for="idNumSemana"/>
+                                                                </td>
+                                                            </tr>
+                                                        </ui:repeat>
+                                                    </tbody>
+                                                </table>
+                                            </h:panelGroup>
+                                            <h:panelGroup rendered="#{!esGerentePlaneacion}">
+                                                <table>
+                                                    <tbody>
+                                                        <ui:repeat value="#{planeacionBean.getAtributos2(registrosEtapa,'Tamaño del plan')}" var="atributo2">
+                                                            <tr>
+                                                                <td>
+                                                                    <c:set var="atributo3" value="#{atributo2.getSubAtributo('N. Semana')}"/>
+                                                                    <h:inputText value="#{atributo3.valor}" a:type="number" disabled="true">
+                                                                        <f:ajax event="change" listener="#{planeacionBean.validarSemanaPlan(registrosEtapa,atributo2)}" execute="@this" render="@this"/>
+                                                                    </h:inputText>
+                                                                </td>
+                                                            </tr>
+                                                        </ui:repeat>
+                                                    </tbody>
+                                                </table>
+                                            </h:panelGroup>
+                                        </p:column>
+
+                                        <!-- VP -->
+                                        <p:column colspan="1">
+                                            <table>
+                                                <tbody>
+                                                    <ui:repeat id="repeatValorPlaneado" value="#{planeacionBean.getAtributos2(registrosEtapa,'Tamaño del plan')}" var="atributo2">
+                                                        <tr>
+                                                            <td>
+                                                                <c:set var="atributo3" value="#{atributo2.getSubAtributo('VP')}"/>
+                                                                <h:inputText id="valorPlaneado" value="#{atributo3.valor}" a:type="number" a:step="any" disabled="true"/>
+                                                            </td>
+                                                        </tr>
+                                                    </ui:repeat>
+                                                </tbody>
+                                            </table>
+                                        </p:column>
+
+                                        <!-- VP Acumulado -->
+                                        <p:column colspan="1">
+                                            <table>
+                                                <tbody>
+                                                    <ui:repeat id="repeatVpAcumulado" value="#{planeacionBean.getAtributos2(registrosEtapa,'Tamaño del plan')}" var="atributo2">
+                                                        <tr>
+                                                            <td>
+                                                                <c:set var="atributo3" value="#{atributo2.getSubAtributo('VP Acumulado')}"/>
+                                                                <h:inputText id="vpAcumulado" value="#{atributo3.valor}" a:type="number" a:step="any" disabled="true"/>
+                                                            </td>
+                                                        </tr>
+                                                    </ui:repeat>
+                                                </tbody>
+                                            </table>
+                                        </p:column>
+
+
+
+                                        <!-- Real -->
+
+                                        <!-- Horas -->
+                                        <p:column colspan="1">
+                                            <table>
+                                                <tbody>
+                                                    <ui:repeat value="#{planeacionBean.getAtributos2(registrosEtapa,'Real')}" var="atributo2">
+                                                        <tr>
+                                                            <td>
+                                                                <c:set var="atributo3" value="#{atributo2.getSubAtributo('Horas')}"/>
+                                                                <h:inputText id="realTotalHoras" value="#{atributo3.valor}" disabled="true"/>
+                                                            </td>
+                                                        </tr>
+                                                    </ui:repeat>
+                                                </tbody>
+                                            </table>
+                                        </p:column>
+
+                                        <!-- Horas acumuladas -->
+                                        <p:column colspan="1">
+                                            <table>
+                                                <tbody>
+                                                    <ui:repeat value="#{planeacionBean.getAtributos2(registrosEtapa,'Real')}" var="atributo2">
+                                                        <tr>
+                                                            <td>
+                                                                <c:set var="atributo3" value="#{atributo2.getSubAtributo('Horas acumuladas')}"/>
+                                                                <h:inputText id="realHorasAcumuladas" value="#{atributo3.valor}" disabled="true"/>
+                                                            </td>
+                                                        </tr>
+                                                    </ui:repeat>
+                                                </tbody>
+                                            </table>
+                                        </p:column>
+
+                                        <!-- Número de semanas -->
+                                        <p:column colspan="1">
+                                            <table>
+                                                <tbody>
+                                                    <ui:repeat value="#{planeacionBean.getAtributos2(registrosEtapa,'Real')}" var="atributo2">
+                                                        <tr>
+                                                            <td>
+                                                                <c:set var="atributo3" value="#{atributo2.getSubAtributo('N. Semana')}"/>
+                                                                <h:inputText id="realTotalHoras" value="#{atributo3.valor}" disabled="true"/>
+                                                            </td>
+                                                        </tr>
+                                                    </ui:repeat>
+                                                </tbody>
+                                            </table>
+                                        </p:column>
+
+
+                                        <!-- Acciones -->
+                                        <p:column colspan="1">
+                                            <table>
+                                                <tbody>
+                                                    <h:panelGroup rendered="#{registrosEtapa.size() > 1 and esGerentePlaneacion}">
+                                                        <ui:repeat value="#{registrosEtapa}" var="atributo">
+                                                            <tr>
+                                                                <td>
+                                                                    <div class="alineadoCentro">
+                                                                        <h:commandLink action="#{planeacionBean.eliminarTarea(registrosEtapa, atributo)}" onclick="">
+                                                                            <f:ajax render="@form" execute="@this" onevent="PF('bloqueoFormTask').show()"/>
+                                                                            <i class="material-icons small iconoCelda">clear</i>
+                                                                        </h:commandLink>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </ui:repeat>
+                                                    </h:panelGroup>
+                                                    <h:panelGroup rendered="#{registrosEtapa.size() == 1}">
+                                                        <tr>
+                                                            <td>
+                                                                <div class="alineadoCentro">  
+                                                                    <i class="material-icons small">remove</i>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </h:panelGroup>
+                                                </tbody>
+                                            </table>
+                                        </p:column>
+                                    </p:dataTable>
+                                    <div class="corte"/>
+                                    <h:panelGroup id="footerTask" class="footerTask">
+                                        <c:set value="#{planeacionBean.totalRoles}" var="totalRoles"/>
+                                        <div id="tdFooterTask1" class="tdFooterTask ui-datatable-header ui-widget-header ui-corner-top alineadoDerecha">
+                                            Total:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        </div>
+                                        <div id="tdFooterTask2" class="tdFooterTask ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{totalRoles[0]}
+                                        </div>
+                                        <div id="tdFooterTask3" class="tdFooterTask ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{totalRoles[1]}
+                                        </div>
+                                        <div id="tdFooterTask4" class="tdFooterTask ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{totalRoles[2]}
+                                        </div>
+                                        <div id="tdFooterTask5" class="tdFooterTask ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{totalRoles[3]}
+                                        </div>
+                                        <div id="tdFooterTask6" class="tdFooterTask ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{totalRoles[4]}
+                                        </div>
+                                        <div id="tdFooterTask7" class="tdFooterTask ui-datatable-header ui-widget-header ui-corner-top">
+                                            &nbsp;
+                                        </div>
+                                    </h:panelGroup> 
+                                </div>
+
+                                <div class="corte"/>
+                                <br/>
+                                <h:panelGroup rendered="#{proyectoBean.proyectoSesion.faseActual eq mensajes['planeacion']}">                                
+                                    <h:commandButton value="#{mensajes['guardarFormatoTask']}"  class="boton center-block" action="#{planeacionBean.guardarTask}">
+                                        <f:ajax render="@form" execute="@form" onevent="PF('bloqueoTaskGuardar').show()"/>
+                                    </h:commandButton>
+                                </h:panelGroup>                           
+                                <tsp:carg objeto="formTask" elemento="bloqueoFormTask"/>
+                                <tsp:carg objeto="formTask" elemento="bloqueoTaskGuardar"/>
+                            </h:panelGroup>
+                        </h:form>
+                        
+
+                        
+                        
+                        
+                        
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <tsp:pie/>
+    </h:body>
+</html>
+

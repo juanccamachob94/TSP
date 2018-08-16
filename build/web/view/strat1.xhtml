@@ -1,0 +1,191 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:tsp="tsp/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>TSPSupport</title>
+    </h:head>
+    <h:body>
+        <ui:include src="./../resources/plantillas/menu_arriba.xhtml"/>
+
+        <div class="container contenedor row">
+            <tsp:menuIzq/>
+            <div class="col m9">
+                <p:messages autoUpdate="true" closable="true"/>
+                <div class="contenido">
+                    <tsp:encabezadoProyecto/>
+                    <div class="contenidoReal">
+                        <p:panelGrid class="ui-datatable ui-widget tablaNormal">
+                            <f:facet name="header">
+                                <p:row>
+                                    <p:column rowspan="1" colspan="3" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                        #{mensajes['strat1.info1']}
+                                    </p:column>
+                                </p:row>
+                            </f:facet>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['strat1.info2']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['strat1.info3']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['strat1.info4']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    <ul>
+                                        <li>#{mensajes['strat1.info5']}</li>
+                                        <li>#{mensajes['strat1.info6']}</li> 
+                                        <li>#{mensajes['strat1.info7']}</li>
+                                        <li>#{mensajes['strat1.info8']}</li>
+                                        <li>#{mensajes['strat1.info9']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['strat1.info10']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['strat1.info11']}
+                                    <ul>
+                                        <li>#{mensajes['strat1.info12']}</li>
+                                        <li>#{mensajes['strat1.info13']}</li> 
+                                    </ul>
+                                    #{mensajes['strat1.info14']}
+                                    <ul>
+                                        <li>#{mensajes['strat1.info15']}</li>
+                                    </ul>
+                                    <ul>
+                                        <li>#{mensajes['strat1.info16']}</li>
+                                        <li>#{mensajes['strat1.info17']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['strat1.info18']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['strat1.info19']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['strat1.info20']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['strat1.info21']}
+                                    <ul>
+                                        <li>#{mensajes['strat1.info22']}</li>
+                                        <li>#{mensajes['strat1.info23']}</li> 
+                                        <li>#{mensajes['strat1.info24']}</li>
+                                    </ul>                                    
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['strat1.info25']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    <ul>
+                                        <li>#{mensajes['strat1.info26']}</li>
+                                        <li>#{mensajes['strat1.info27']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['strat1.info28']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['strat1.info29']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['strat1.info30']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['strat1.info31']}
+                                    <ul>
+                                        <li>#{mensajes['strat1.info32']}</li>
+                                        <li>#{mensajes['strat1.info33']}</li>
+                                        <li>#{mensajes['strat1.info34']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['strat1.info35']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['strat1.info36']}
+                                    <ul>
+                                        <li>#{mensajes['strat1.info37']}</li>
+                                        <li>#{mensajes['strat1.info38']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['strat1.info39']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['strat1.info40']}
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['strat1.info41']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['strat1.info42']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['strat1.info43']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['strat1.info44']}
+                                    <ul>
+                                        <li>#{mensajes['strat1.info45']}</li>
+                                        <li>#{mensajes['strat1.info46']}</li>
+                                        <li>#{mensajes['strat1.info47']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['strat1.info48']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    <ul>
+                                        <li>#{mensajes['strat1.info49']}</li>
+                                        <li>#{mensajes['strat1.info50']}</li>
+                                        <li>#{mensajes['strat1.info51']}</li>
+                                        <li>#{mensajes['strat1.info52']}</li>
+                                        <li>#{mensajes['strat1.info53']}</li>
+                                        <li>#{mensajes['strat1.info54']}</li>
+                                        <li>#{mensajes['strat1.info55']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>                            
+                        </p:panelGrid>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <tsp:pie/>
+    </h:body>
+</html>

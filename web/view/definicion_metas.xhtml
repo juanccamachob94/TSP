@@ -1,0 +1,342 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:tsp="tsp/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>TSPSupport</title>
+    </h:head>
+    <h:body>
+        <ui:include src="./../resources/plantillas/menu_arriba.xhtml"/>
+
+        <div class="container contenedor row">
+            <tsp:menuIzq/>
+            <div class="col m9">
+                <p:messages autoUpdate="true" closable="true"/>
+                <div class="contenido">
+                    <tsp:encabezadoProyecto/>
+                    <div class="contenidoReal">
+
+                        <f:metadata>
+                            <f:viewAction action="#{lanzamientoBean.cargarMetas}"/>
+                        </f:metadata>
+
+
+                        <h6>#{mensajes['metasDeProyecto']}</h6>
+                        <h:form onkeypress="if (event.keyCode == 13)
+                                    return false;" id="formDefinicionMetasProyecto">
+                            <p:dataTable class="tablaNormal" value="#{lanzamientoBean.metasProyectoSesion}" var="metaProyectoSesion">
+                                <p:columnGroup type="header">
+                                    <p:row>
+                                        <p:column rowspan="1" colspan="4" headerText="#{mensajes['meta']}"/>
+                                        <p:column rowspan="1" colspan="1" headerText="#{mensajes['comparativa']}"/>
+                                        <p:column rowspan="1" colspan="1" headerText="#{mensajes['valor']}"/>
+                                        <p:column rowspan="1" colspan="1" headerText="#{mensajes['unidadDeMedida']}"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <f:facet name="header">
+                                                <i class="material-icons iconoTitulo">delete</i>
+                                            </f:facet>
+                                        </p:column>
+                                    </p:row>
+                                </p:columnGroup>
+                                <p:column rowspan="1" colspan="4">
+                                    #{metaProyectoSesion.id.descripcion}
+                                </p:column>
+                                <p:column>
+                                    <h:selectOneMenu class="browser-default selectorTabla" value="#{metaProyectoSesion.comparativaValor}" disabled="#{metaProyectoSesion.automatica ? 'true':'false'}">
+                                        <f:selectItem itemValue="#{mensajes['menorA']}" itemLabel="#{mensajes['menorA']}"/>
+                                        <f:selectItem itemValue="#{mensajes['mayorA']}" itemLabel="#{mensajes['mayorA']}"/>
+                                        <f:selectItem itemValue="#{mensajes['igualA']}" itemLabel="#{mensajes['igualA']}"/>
+                                        <f:ajax event="change" render="@this" execute="@this" listener="#{generalBean.actualizar}"/>
+                                    </h:selectOneMenu>
+                                </p:column>
+                                <p:column>
+                                    <h:inputText value="#{metaProyectoSesion.valor}" a:type="number" a:step="any">
+                                        <f:ajax event="change" render="@this" execute="@this" listener="#{generalBean.hacerMetaPositiva(metaProyectoSesion)}"/>
+                                    </h:inputText>
+                                </p:column>
+                                <p:column>
+                                    <h:selectOneMenu class="browser-default selectorTabla" value="#{metaProyectoSesion.unidadValor}" disabled="#{metaProyectoSesion.automatica ? 'true':'false'}">
+                                        <f:selectItem itemValue="#{mensajes['cantidad']}" itemLabel="#{mensajes['cantidad']}"/>
+                                        <f:selectItem itemValue="#{mensajes['porcentaje']}" itemLabel="#{mensajes['porcentaje']}"/>
+                                        <f:selectItem itemValue="#{mensajes['dias']}" itemLabel="#{mensajes['dias']}"/>
+                                        <f:ajax event="change" render="@this" execute="@this" listener="#{generalBean.actualizar}"/>
+                                    </h:selectOneMenu>
+                                </p:column>
+                                <p:column>
+                                    <h:panelGroup rendered="#{proyectoBean.proyectoSesion.faseActual eq mensajes['lanzamiento']}">
+                                        <h:panelGroup rendered="#{proyectoBean.poseeRolCicloActual('Instructor')}">
+                                            <div class="alineadoCentro">
+                                                <a class="modal-trigger" href="#modalConfirmElimMetaProyecto#{generalBean.unir(metaProyectoSesion.id.descripcion)}">
+                                                    <i class="material-icons small iconoCelda">clear</i>
+                                                </a>
+                                                <h:commandButton class="btnEliminarMetaProyecto#{generalBean.unir(metaProyectoSesion.id.descripcion)}" action="#{lanzamientoBean.eliminarMeta(lanzamientoBean.metasProyectoSesion,metaProyectoSesion)}" style="display:none">
+                                                    <f:ajax render="@form" execute="@this"/>
+                                                </h:commandButton>
+                                            </div>
+                                            <tsp:modalConfirm texto="#{mensajes['estasAPuntoDeEliminarLaMeta']} '#{metaProyectoSesion.id.descripcion}'" id="modalConfirmElimMetaProyecto#{generalBean.unir(metaProyectoSesion.id.descripcion)}" validacion = "efectuar([1],'btnEliminarMetaProyecto#{generalBean.unir(metaProyectoSesion.id.descripcion)}','X')"/>
+                                        </h:panelGroup>
+                                    </h:panelGroup>
+                                </p:column>
+                            </p:dataTable>
+
+                            <!-- Botones para agregar -->
+                            <h:panelGroup rendered="#{proyectoBean.proyectoSesion.faseActual eq mensajes['lanzamiento']}">
+                                <h:panelGroup rendered="#{proyectoBean.poseeRolCicloActual('Instructor')}">
+                                    <!-- Existente en TSP -->
+                                    <h:commandLink class="btn btn-floating right" action="#{lanzamientoBean.cargarModalNuevaMetaProyecto(true)}">
+                                        <i class="material-icons">playlist_add</i>
+                                        <f:ajax render=":formModalSeleccionMetasTSPProyecto" execute="@this"/>
+                                    </h:commandLink>
+                                    <a class="modal-trigger linkModalCargarMetaProyectoTSP" href="#modalSeleccionMetasTSPProyecto"></a>
+
+                                    <!-- Nuevo -->
+                                    <h:commandLink class="btn btn-floating right" action="#{lanzamientoBean.cargarModalNuevaMetaProyecto(false)}">
+                                        <i class="material-icons">add</i>
+                                        <f:ajax render=":formModalNuevaMetaTSPProyecto" execute="@this"/>
+                                    </h:commandLink>
+                                    <a class="modal-trigger linkModalNuevaMetaProyecto" href="#modalNuevaMetaProyecto"></a>
+
+                                    <!--Boton para guardar las metas del proyecto -->
+                                    <div class="corte"/>
+                                    <h:panelGroup rendered="#{proyectoBean.rolesAasignados}">
+                                        <h:commandButton class="boton center-block" value="#{lanzamientoBean.metasProyectoRegistradas? mensajes['actualizar'] : mensajes['guardar']} #{mensajes['metasDeCiclo']}" action="#{lanzamientoBean.guardarMetas(lanzamientoBean.metasProyectoSesion,'proyecto')}">
+                                            <f:ajax render="@form" execute="@form"/>
+                                        </h:commandButton>
+                                    </h:panelGroup>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                        </h:form>
+
+                        <div id="modalSeleccionMetasTSPProyecto" class="modal modal-fixed-footer">
+                            <h:form onkeypress="if (event.keyCode == 13)
+                                        return false;" id="formModalSeleccionMetasTSPProyecto">
+                                <div class="modal-content row">
+                                    <h5>#{mensajes['seleccionDeMetasDeProyecto']}</h5>
+                                    <div class="corte"/>
+                                    <div class="input-field col m12">
+                                        <i class="material-icons prefix">compare_arrows</i>
+                                        <h:selectOneMenu value="#{lanzamientoBean.nuevaMetaProyecto.id.descripcion}">
+                                            <f:selectItem value="#{null}" itemLabel="#{generalBean.mensajeSeleccion}"/>
+                                            <f:selectItems value="#{lanzamientoBean.metasTSPProyecto}" var="metaTSPProyecto" itemValue="#{metaTSPProyecto.id.descripcion}" itemLabel="#{metaTSPProyecto.id.descripcion}"/>
+                                            <f:ajax event="change" render="@form" execute="@this" listener="#{lanzamientoBean.clonarMetaTSPProyecto}"/>
+                                        </h:selectOneMenu>
+                                        <label>#{mensajes['comparacion']}</label>
+                                    </div>
+                                    <br/>
+                                    <div class="corte"/>
+                                    <tsp:ent id="nuevaMetaProyectoTSP_valor" texto="#{mensajes['valor']}" valor="#{lanzamientoBean.nuevaMetaProyecto.valor}" tipo="decimal" m="6" i="format_list_numbered"/>
+
+                                    <div class="corte"/>
+                                    <div class="input-field col m6">
+                                        <i class="material-icons prefix">compare_arrows</i>
+                                        <h:selectOneMenu value="#{lanzamientoBean.nuevaMetaProyecto.comparativaValor}" disabled="true">
+                                            <f:selectItem value="#{null}" itemLabel="#{generalBean.mensajeSeleccion}"/>
+                                            <f:selectItem itemValue="#{mensajes['menorA']}" itemLabel="#{mensajes['menorA']}"/>
+                                            <f:selectItem itemValue="#{mensajes['mayorA']}" itemLabel="#{mensajes['mayorA']}"/>
+                                            <f:selectItem itemValue="#{mensajes['igualA']}" itemLabel="#{mensajes['igualA']}"/>
+                                            <f:ajax event="change" render="@this" execute="@this" listener="#{generalBean.actualizar}"/>
+                                        </h:selectOneMenu>
+                                        <label>#{mensajes['comparacion']}</label>
+                                    </div>
+                                    <div class="corte"/>
+
+                                    <div class="input-field col m6">
+                                        <i class="material-icons prefix">ac_unit</i>
+                                        <h:selectOneMenu value="#{lanzamientoBean.nuevaMetaProyecto.unidadValor}" disabled="true">
+                                            <f:selectItem value="#{null}" itemLabel="#{generalBean.mensajeSeleccion}"/>
+                                            <f:selectItem itemValue="#{mensajes['cantidad']}" itemLabel="#{mensajes['cantidad']}"/>
+                                            <f:selectItem itemValue="#{mensajes['porcentaje']}" itemLabel="#{mensajes['porcentaje']}"/>
+                                            <f:selectItem itemValue="#{mensajes['dias']}" itemLabel="#{mensajes['dias']}"/>
+                                            <f:ajax event="change" render="@this" execute="@this" listener="#{generalBean.actualizar}"/>
+                                        </h:selectOneMenu>
+                                        <label>#{mensajes['unidad']}</label>
+                                    </div>
+                                    <div class="corte"/>
+                                    <br/><br/><br/>
+                                </div>
+                                <div class="modal-footer">
+                                    <h:commandButton class="center-block boton" value="#{mensajes['agregarMeta']}" action="#{lanzamientoBean.agregarMetaProyecto}">
+                                        <f:ajax execute="@form" render="@form :formDefinicionMetasProyecto"/>
+                                    </h:commandButton>
+                                </div>
+                            </h:form>
+                        </div>
+
+                        <div id="modalNuevaMetaProyecto" class="modal modal-fixed-footer">
+                            <h:form onkeypress="if (event.keyCode == 13)
+                                        return false;" id="formModalNuevaMetaTSPProyecto">
+                                <div class="modal-content row">
+                                    <h5>#{mensajes['nuevaMetaDeProyeto']}</h5>
+                                    <tsp:ent id="nuevaMetaProyecto_descripcion" texto="#{mensajes['meta']}" valor="#{lanzamientoBean.nuevaMetaProyecto.id.descripcion}" tipo="text" m="12" i="golf_course"/>
+                                    <div class="corte"/>
+                                    <div class="input-field col m6">
+                                        <i class="material-icons prefix">format_list_numbered</i>
+                                        <h:inputText id="nuevaMetaProyecto_valor" class="validate nuevaMetaProyecto_valor" a:type="number" a:step="any" value="#{lanzamientoBean.nuevaMetaProyecto.valor}">
+                                            <f:ajax event="change" render="@this" execute="@this" listener="#{generalBean.hacerMetaPositiva(lanzamientoBean.nuevaMetaProyecto)}"/>
+                                        </h:inputText>
+                                        <label>#{mensajes['valor']}</label>
+                                    </div>
+
+                                    <div class="corte"/>
+                                    <div class="input-field col m6">
+                                        <i class="material-icons prefix">compare_arrows</i>
+                                        <h:selectOneMenu value="#{lanzamientoBean.nuevaMetaProyecto.comparativaValor}">
+                                            <f:selectItem value="#{null}" itemLabel="#{generalBean.mensajeSeleccion}"/>
+                                            <f:selectItem itemValue="#{mensajes['menorA']}" itemLabel="#{mensajes['menorA']}"/>
+                                            <f:selectItem itemValue="#{mensajes['mayorA']}" itemLabel="#{mensajes['mayorA']}"/>
+                                            <f:selectItem itemValue="#{mensajes['igualA']}" itemLabel="#{mensajes['igualA']}"/>
+                                            <f:ajax render="@this" execute="@this"/>
+                                        </h:selectOneMenu>
+                                        <label>#{mensajes['comparacion']}</label>
+                                    </div>
+                                    <div class="corte"/>
+
+                                    <div class="input-field col m6">
+                                        <i class="material-icons prefix">ac_unit</i>
+                                        <h:selectOneMenu value="#{lanzamientoBean.nuevaMetaProyecto.unidadValor}">
+                                            <f:selectItem value="#{null}" itemLabel="#{generalBean.mensajeSeleccion}"/>
+                                            <f:selectItem itemValue="#{mensajes['cantidad']}" itemLabel="#{mensajes['cantidad']}"/>
+                                            <f:selectItem itemValue="#{mensajes['porcentaje']}" itemLabel="#{mensajes['porcentaje']}"/>
+                                            <f:selectItem itemValue="#{mensajes['dias']}" itemLabel="#{mensajes['dias']}"/>
+                                            <f:ajax render="@this" execute="@this"/>
+                                        </h:selectOneMenu>
+                                        <label>#{mensajes['unidad']}</label>
+                                    </div>
+                                    <br/><br/><br/>
+                                </div>
+                                <div class="modal-footer">
+                                    <h:commandButton class="center-block boton" value="#{mensajes['crearMeta']}" action="#{lanzamientoBean.agregarMetaProyecto}">
+                                        <f:ajax execute="@form" render="@form :formDefinicionMetasProyecto"/>
+                                    </h:commandButton>
+                                </div>
+                            </h:form>
+                        </div>
+                        <br/><br/><br/>
+                        <h6>#{mensajes['metasDeRol']}</h6>
+                        <ui:repeat id="repeatRol" value="#{lanzamientoBean.rolesTSP}" var="rolTSP" varStatus="estadoRol">
+                            <h:form onkeypress="if (event.keyCode == 13)
+                                        return false;" id="formDefinicionMetasRol">
+                                <p:panelGrid class="ui-datatable ui-widget tablaNormal">
+                                    <f:facet name="header">
+                                        <p:row>
+                                            <p:column rowspan="1" colspan="8" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                #{rolTSP.nombre}
+                                            </p:column>
+                                        </p:row>
+                                    </f:facet>
+                                </p:panelGrid>
+                                <c:set value="#{lanzamientoBean.metasDeRol(rolTSP.nombre)}" var="metasRol"/>
+                                <p:dataTable class="tablaNormal" value="#{metasRol}" var="metaRol">
+                                    <p:columnGroup type="header">
+                                        <p:row>
+                                            <p:column rowspan="1" colspan="7" headerText="#{mensajes['meta']}"/>
+                                            <p:column rowspan="1" colspan="1">
+                                                <f:facet name="header">
+                                                    <i class="material-icons iconoTitulo">delete</i>
+                                                </f:facet>
+                                            </p:column>
+                                        </p:row>
+                                    </p:columnGroup>
+                                    <p:column rowspan="1" colspan="7">
+                                        #{metaRol.id.descripcion}
+                                    </p:column>
+
+                                    <p:column rowspan="1" colspan="1">
+                                        <h:panelGroup rendered="#{proyectoBean.proyectoSesion.faseActual eq mensajes['lanzamiento']}">
+                                            <h:panelGroup rendered="#{proyectoBean.poseeRolCicloActual(rolTSP.nombre)}">
+                                                <div class="alineadoCentro">
+                                                    <a class="modal-trigger" href="#modalConfirmElimMetaRol#{generalBean.unir(metaRol.id.descripcion)}">
+                                                        <i class="material-icons small iconoCelda">clear</i>
+                                                    </a>
+                                                    <h:commandButton class="btnEliminarMetaRol#{generalBean.unir(metaRol.id.descripcion)}" action="#{lanzamientoBean.eliminarMeta(metasRol,metaRol)}" style="display:none">
+                                                        <f:ajax render="repeatRol:#{estadoRol.index}:formDefinicionMetasRol" execute="@this"/>
+                                                    </h:commandButton>
+                                                </div>
+                                                <tsp:modalConfirm texto="#{mensajes['estasAPuntoDeEliminarLaMeta']} '#{metaRol.id.descripcion}'" id="modalConfirmElimMetaRol#{generalBean.unir(metaRol.id.descripcion)}" validacion = "efectuar([1],'btnEliminarMetaRol#{generalBean.unir(metaRol.id.descripcion)}','X')"/>
+                                            </h:panelGroup>
+                                        </h:panelGroup>
+                                    </p:column>
+                                </p:dataTable>
+                                <!-- Botones para agregar -->
+                                <h:panelGroup rendered="#{proyectoBean.proyectoSesion.faseActual eq mensajes['lanzamiento']}">
+                                    <h:panelGroup rendered="#{proyectoBean.poseeRolCicloActual(rolTSP.nombre)}">
+                                        <!-- Existente en TSP -->
+                                        <h:commandLink class="btn btn-floating right" action="#{lanzamientoBean.cargarModalNuevaMetaRol(estadoRol.index,true)}">
+                                            <i class="material-icons">playlist_add</i>
+                                            <f:ajax render="repeatRol:#{estadoRol.index}:formSeleccionMetaRolTSP" execute="@this"/>
+                                        </h:commandLink>
+                                        <a class="modal-trigger linkModalCargarMetaRolTSP#{estadoRol.index}" href="#modalSeleccionMetasTSPRol#{estadoRol.index}"></a>
+
+                                        <!-- Nuevo -->
+                                        <h:commandLink class="btn btn-floating right" action="#{lanzamientoBean.cargarModalNuevaMetaRol(estadoRol.index,false)}">
+                                            <i class="material-icons">add</i>
+                                            <f:ajax render="repeatRol:#{estadoRol.index}:formNuevaMetaRol" execute="@this"/>
+                                        </h:commandLink>
+                                        <a class="modal-trigger linkModalNuevaMetaRol#{estadoRol.index}" href="#modalNuevaMetaRol#{estadoRol.index}"></a>
+
+                                        <!--Boton para guardar las metas del proyecto -->
+                                        <div class="corte"/>
+                                        <h:commandButton class="boton center-block" value="#{lanzamientoBean.metasRolesRegistradas.get(estadoRol.index)? mensajes['actualizar'] : mensajes['guardar']} #{mensajes['metasDe']} #{rolTSP.nombre}" action="#{lanzamientoBean.guardarMetas(metasRol,'rol')}">
+                                            <f:ajax render="@form" execute="@form"/>
+                                        </h:commandButton>
+                                    </h:panelGroup>
+                                </h:panelGroup>
+                            </h:form>
+
+                            <div id="modalSeleccionMetasTSPRol#{estadoRol.index}" class="modal modal-fixed-footer">
+                                <h:form onkeypress="if (event.keyCode == 13)
+                                            return false;" id="formSeleccionMetaRolTSP">
+                                    <div class="modal-content row">
+                                        <h5>#{mensajes['seleccionDeMetasDelRol']} #{rolTSP.nombre}</h5>
+                                        <div class="corte"/>
+                                        <div class="input-field col m12">
+                                            <i class="material-icons prefix">golf_course</i>
+                                            <h:selectOneMenu value="#{lanzamientoBean.nuevaMetaRol.id.descripcion}">
+                                                <f:selectItem value="#{null}" itemLabel="#{generalBean.mensajeSeleccion}"/>
+                                                <f:selectItems value="#{lanzamientoBean.metasTSPRol(estadoRol.index)}" var="metaTSPRol" itemValue="#{metaTSPRol.id.descripcion}" itemLabel="#{metaTSPRol.id.descripcion}"/>
+                                            </h:selectOneMenu>
+                                            <label>#{mensajes['meta']}</label>
+                                            <br/><br/><br/>
+                                        </div>
+                                        <div class="corte"/>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <h:commandButton class="center-block boton" value="#{mensajes['crearMetaParaElRol']} #{rolTSP.nombre}" action="#{lanzamientoBean.agregarMetaRol(estadoRol.index)}">
+                                            <f:ajax execute="@form" render="@form repeatRol:#{estadoRol.index}:formDefinicionMetasRol"/>
+                                        </h:commandButton>
+                                    </div>
+                                </h:form>
+                            </div>
+
+
+                            <div id="modalNuevaMetaRol#{estadoRol.index}" class="modal modal-fixed-footer">
+                                <h:form onkeypress="if (event.keyCode == 13)
+                                            return false;" id="formNuevaMetaRol">
+                                    <div class="modal-content row">
+                                        <h5>#{mensajes['nuevaMetaParaElRol']} #{rolTSP.nombre}</h5>
+                                        <tsp:ent id="metaRol_nuevo" texto="#{mensajes['meta']}" valor="#{lanzamientoBean.nuevaMetaRol.id.descripcion}" tipo="text" m="12" i="golf_course"/>
+                                        <br/><br/><br/>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <h:commandButton class="center-block boton" value="#{mensajes['crearMetaParaElRol']} #{rolTSP.nombre}" action="#{lanzamientoBean.agregarMetaRol(estadoRol.index)}">
+                                            <f:ajax execute="@form" render="@form repeatRol:#{estadoRol.index}:formDefinicionMetasRol"/>
+                                        </h:commandButton>
+                                    </div>
+                                </h:form>
+                            </div>
+                            <br/><br/><br/>
+                        </ui:repeat>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <tsp:pie/>
+    </h:body>
+</html>
+

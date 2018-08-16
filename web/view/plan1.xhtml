@@ -1,0 +1,190 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:tsp="tsp/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>TSPSupport</title>
+    </h:head>
+    <h:body>
+        <ui:include src="./../resources/plantillas/menu_arriba.xhtml"/>
+
+        <div class="container contenedor row">
+            <tsp:menuIzq/>
+            <div class="col m9">
+                <p:messages autoUpdate="true" closable="true"/>
+                <div class="contenido">
+                    <tsp:encabezadoProyecto/>
+                    <div class="contenidoReal">
+                        <p:panelGrid class="ui-datatable ui-widget tablaNormal">
+                            <f:facet name="header">
+                                <p:row>
+                                    <p:column rowspan="1" colspan="3" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                        #{mensajes['plan1.info1']}
+                                    </p:column>
+                                </p:row>
+                            </f:facet>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['plan1.info2']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['plan1.info3']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['plan1.info4']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    <ul>
+                                        <li>#{mensajes['plan1.info5']}</li>
+                                        <li>#{mensajes['plan1.info6']}</li> 
+                                    </ul>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['plan1.info7']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['plan1.info8']}
+                                    <ul>
+                                        <li>#{mensajes['plan1.info9']}</li>
+                                        <li>#{mensajes['plan1.info10']}</li> 
+                                        <li>#{mensajes['plan1.info11']}</li>
+                                    </ul>
+                                    #{mensajes['plan1.info12']}
+                                    <ul>
+                                        <li>#{mensajes['plan1.info13']}</li>
+                                        <li>#{mensajes['plan1.info14']}</li>
+                                        <li>#{mensajes['plan1.info15']}</li>
+                                        <li>#{mensajes['plan1.info16']}</li>
+                                    </ul>
+                                    #{mensajes['plan1.info17']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['plan1.info18']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['plan1.info19']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['plan1.info20']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['plan1.info21']}
+                                    <ul>
+                                        <li>#{mensajes['plan1.info22']}</li>
+                                        <li>#{mensajes['plan1.info23']}</li> 
+                                    </ul>                                    
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['plan1.info24']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['plan1.info25']}
+                                    <ul>
+                                        <li>#{mensajes['plan1.info26']}</li>
+                                        <li>#{mensajes['plan1.info27']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['plan1.info28']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['plan1.info29']}
+                                    <ul>
+                                        <li>#{mensajes['plan1.info30']}</li>
+                                        <li>#{mensajes['plan1.info31']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['plan1.info32']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['plan1.info33']}
+                                    <ul>
+                                        <li>#{mensajes['plan1.info34']}</li>
+                                        <li>#{mensajes['plan1.info35']}</li>
+                                        <li>#{mensajes['plan1.info36']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['plan1.info37']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['plan1.info38']}
+                                    <ul>
+                                        <li>#{mensajes['plan1.info39']}</li>
+                                        <li>#{mensajes['plan1.info40']}</li>
+                                        <li>#{mensajes['plan1.info41']}</li>
+                                        <li>#{mensajes['plan1.info42']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['plan1.info43']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['plan1.info44']}
+                                    <ul>
+                                        <li>#{mensajes['plan1.info45']}</li>
+                                        <li>#{mensajes['plan1.info46']}</li>
+                                        <li>#{mensajes['plan1.info47']}</li>
+                                        <li>#{mensajes['plan1.info48']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['plan1.info49']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['plan1.info50']}
+                                    <ul>
+                                        <li>#{mensajes['plan1.info51']}</li>
+                                        <li>#{mensajes['plan1.info52']}</li>
+                                        <li>#{mensajes['plan1.info53']}</li>
+                                        <li>#{mensajes['plan1.info54']}</li>    
+                                    </ul>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['plan1.info55']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    <ul>
+                                        <li>#{mensajes['plan1.info56']}</li>
+                                        <li>#{mensajes['plan1.info57']}</li>
+                                        <li>#{mensajes['plan1.info58']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>                            
+                        </p:panelGrid> 
+                    </div>
+                </div>
+            </div>
+        </div>
+        <tsp:pie/>
+    </h:body>
+</html>

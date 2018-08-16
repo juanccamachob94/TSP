@@ -1,0 +1,241 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:tsp="tsp/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>TSPSupport</title>
+    </h:head>
+    <h:body>
+        <ui:include src="./../resources/plantillas/menu_arriba.xhtml"/>
+
+        <div class="container contenedor row">
+            <tsp:menuIzq/>
+            <div class="col m9">
+                <p:messages autoUpdate="true" closable="true"/>
+                <div class="contenido">
+                    <tsp:encabezadoProyecto/>
+                    <div class="contenidoReal">
+                        <f:metadata>
+                            <f:viewAction action="#{estrategiaBean.cargarProductos}"/>
+                            <f:viewAction action="#{riesgosBean.cargarItlFiltroParte}"/>
+                        </f:metadata>
+                        <!-- Exportar a hoja de cálculo -->
+                        <h:form>
+                            <a onclick="$('.btnExportarExcel').click();
+                                    return false;" style="float:right">
+                                <div class="iconoExcel" style="width: 25px; height: 30px"/>
+                            </a>
+                            <p:commandButton class="btnExportarExcel" value="#{mensajes['generarExcel']}" ajax="false" actionListener="#{reportesBean.exportarFormatoExcel(riesgosBean.itl,false)}" style="display:none">
+                                <p:fileDownload value="#{reportesBean.archivoExcel}" />
+                            </p:commandButton>
+                            <div class="corte"/>
+                        </h:form>
+                        <h:form onkeypress="if (event.keyCode == 13)
+                                    return false;" id="formItl">
+                            <h:panelGroup id="pgItl">
+                                <p:panelGrid class="ui-datatable ui-widget tablaNormal">
+                                    <f:facet name="header">
+                                        <p:row>
+                                            <p:column rowspan="1" colspan="12" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                #{mensajes['formatoItl']}
+                                            </p:column>
+                                        </p:row>
+                                    </f:facet>
+                                    <p:row>
+                                        <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['parte']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="10">
+                                            <h:panelGroup id="pgParteItl">
+                                                <h:selectOneMenu class="browser-default selectPequenio" value="#{riesgosBean.parteFiltro}">
+                                                    <f:selectItem itemLabel="#{generalBean.mensajeSeleccion}" itemValue="#{null}"/>
+                                                    <f:selectItems value="#{estrategiaBean.partesProductos}" var="producto" itemValue="#{producto.nombre}" itemLabel="#{producto.nombre}"/>
+                                                    <f:ajax event="change" execute="@this" render=":formItl" listener="#{riesgosBean.cargarItlFiltroParte}" onevent="PF('bloqueoItl').show()"/>
+                                                </h:selectOneMenu>
+                                            </h:panelGroup>
+                                        </p:column>
+                                    </p:row>
+
+                                    <c:set value="#{riesgosBean.itl.getAtributo('contenido iterable').atributos}" var="registros"/>
+                                    <ui:repeat value="#{registros}" var="registro">
+                                        <c:set value="#{registro.getSubAtributo('autor')}" var="autor"/>
+                                        <!-- título -->
+                                        <p:row>
+                                            <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                #{mensajes['fecha']}
+                                            </p:column>
+                                            <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                #{mensajes['riesgoProblema']}
+                                            </p:column>
+                                            <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                #{mensajes['numero']}
+                                            </p:column>
+                                            <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                #{mensajes['prioridad']}
+                                            </p:column>
+                                            <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                #{mensajes['duenio']}
+                                            </p:column>
+                                            <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                #{mensajes['fechaDeSeguimiento']}
+                                            </p:column>
+                                            <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                #{mensajes['fechaDeResolucion']}
+                                            </p:column>
+                                        </p:row>
+                                        <!-- contenido -->
+                                        <p:row>
+                                            <p:column rowspan="1" colspan="1">
+                                                <c:set value="#{registro.getSubAtributo('fecha')}" var="fecha"/>
+                                                <h:inputText value="#{fecha.valor}" disabled="true"/>
+                                            </p:column>
+
+                                            <p:column rowspan="1" colspan="1">
+                                                <c:set value="#{registro.getSubAtributo('riesgo-problema')}" var="riesgoProblema"/>
+                                                <h:panelGroup rendered="#{riesgosBean.esAutor(autor)}">
+                                                    <h:selectOneMenu class="browser-default selectorTabla" value="#{riesgoProblema.valor}">
+                                                        <f:selectItems value="#{riesgosBean.riesgosProblemas}" var="itl_riesgosProblemas" itemValue="#{itl_riesgosProblemas}" itemLabel="#{itl_riesgosProblemas}"/>
+                                                    </h:selectOneMenu>
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{!riesgosBean.esAutor(autor)}">
+                                                    <h:selectOneMenu class="browser-default selectorTabla" value="#{riesgoProblema.valor}" disabled="true">
+                                                        <f:selectItems value="#{riesgosBean.riesgosProblemas}" var="itl_riesgosProblemas" itemValue="#{itl_riesgosProblemas}" itemLabel="#{itl_riesgosProblemas}"/>
+                                                    </h:selectOneMenu>
+                                                </h:panelGroup>
+                                            </p:column>
+                                            <p:column rowspan="1" colspan="1">
+                                                <c:set value="#{registro.getSubAtributo('numero')}" var="numero"/>
+                                                <h:inputText value="#{numero.valor}" disabled="true"/>
+                                            </p:column>
+                                            <p:column rowspan="1" colspan="1">
+                                                <c:set value="#{registro.getSubAtributo('prioridad')}" var="prioridad"/>
+                                                <h:panelGroup rendered="#{riesgosBean.esAutor(autor)}">
+                                                    <h:selectOneMenu class="browser-default selectorTabla" value="#{prioridad.valor}">
+                                                        <f:selectItems value="#{riesgosBean.prioridades}" var="la_prioridad" itemLabel="#{la_prioridad}" itemValue="#{la_prioridad}"/>
+                                                    </h:selectOneMenu>
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{!riesgosBean.esAutor(autor)}">
+                                                    <h:selectOneMenu class="browser-default selectorTabla" value="#{inyeccion.valor}" disabled="true">
+                                                        <f:selectItems value="#{riesgosBean.prioridades}" var="la_prioridad" itemLabel="#{la_prioridad}" itemValue="#{la_prioridad}"/>
+                                                    </h:selectOneMenu>
+                                                </h:panelGroup>
+                                            </p:column>
+                                            <p:column rowspan="1" colspan="1">
+                                                <h:inputText value="#{autor.valor}" disabled="true"/>
+                                            </p:column>
+                                            <p:column rowspan="1" colspan="1">
+                                                <c:set value="#{registro.getSubAtributo('fecha seguimiento')}" var="fechaSeguimiento"/>
+                                                <h:panelGroup rendered="#{riesgosBean.esAutor(autor)}">
+                                                    <h:inputText value="#{fechaSeguimiento.valor}" a:type="date">
+                                                        <f:ajax render="@this" execute="@this"/>
+                                                    </h:inputText>
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{!riesgosBean.esAutor(autor)}">
+                                                    <h:inputText value="#{fechaSeguimiento.valor}" disabled="true">
+                                                        <f:ajax render="@this" execute="@this"/>
+                                                    </h:inputText>
+                                                </h:panelGroup>
+                                            </p:column>
+                                            <p:column rowspan="1" colspan="1">
+                                                <c:set value="#{registro.getSubAtributo('fecha resolución')}" var="fechaResolucion"/>
+                                                <h:panelGroup rendered="#{riesgosBean.esAutor(autor)}">
+                                                    <h:inputText value="#{fechaResolucion.valor}" a:type="date">
+                                                        <f:ajax render="@this" execute="@this"/>
+                                                    </h:inputText>
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{!riesgosBean.esAutor(autor)}">
+                                                    <h:inputText value="#{fechaResolucion.valor}" disabled="true">
+                                                        <f:ajax render="@this" execute="@this"/>
+                                                    </h:inputText>
+                                                </h:panelGroup>
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column rowspan="1" colspan="12" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                #{mensajes['descripcion']}
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column rowspan="1" colspan="12">
+                                                <c:set value="#{registro.getSubAtributo('descripción')}" var="descripcion"/>
+                                                <h:panelGroup rendered="#{riesgosBean.esAutor(autor)}">
+                                                    <h:inputTextarea value="#{descripcion.valor}"/>
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{!riesgosBean.esAutor(autor)}">
+                                                    <h:inputTextarea value="#{descripcion.valor}" disabled="true"/>
+                                                </h:panelGroup>
+                                            </p:column>
+                                        </p:row>
+                                    </ui:repeat>
+                                </p:panelGrid>
+                            </h:panelGroup>
+
+                            <h:panelGroup rendered="#{planeacionBean.tieneRol(mensajes['gerenteDeSoporte'])}">
+                                <h:panelGroup id="pgNuevoElemenetoLogd">
+                                    <h:panelGroup rendered="#{not empty riesgosBean.parteFiltro}">
+                                        <h:commandLink class="btn btn-floating right" action="#{riesgosBean.cargarModalNuevoRegistroItl}">
+                                            <i class="material-icons">add</i>
+                                            <f:ajax execute="pgNuevoElemenetoLogd" render=":formItl :formNuevoRegistroItl"/>
+                                        </h:commandLink>
+                                    </h:panelGroup>
+                                </h:panelGroup>
+                                <br/>
+                                <h:panelGroup rendered="#{not empty riesgosBean.parteFiltro}">
+                                    <h:commandButton  value="#{mensajes['actualizarFormatoItl']}" class="boton center-block" action="#{riesgosBean.actualizarItl}">
+                                        <f:ajax render=":formItl" execute="@form" onevent="PF('bloqueoItl').show()"/>
+                                    </h:commandButton>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                            <tsp:carg objeto="formItl" elemento="bloqueoItl"/>
+                        </h:form>
+
+                        <a class="modal-trigger linkModalNuevoRegistroItl" href="#modalNuevoRegistroItl"></a>
+                        <div id="modalNuevoRegistroItl" class="modal modal-fixed-footer">
+                            <h:form onkeypress="if (event.keyCode == 13)
+                                        return false;" id="formNuevoRegistroItl">
+                                <h:panelGroup id="pgNuevoRegistroItl">
+                                    <div class="modal-content row">
+                                        <h5>#{mensajes['nuevoRegistroDeRiesgoProblema']}</h5>
+                                        <c:set value="#{riesgosBean.registroItl.getSubAtributo('riesgo-problema')}" var="registroItl_riesgoProblema"/>
+                                        <tsp:select id="registroItl_riesgosProblemas" texto="#{mensajes['riesgoProblema']}" valor="#{registroItl_riesgoProblema.valor}" lista="#{riesgosBean.riesgosProblemas}" variable="nuevoRegistro_riesgosProblemas" itemValor="#{nuevoRegistro_riesgosProblemas}" itemLabel="#{nuevoRegistro_riesgosProblemas}" m="8" i="report_problem"/>
+                                        <c:set value="#{riesgosBean.registroItl.getSubAtributo('prioridad')}" var="registroItl_prioridad"/>
+                                        <tsp:select id="registroItl_Prioridad" texto="#{mensajes['prioridad']}" valor="#{registroItl_prioridad.valor}" lista="#{riesgosBean.prioridades}" variable="nuevoRegistroItl_prioridad" itemValor="#{nuevoRegistroItl_prioridad}" itemLabel="#{nuevoRegistroItl_prioridad}" m="8" i="low_priority"/>
+                                        <c:set value="#{riesgosBean.registroItl.getSubAtributo('fecha seguimiento')}" var="registroItl_fechaSeguimiento"/>
+                                        <tsp:ent id="registroItl_fechaSeguimiento" texto="#{mensajes['fechaDeSeguimiento']}" valor="#{registroItl_fechaSeguimiento.valor}" tipo="date" m="6" i="date_range"/>
+                                        <div class="corte"/>
+                                        <br/>
+                                        <c:set value="#{riesgosBean.registroItl.getSubAtributo('fecha resolución')}" var="registroItl_fechaResolucion"/>
+                                        <tsp:ent id="registroItl_fechaResolucion" texto="#{mensajes['fechaDeResolucion']}" valor="#{registroItl_fechaResolucion.valor}" tipo="date" m="6" i="date_range"/>
+                                        <div class="corte"/>
+                                        <br/>
+                                        <c:set value="#{riesgosBean.registroItl.getSubAtributo('descripción')}" var="registroItl_descripcion"/>
+                                        <tsp:text id="registroItl_descripcion" texto="#{mensajes['descripcion']}" valor="#{registroItl_descripcion.valor}" tipo="text" m="12" i="description" max="1000"/>
+                                        <tsp:msg boton="btnGuardarRegistroItl"/>
+                                        <br/><br/><br/><br/><br/><br/>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <h:commandButton id="btnGuardarRegistroItl" binding="#{riesgosBean.btnGuardarRegistroItl}" value="#{mensajes['agregarRegistroDeRiesgoProblema']}" class="btnGuardarRegistroItl center-block boton" action="#{riesgosBean.agregarRegistroItl}">
+                                            <f:ajax render="@form :formItl" execute="@form"/>
+                                        </h:commandButton>
+                                    </div>
+                                </h:panelGroup>
+                            </h:form>
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <tsp:pie/>
+    </h:body>
+</html>
+

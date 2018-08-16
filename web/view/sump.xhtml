@@ -1,0 +1,1633 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:tsp="tsp/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>TSPSupport</title>
+    </h:head>
+    <h:body>
+        <ui:include src="./../resources/plantillas/menu_arriba.xhtml"/>
+        <div class="container contenedor row">
+            <tsp:menuIzq/>
+            <div class="col m9">
+                <p:messages autoUpdate="true" closable="true"/>
+                <div class="contenido">
+                    <tsp:encabezadoProyecto/>
+                    <div class="contenidoReal">
+                        <f:metadata>
+                            <f:viewAction action="#{calidadBean.cargarSump(true)}"/>
+                        </f:metadata>
+
+                        <!-- Exportar a hoja de cálculo -->
+                        <h:form>
+                            <a onclick="$('.btnExportarExcel').click();
+                                    return false;" style="float:right">
+                                <div class="iconoExcel" style="width: 25px; height: 30px"/>
+                            </a>
+                            <p:commandButton class="btnExportarExcel" value="#{mensajes['generarExcel']}" ajax="false" actionListener="#{reportesBean.exportarFormatoExcel(calidadBean.sump,false)}" style="display:none">
+                                <p:fileDownload value="#{reportesBean.archivoExcel}" />
+                            </p:commandButton>
+                            <div class="corte"/>
+                        </h:form>
+                        <h:form onkeypress="if (event.keyCode == 13)
+                                    return false;" id="formSump">
+                            <h:panelGroup id="pgSump">
+                                <p:panelGrid class="ui-datatable ui-widget tablaNormal">
+                                    <f:facet name="header">
+                                        <p:row>
+                                            <p:column rowspan="1" colspan="10" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                #{mensajes['formatoSump']}
+                                            </p:column>
+                                        </p:row>
+                                    </f:facet>
+
+                                    <!-- TAMAÑO DEL PRODUCTO-->
+
+                                    <p:row>
+                                        <p:column rowspan="1" colspan="8" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['tamanioDelProducto']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['plan']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['real']}
+                                        </p:column>
+                                    </p:row>
+
+
+                                    <c:set value="#{calidadBean.sump.getAtributo('Tamaño del producto')}" var="tamanioProducto"/>
+                                    <p:row>
+                                        <c:set value="#{tamanioProducto.getSubAtributo('Páginas de requerimientos (SRS)')}" var="tamanioProducto_paginasRequerimientos"/>
+                                        <p:column rowspan="1" colspan="8">
+                                            #{mensajes['paginasDeRequerimientosSRS']}
+                                        </p:column>
+                                        <c:set value="#{tamanioProducto_paginasRequerimientos.getSubAtributo('Plan')}" var="tamanioProducto_paginasRequerimientosPlan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tamanioProducto_paginasRequerimientosPlan.valor}" a:type="number" a:step="any">
+                                                <f:ajax event="change" render="@this" execute="@this" listener="#{generalBean.hacerPositivo(tamanioProducto_paginasRequerimientosPlan)}"/>
+                                            </h:inputText>
+                                        </p:column>
+                                        <c:set value="#{tamanioProducto_paginasRequerimientos.getSubAtributo('Real')}" var="tamanioProducto_paginasRequerimientosReal"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tamanioProducto_paginasRequerimientosReal.valor}" a:type="number" a:step="any">
+                                                <f:ajax event="change" render="@this" execute="@this" listener="#{generalBean.hacerPositivo(tamanioProducto_paginasRequerimientosReal)}"/>
+                                            </h:inputText>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{tamanioProducto.getSubAtributo('Otras páginas de texto')}" var="tamanioProducto_otrasPaginasTexto"/>
+                                        <p:column rowspan="1" colspan="8">
+                                            #{mensajes['otrasPaginasDeTexto']}
+                                        </p:column>
+                                        <c:set value="#{tamanioProducto_otrasPaginasTexto.getSubAtributo('Plan')}" var="tamanioProducto_otrasPaginasTextoPlan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tamanioProducto_otrasPaginasTextoPlan.valor}" a:type="number" a:step="any">
+                                                <f:ajax event="change" render="@this" execute="@this" listener="#{generalBean.hacerPositivo(tamanioProducto_otrasPaginasTextoPlan)}"/>
+                                            </h:inputText>
+                                        </p:column>
+                                        <c:set value="#{tamanioProducto_otrasPaginasTexto.getSubAtributo('Real')}" var="tamanioProducto_otrasPaginasTextoReal"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tamanioProducto_otrasPaginasTextoReal.valor}" a:type="number" a:step="any">
+                                                <f:ajax event="change" render="@this" execute="@this" listener="#{generalBean.hacerPositivo(tamanioProducto_otrasPaginasTextoReal)}"/>
+                                            </h:inputText>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{tamanioProducto.getSubAtributo('Páginas de diseño de alto nivel (SDS)')}" var="tamanioProducto_paginasDisenioAltoNivelSDS"/>
+                                        <p:column rowspan="1" colspan="8">
+                                            #{mensajes['paginasDeDisenioDeAltoNivelSDS']}
+                                        </p:column>
+                                        <c:set value="#{tamanioProducto_paginasDisenioAltoNivelSDS.getSubAtributo('Plan')}" var="tamanioProducto_paginasDisenioAltoNivelSDS_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tamanioProducto_paginasDisenioAltoNivelSDS_Plan.valor}" a:type="number" a:step="any">
+                                                <f:ajax event="change" render="@this" execute="@this" listener="#{generalBean.hacerPositivo(tamanioProducto_paginasDisenioAltoNivelSDS_Plan)}"/>
+                                            </h:inputText>
+                                        </p:column>
+                                        <c:set value="#{tamanioProducto_paginasDisenioAltoNivelSDS.getSubAtributo('Real')}" var="tamanioProducto_paginasDisenioAltoNivelSDS_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tamanioProducto_paginasDisenioAltoNivelSDS_Real.valor}" a:type="number" a:step="any">
+                                                <f:ajax event="change" render="@this" execute="@this" listener="#{generalBean.hacerPositivo(tamanioProducto_paginasDisenioAltoNivelSDS_Real)}"/>
+                                            </h:inputText>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{tamanioProducto.getSubAtributo('Total de líneas de diseño')}" var="tamanioProducto_totalLineasDisenio"/>
+                                        <p:column rowspan="1" colspan="8">
+                                            #{mensajes['totalDeLineasDeDisenio']}
+                                        </p:column>
+                                        <c:set value="#{tamanioProducto_totalLineasDisenio.getSubAtributo('Plan')}" var="tamanioProducto_totalLineasDisenio_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tamanioProducto_totalLineasDisenio_Plan.valor}" a:type="number" a:step="any">
+                                                <f:ajax event="change" render="@this" execute="@this" listener="#{generalBean.hacerPositivo(tamanioProducto_totalLineasDisenio_Plan)}"/>
+                                            </h:inputText>
+                                        </p:column>
+                                        <c:set value="#{tamanioProducto_totalLineasDisenio.getSubAtributo('Real')}" var="tamanioProducto_totalLineasDisenio_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tamanioProducto_totalLineasDisenio_Real.valor}" a:type="number" a:step="any">
+                                                <f:ajax event="change" render="@this" execute="@this" listener="#{generalBean.hacerPositivo(tamanioProducto_totalLineasDisenio_Real)}"/>
+                                            </h:inputText>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{tamanioProducto.getSubAtributo('Código base (B)')}" var="tamanioProducto_codigoBase"/>
+                                        <p:column rowspan="1" colspan="8">
+                                            #{mensajes['codigoBaseB']}
+                                        </p:column>
+                                        <c:set value="#{tamanioProducto_codigoBase.getSubAtributo('Plan')}" var="tamanioProducto_codigoBase_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tamanioProducto_codigoBase_Plan.valor}" a:type="number" a:step="any">
+                                                <f:ajax event="change" render="@this :formSump:totalCodigoReal :formSump:totalCodigoPlan :formSump:totalCodigoNuevoReutilizadoPlan :formSump:totalCodigoNuevoReutilizadoReal :formSump:resumencodigoHoraPlan :formSump:resumencodigoHoraReal :formSump:porcentajeReusoPlan :formSump:porcentajeReusoReal" execute="@this" listener="#{calidadBean.totalizarCodigoSump(tamanioProducto_codigoBase_Plan)}"/>
+                                            </h:inputText>
+                                        </p:column>
+                                        <c:set value="#{tamanioProducto_codigoBase.getSubAtributo('Real')}" var="tamanioProducto_codigoBase_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tamanioProducto_codigoBase_Real.valor}" a:type="number" a:step="any">
+                                                <f:ajax event="change" render="@this :formSump:totalCodigoReal :formSump:totalCodigoPlan :formSump:totalCodigoNuevoReutilizadoPlan :formSump:totalCodigoNuevoReutilizadoReal :formSump:resumencodigoHoraPlan :formSump:resumencodigoHoraReal :formSump:porcentajeReusoPlan :formSump:porcentajeReusoReal" execute="@this" listener="#{calidadBean.totalizarCodigoSump(tamanioProducto_codigoBase_Real)}"/>
+                                            </h:inputText>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{tamanioProducto.getSubAtributo('Código eliminado (D)')}" var="tamanioProducto_codigoEliminado"/>
+                                        <p:column rowspan="1" colspan="8">
+                                            #{mensajes['codigoEliminadoD']}
+                                        </p:column>
+                                        <c:set value="#{tamanioProducto_codigoEliminado.getSubAtributo('Plan')}" var="tamanioProducto_codigoEliminado_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tamanioProducto_codigoEliminado_Plan.valor}" a:type="number" a:step="any">
+                                                <f:ajax event="change" render="@this :formSump:totalCodigoReal :formSump:totalCodigoPlan :formSump:totalCodigoNuevoReutilizadoPlan :formSump:totalCodigoNuevoReutilizadoReal :formSump:resumencodigoHoraPlan :formSump:resumencodigoHoraReal :formSump:porcentajeReusoPlan :formSump:porcentajeReusoReal" execute="@this" listener="#{calidadBean.totalizarCodigoSump(tamanioProducto_codigoEliminado_Plan)}"/>
+                                            </h:inputText>
+                                        </p:column>
+                                        <c:set value="#{tamanioProducto_codigoEliminado.getSubAtributo('Real')}" var="tamanioProducto_codigoEliminado_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tamanioProducto_codigoEliminado_Real.valor}" a:type="number" a:step="any">
+                                                <f:ajax event="change" render="@this :formSump:totalCodigoReal :formSump:totalCodigoPlan :formSump:totalCodigoNuevoReutilizadoPlan :formSump:totalCodigoNuevoReutilizadoReal :formSump:resumencodigoHoraPlan :formSump:resumencodigoHoraReal :formSump:porcentajeReusoPlan :formSump:porcentajeReusoReal" execute="@this" listener="#{calidadBean.totalizarCodigoSump(tamanioProducto_codigoEliminado_Real)}"/>
+                                            </h:inputText>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{tamanioProducto.getSubAtributo('Código modificado (M)')}" var="tamanioProducto_codigoModificado"/>
+                                        <p:column rowspan="1" colspan="8">
+                                            #{mensajes['codigoModificadoM']}
+                                        </p:column>
+                                        <c:set value="#{tamanioProducto_codigoModificado.getSubAtributo('Plan')}" var="tamanioProducto_codigoModificado_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tamanioProducto_codigoModificado_Plan.valor}" a:type="number" a:step="any">
+                                                <f:ajax event="change" render="@this :formSump:totalCodigoReal :formSump:totalCodigoPlan :formSump:totalCodigoNuevoReutilizadoPlan :formSump:totalCodigoNuevoReutilizadoReal :formSump:resumencodigoHoraPlan :formSump:resumencodigoHoraReal :formSump:porcentajeReusoPlan :formSump:porcentajeReusoReal" execute="@this" listener="#{calidadBean.totalizarCodigoSump(tamanioProducto_codigoModificado_Plan)}"/>
+                                            </h:inputText>
+                                        </p:column>
+                                        <c:set value="#{tamanioProducto_codigoModificado.getSubAtributo('Real')}" var="tamanioProducto_codigoModificado_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tamanioProducto_codigoModificado_Real.valor}" a:type="number" a:step="any">
+                                                <f:ajax event="change" render="@this :formSump:totalCodigoReal :formSump:totalCodigoPlan :formSump:totalCodigoNuevoReutilizadoPlan :formSump:totalCodigoNuevoReutilizadoReal :formSump:resumencodigoHoraPlan :formSump:resumencodigoHoraReal :formSump:porcentajeReusoPlan :formSump:porcentajeReusoReal" execute="@this" listener="#{calidadBean.totalizarCodigoSump(tamanioProducto_codigoModificado_Real)}"/>
+                                            </h:inputText>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{tamanioProducto.getSubAtributo('Código añadido (A)')}" var="tamanioProducto_codigoAnadido"/>
+                                        <p:column rowspan="1" colspan="8">
+                                            #{mensajes['codigoAniadidoA']}
+                                        </p:column>
+                                        <c:set value="#{tamanioProducto_codigoAnadido.getSubAtributo('Plan')}" var="tamanioProducto_codigoAnadido_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tamanioProducto_codigoAnadido_Plan.valor}" a:type="number" a:step="any">
+                                                <f:ajax event="change" render="@this :formSump:totalCodigoReal :formSump:totalCodigoPlan :formSump:totalCodigoNuevoReutilizadoPlan :formSump:totalCodigoNuevoReutilizadoReal :formSump:resumencodigoHoraPlan :formSump:resumencodigoHoraReal :formSump:porcentajeReusoPlan :formSump:porcentajeReusoReal" execute="@this" listener="#{calidadBean.totalizarCodigoSump(tamanioProducto_codigoAnadido_Plan)}"/>
+                                            </h:inputText>
+                                        </p:column>
+                                        <c:set value="#{tamanioProducto_codigoAnadido.getSubAtributo('Real')}" var="tamanioProducto_codigoAnadido_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tamanioProducto_codigoAnadido_Real.valor}" a:type="number" a:step="any">
+                                                <f:ajax event="change" render="@this :formSump:totalCodigoReal :formSump:totalCodigoPlan :formSump:totalCodigoNuevoReutilizadoPlan :formSump:totalCodigoNuevoReutilizadoReal :formSump:resumencodigoHoraPlan :formSump:resumencodigoHoraReal :formSump:porcentajeReusoPlan :formSump:porcentajeReusoReal" execute="@this" listener="#{calidadBean.totalizarCodigoSump(tamanioProducto_codigoAnadido_Real)}"/>
+                                            </h:inputText>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{tamanioProducto.getSubAtributo('Código reutilizado (R)')}" var="tamanioProducto_codigoReutilizado"/>
+                                        <p:column rowspan="1" colspan="8">
+                                            #{mensajes['codigoReutilizadoR']}
+                                        </p:column>
+                                        <c:set value="#{tamanioProducto_codigoReutilizado.getSubAtributo('Plan')}" var="tamanioProducto_codigoReutilizado_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tamanioProducto_codigoReutilizado_Plan.valor}" a:type="number" a:step="any">
+                                                <f:ajax event="change" render="@this :formSump:totalCodigoReal :formSump:totalCodigoPlan :formSump:totalCodigoNuevoReutilizadoPlan :formSump:totalCodigoNuevoReutilizadoReal :formSump:resumencodigoHoraPlan :formSump:resumencodigoHoraReal :formSump:porcentajeReusoPlan :formSump:porcentajeReusoReal" execute="@this" listener="#{calidadBean.totalizarCodigoSump(tamanioProducto_codigoReutilizado_Plan)}"/>
+                                            </h:inputText>
+                                        </p:column>
+                                        <c:set value="#{tamanioProducto_codigoReutilizado.getSubAtributo('Real')}" var="tamanioProducto_codigoReutilizado_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tamanioProducto_codigoReutilizado_Real.valor}" a:type="number" a:step="any">
+                                                <f:ajax event="change" render="@this :formSump:totalCodigoReal :formSump:totalCodigoPlan :formSump:totalCodigoNuevoReutilizadoPlan :formSump:totalCodigoNuevoReutilizadoReal :formSump:resumencodigoHoraPlan :formSump:resumencodigoHoraReal :formSump:porcentajeReusoPlan :formSump:porcentajeReusoReal" execute="@this" listener="#{calidadBean.totalizarCodigoSump(tamanioProducto_codigoReutilizado_Real)}"/>
+                                            </h:inputText>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{tamanioProducto.getSubAtributo('Código total nuevo y reutilizado (N)')}" var="tamanioProducto_codigoNuevoReutil"/>
+                                        <p:column rowspan="1" colspan="8">
+                                            #{mensajes['codigoTotalNuevoYReutilizadoN']}
+                                        </p:column>
+                                        <c:set value="#{tamanioProducto_codigoNuevoReutil.getSubAtributo('Plan')}" var="tamanioProducto_codigoNuevoReutil_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText id="totalCodigoNuevoReutilizadoPlan" value="#{tamanioProducto_codigoNuevoReutil_Plan.valor}" a:type="number" a:step="any" disabled="true">
+                                                <f:ajax event="change" render="@this" execute="@this" listener="#{generalBean.hacerPositivo(tamanioProducto_codigoNuevoReutil_Plan)}"/>
+                                            </h:inputText>
+                                        </p:column>
+                                        <c:set value="#{tamanioProducto_codigoNuevoReutil.getSubAtributo('Real')}" var="tamanioProducto_codigoNuevoReutil_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText id="totalCodigoNuevoReutilizadoReal" value="#{tamanioProducto_codigoNuevoReutil_Real.valor}" a:type="number" a:step="any" disabled="true">
+                                                <f:ajax event="change" render="@this" execute="@this" listener="#{generalBean.hacerPositivo(tamanioProducto_codigoNuevoReutil_Real)}"/>
+                                            </h:inputText>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{tamanioProducto.getSubAtributo('Código total (T)')}" var="tamanioProducto_codigoTotal"/>
+                                        <p:column rowspan="1" colspan="8">
+                                            #{mensajes['codigoTotalT']}
+                                        </p:column>
+                                        <c:set value="#{tamanioProducto_codigoTotal.getSubAtributo('Plan')}" var="tamanioProducto_codigoTotal_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText id="totalCodigoPlan" value="#{tamanioProducto_codigoTotal_Plan.valor}" a:type="number" a:step="any" disabled="true">
+                                                <f:ajax event="change" render="@this" execute="@this" listener="#{generalBean.hacerPositivo(tamanioProducto_codigoTotal_Plan)}"/>
+                                            </h:inputText>
+                                        </p:column>
+                                        <c:set value="#{tamanioProducto_codigoTotal.getSubAtributo('Real')}" var="tamanioProducto_codigoTotal_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText id="totalCodigoReal" value="#{tamanioProducto_codigoTotal_Real.valor}" a:type="number" a:step="any" disabled="true">
+                                                <f:ajax event="change" render="@this" execute="@this" listener="#{generalBean.hacerPositivo(tamanioProducto_codigoTotal_Real)}"/>
+                                            </h:inputText>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{tamanioProducto.getSubAtributo('Intervalo de predicción (70%)')}" var="tamanioProducto_intervaloPrediccion"/>
+                                        <p:column rowspan="1" colspan="8">
+                                            #{mensajes['intervaloDePrediccion70']}
+                                        </p:column>
+                                        <c:set value="#{tamanioProducto_intervaloPrediccion.getSubAtributo('Plan')}" var="tamanioProducto_intervaloPrediccion_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tamanioProducto_intervaloPrediccion_Plan.valor}" a:type="number" a:step="any">
+                                                <f:ajax event="change" render="@this" execute="@this" listener="#{generalBean.hacerPositivo(tamanioProducto_intervaloPrediccion_Plan)}"/>
+                                            </h:inputText>
+                                        </p:column>
+                                        <c:set value="#{tamanioProducto_intervaloPrediccion.getSubAtributo('Real')}" var="tamanioProducto_intervaloPrediccion_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tamanioProducto_intervaloPrediccion_Real.valor}" a:type="number" a:step="any">
+                                                <f:ajax event="change" render="@this" execute="@this" listener="#{generalBean.hacerPositivo(tamanioProducto_intervaloPrediccion_Real)}"/>
+                                            </h:inputText>
+                                        </p:column>
+                                    </p:row>
+
+
+                                    <!-- TIEMPO EN FASE-->
+
+
+                                    <p:row>
+                                        <p:column rowspan="1" colspan="7" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['tiempoEnFaseHoras']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['plan']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['real']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['real']}%
+                                        </p:column>
+                                    </p:row>
+
+                                    <c:set value="#{calidadBean.sump.getAtributo('Tiempo en fase (horas)')}" var="tiempoEnFase"/>
+
+                                    <p:row>
+                                        <c:set value="#{tiempoEnFase.getSubAtributo(mensajes['gerenciaYMiscelanea'])}" var="tiempoEnFase_gerenciaMiscelanea"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['gerenciaYMiscelanea']} #{tiempoEnFase.atributo}
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_gerenciaMiscelanea.getSubAtributo('Plan')}" var="tiempoEnFase_gerenciaMiscelanea_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_gerenciaMiscelanea_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_gerenciaMiscelanea.getSubAtributo('Real')}" var="tiempoEnFase_gerenciaMiscelanea_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_gerenciaMiscelanea_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_gerenciaMiscelanea.getSubAtributo('Real porcentaje')}" var="tiempoEnFase_gerenciaMiscelanea_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_gerenciaMiscelanea_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{tiempoEnFase.getSubAtributo(mensajes['lanzamientoYEstrategia'])}" var="tiempoEnFase_lanzamientoEstrategia"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['lanzamientoYEstrategia']}
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_lanzamientoEstrategia.getSubAtributo('Plan')}" var="tiempoEnFase_lanzamientoEstrategia_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_lanzamientoEstrategia_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_lanzamientoEstrategia.getSubAtributo('Real')}" var="tiempoEnFase_lanzamientoEstrategia_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_lanzamientoEstrategia_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_lanzamientoEstrategia.getSubAtributo('Real porcentaje')}" var="tiempoEnFase_lanzamientoEstrategia_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_lanzamientoEstrategia_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{tiempoEnFase.getSubAtributo(mensajes['estrategiaYPlaneacion'])}" var="tiempoEnFase_planeacion"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['estrategiaYPlaneacion']}
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_planeacion.getSubAtributo('Plan')}" var="tiempoEnFase_planeacion_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_planeacion_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_planeacion.getSubAtributo('Real')}" var="tiempoEnFase_planeacion_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_planeacion_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_planeacion.getSubAtributo('Real porcentaje')}" var="tiempoEnFase_planeacion_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_planeacion_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{tiempoEnFase.getSubAtributo(mensajes['requerimientos'])}" var="tiempoEnFase_requerimientos"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['requerimientos']}
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_requerimientos.getSubAtributo('Plan')}" var="tiempoEnFase_requerimientos_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_requerimientos_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_requerimientos.getSubAtributo('Real')}" var="tiempoEnFase_requerimientos_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_requerimientos_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_requerimientos.getSubAtributo('Real porcentaje')}" var="tiempoEnFase_requerimientos_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_requerimientos_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{tiempoEnFase.getSubAtributo(mensajes['planDePruebaDeSistema'])}" var="tiempoEnFase_planPruebaSistema"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['planDePruebaDeSistema']}
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_planPruebaSistema.getSubAtributo('Plan')}" var="tiempoEnFase_planPruebaSistema_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_planPruebaSistema_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_planPruebaSistema.getSubAtributo('Real')}" var="tiempoEnFase_planPruebaSistema_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_planPruebaSistema_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_planPruebaSistema.getSubAtributo('Real porcentaje')}" var="tiempoEnFase_planPruebaSistema_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_planPruebaSistema_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{tiempoEnFase.getSubAtributo(mensajes['inspeccionDeRequerimientos'])}" var="tiempoEnFase_inspeccionRequerimientos"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['inspeccionDeRequerimientos']}
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_inspeccionRequerimientos.getSubAtributo('Plan')}" var="tiempoEnFase_inspeccionRequerimientos_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_inspeccionRequerimientos_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_inspeccionRequerimientos.getSubAtributo('Real')}" var="tiempoEnFase_inspeccionRequerimientos_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_inspeccionRequerimientos_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_inspeccionRequerimientos.getSubAtributo('Real porcentaje')}" var="tiempoEnFase_inspeccionRequerimientos_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_inspeccionRequerimientos_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{tiempoEnFase.getSubAtributo(mensajes['disenioDeAltoNivel'])}" var="tiempoEnFase_disenioAltoNivel"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['disenioDeAltoNivel']}
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_disenioAltoNivel.getSubAtributo('Plan')}" var="tiempoEnFase_disenioAltoNivel_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_disenioAltoNivel_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_disenioAltoNivel.getSubAtributo('Real')}" var="tiempoEnFase_disenioAltoNivel_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_disenioAltoNivel_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_disenioAltoNivel.getSubAtributo('Real porcentaje')}" var="tiempoEnFase_disenioAltoNivel_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_disenioAltoNivel_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{tiempoEnFase.getSubAtributo(mensajes['planDePruebaDeIntegracion'])}" var="tiempoEnFase_planPruebaIntegracion"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['planDePruebaDeIntegracion']}
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_planPruebaIntegracion.getSubAtributo('Plan')}" var="tiempoEnFase_planPruebaIntegracion_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_planPruebaIntegracion_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_planPruebaIntegracion.getSubAtributo('Real')}" var="tiempoEnFase_planPruebaIntegracion_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_planPruebaIntegracion_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_planPruebaIntegracion.getSubAtributo('Real porcentaje')}" var="tiempoEnFase_planPruebaIntegracion_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_planPruebaIntegracion_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{tiempoEnFase.getSubAtributo(mensajes['inspeccionDeDisenioDeAltoNivelHLD'])}" var="tiempoEnFase_inspeccionDisenioAltoNivel"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['inspeccionDeDisenioDeAltoNivelHLD']}
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_inspeccionDisenioAltoNivel.getSubAtributo('Plan')}" var="tiempoEnFase_inspeccionDisenioAltoNivel_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_inspeccionDisenioAltoNivel_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_inspeccionDisenioAltoNivel.getSubAtributo('Real')}" var="tiempoEnFase_inspeccionDisenioAltoNivel_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_inspeccionDisenioAltoNivel_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_inspeccionDisenioAltoNivel.getSubAtributo('Real porcentaje')}" var="tiempoEnFase_inspeccionDisenioAltoNivel_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_inspeccionDisenioAltoNivel_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{tiempoEnFase.getSubAtributo(mensajes['disenioDetallado'])}" var="tiempoEnFase_disenioDetallado"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['disenioDetallado']}
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_disenioDetallado.getSubAtributo('Plan')}" var="tiempoEnFase_disenioDetallado_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_disenioDetallado_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_disenioDetallado.getSubAtributo('Real')}" var="tiempoEnFase_disenioDetallado_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_disenioDetallado_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_disenioDetallado.getSubAtributo('Real porcentaje')}" var="tiempoEnFase_disenioDetallado_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_disenioDetallado_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{tiempoEnFase.getSubAtributo(mensajes['revisionDeDisenioDetallado'])}" var="tiempoEnFase_revisionDisenioDetallado"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['revisionDeDisenioDetallado']}
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_revisionDisenioDetallado.getSubAtributo('Plan')}" var="tiempoEnFase_revisionDisenioDetallado_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_revisionDisenioDetallado_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_revisionDisenioDetallado.getSubAtributo('Real')}" var="tiempoEnFase_revisionDisenioDetallado_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_revisionDisenioDetallado_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_revisionDisenioDetallado.getSubAtributo('Real porcentaje')}" var="tiempoEnFase_revisionDisenioDetallado_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_revisionDisenioDetallado_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{tiempoEnFase.getSubAtributo(mensajes['desarrolloDePrueba'])}" var="tiempoEnFase_desarrolloPrueba"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['desarrolloDePrueba']}
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_desarrolloPrueba.getSubAtributo('Plan')}" var="tiempoEnFase_desarrolloPrueba_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_desarrolloPrueba_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_desarrolloPrueba.getSubAtributo('Real')}" var="tiempoEnFase_desarrolloPrueba_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_desarrolloPrueba_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_desarrolloPrueba.getSubAtributo('Real porcentaje')}" var="tiempoEnFase_desarrolloPrueba_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_desarrolloPrueba_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{tiempoEnFase.getSubAtributo(mensajes['inspeccionDeDisenioDetalladoDLD'])}" var="tiempoEnFase_inspeccionDisenioDetallado"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['inspeccionDeDisenioDetalladoDLD']}
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_inspeccionDisenioDetallado.getSubAtributo('Plan')}" var="tiempoEnFase_inspeccionDisenioDetallado_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_inspeccionDisenioDetallado_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_inspeccionDisenioDetallado.getSubAtributo('Real')}" var="tiempoEnFase_inspeccionDisenioDetallado_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_inspeccionDisenioDetallado_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_inspeccionDisenioDetallado.getSubAtributo('Real porcentaje')}" var="tiempoEnFase_inspeccionDisenioDetallado_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_inspeccionDisenioDetallado_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{tiempoEnFase.getSubAtributo(mensajes['codigo'])}" var="tiempoEnFase_codigo"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['codigo']}
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_codigo.getSubAtributo('Plan')}" var="tiempoEnFase_codigo_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_codigo_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_codigo.getSubAtributo('Real')}" var="tiempoEnFase_codigo_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_codigo_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_codigo.getSubAtributo('Real porcentaje')}" var="tiempoEnFase_codigo_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_codigo_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{tiempoEnFase.getSubAtributo(mensajes['revisionDeCodigo'])}" var="tiempoEnFase_revisionCodigo"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['revisionDeCodigo']}
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_revisionCodigo.getSubAtributo('Plan')}" var="tiempoEnFase_revisionCodigo_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_revisionCodigo_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_revisionCodigo.getSubAtributo('Real')}" var="tiempoEnFase_revisionCodigo_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_revisionCodigo_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_revisionCodigo.getSubAtributo('Real porcentaje')}" var="tiempoEnFase_revisionCodigo_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_revisionCodigo_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{tiempoEnFase.getSubAtributo(mensajes['compilacion'])}" var="tiempoEnFase_compilacion"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['compilacion']}
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_compilacion.getSubAtributo('Plan')}" var="tiempoEnFase_compilacion_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_compilacion_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_compilacion.getSubAtributo('Real')}" var="tiempoEnFase_compilacion_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_compilacion_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_compilacion.getSubAtributo('Real porcentaje')}" var="tiempoEnFase_compilacion_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_compilacion_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{tiempoEnFase.getSubAtributo(mensajes['inspeccionDeCodigo'])}" var="tiempoEnFase_inspeccionCodigo"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['inspeccionDeCodigo']}
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_inspeccionCodigo.getSubAtributo('Plan')}" var="tiempoEnFase_inspeccionCodigo_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_inspeccionCodigo_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_inspeccionCodigo.getSubAtributo('Real')}" var="tiempoEnFase_inspeccionCodigo_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_inspeccionCodigo_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_inspeccionCodigo.getSubAtributo('Real porcentaje')}" var="tiempoEnFase_inspeccionCodigo_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_inspeccionCodigo_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{tiempoEnFase.getSubAtributo(mensajes['pruebaDeUnidad'])}" var="tiempoEnFase_pruebaUnidad"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['pruebaDeUnidad']}
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_pruebaUnidad.getSubAtributo('Plan')}" var="tiempoEnFase_pruebaUnidad_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_pruebaUnidad_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_pruebaUnidad.getSubAtributo('Real')}" var="tiempoEnFase_pruebaUnidad_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_pruebaUnidad_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_pruebaUnidad.getSubAtributo('Real porcentaje')}" var="tiempoEnFase_pruebaUnidad_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_pruebaUnidad_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{tiempoEnFase.getSubAtributo(mensajes['pruebaDeConstruccionEIntegracion'])}" var="tiempoEnFase_pruebaConstruccionIntegracion"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['pruebaDeConstruccionEIntegracion']}
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_pruebaConstruccionIntegracion.getSubAtributo('Plan')}" var="tiempoEnFase_pruebaConstruccionIntegracion_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_pruebaConstruccionIntegracion_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_pruebaConstruccionIntegracion.getSubAtributo('Real')}" var="tiempoEnFase_pruebaConstruccionIntegracion_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_pruebaConstruccionIntegracion_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_pruebaConstruccionIntegracion.getSubAtributo('Real porcentaje')}" var="tiempoEnFase_pruebaConstruccionIntegracion_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_pruebaConstruccionIntegracion_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{tiempoEnFase.getSubAtributo(mensajes['pruebaDeSistema'])}" var="tiempoEnFase_pruebaSistema"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['pruebaDeSistema']}
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_pruebaSistema.getSubAtributo('Plan')}" var="tiempoEnFase_pruebaSistema_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_pruebaSistema_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_pruebaSistema.getSubAtributo('Real')}" var="tiempoEnFase_pruebaSistema_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_pruebaSistema_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_pruebaSistema.getSubAtributo('Real porcentaje')}" var="tiempoEnFase_pruebaSistema_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_pruebaSistema_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{tiempoEnFase.getSubAtributo(mensajes['documentacion'])}" var="tiempoEnFase_documentacion"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['documentacion']}
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_documentacion.getSubAtributo('Plan')}" var="tiempoEnFase_documentacion_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_documentacion_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_documentacion.getSubAtributo('Real')}" var="tiempoEnFase_documentacion_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_documentacion_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_documentacion.getSubAtributo('Real porcentaje')}" var="tiempoEnFase_documentacion_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_documentacion_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{tiempoEnFase.getSubAtributo(mensajes['postmortem'])}" var="tiempoEnFase_Postmortem"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['postmortem']}
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_Postmortem.getSubAtributo('Plan')}" var="tiempoEnFase_Postmortem_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_Postmortem_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_Postmortem.getSubAtributo('Real')}" var="tiempoEnFase_Postmortem_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_Postmortem_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_Postmortem.getSubAtributo('Real porcentaje')}" var="tiempoEnFase_Postmortem_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_Postmortem_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{tiempoEnFase.getSubAtributo('Total')}" var="tiempoEnFase_Total"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['total']}
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_Total.getSubAtributo('Plan')}" var="tiempoEnFase_Total_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_Total_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_Total.getSubAtributo('Real')}" var="tiempoEnFase_Total_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_Total_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{tiempoEnFase_Total.getSubAtributo('Real porcentaje')}" var="tiempoEnFase_Total_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{tiempoEnFase_Total_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+
+                                    <!-- DEFECTOS INYECTADOS-->
+
+                                    <p:row>
+                                        <p:column rowspan="1" colspan="7" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            Defectos inyectados
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['plan']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['real']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['real']}%
+                                        </p:column>
+                                    </p:row>
+
+                                    <c:set value="#{calidadBean.sump.getAtributo('Defectos inyectados')}" var="defectosInyectados"/>
+
+                                    <p:row>
+                                        <c:set value="#{defectosInyectados.getSubAtributo(mensajes['estrategiaYPlaneacion'])}" var="defectosInyectados_estrategiaPlaneacion"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['estrategiaYPlaneacion']}
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_estrategiaPlaneacion.getSubAtributo('Plan')}" var="defectosInyectados_estrategiaPlaneacion_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_estrategiaPlaneacion_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_estrategiaPlaneacion.getSubAtributo('Real')}" var="defectosInyectados_estrategiaPlaneacion_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_estrategiaPlaneacion_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_estrategiaPlaneacion.getSubAtributo('Real porcentaje')}" var="defectosInyectados_estrategiaPlaneacion_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_estrategiaPlaneacion_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{defectosInyectados.getSubAtributo(mensajes['requerimientos'])}" var="defectosInyectados_Requerimientos"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['requerimientos']}
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_Requerimientos.getSubAtributo('Plan')}" var="defectosInyectados_Requerimientos_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_Requerimientos_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_Requerimientos.getSubAtributo('Real')}" var="defectosInyectados_Requerimientos_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_Requerimientos_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_Requerimientos.getSubAtributo('Real porcentaje')}" var="defectosInyectados_Requerimientos_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_Requerimientos_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{defectosInyectados.getSubAtributo(mensajes['planDePruebaDeSistema'])}" var="defectosInyectados_planPruebaSistema"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['planDePruebaDeSistema']}
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_planPruebaSistema.getSubAtributo('Plan')}" var="defectosInyectados_planPruebaSistema_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_planPruebaSistema_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_planPruebaSistema.getSubAtributo('Real')}" var="defectosInyectados_planPruebaSistema_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_planPruebaSistema_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_planPruebaSistema.getSubAtributo('Real porcentaje')}" var="defectosInyectados_planPruebaSistema_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_planPruebaSistema_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{defectosInyectados.getSubAtributo(mensajes['inspeccionDeRequerimientos'])}" var="defectosInyectados_inspeccionRequerimientos"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['inspeccionDeRequerimientos']}
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_inspeccionRequerimientos.getSubAtributo('Plan')}" var="defectosInyectados_inspeccionRequerimientos_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_inspeccionRequerimientos_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_inspeccionRequerimientos.getSubAtributo('Real')}" var="defectosInyectados_inspeccionRequerimientos_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_inspeccionRequerimientos_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_inspeccionRequerimientos.getSubAtributo('Real porcentaje')}" var="defectosInyectados_inspeccionRequerimientos_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_inspeccionRequerimientos_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{defectosInyectados.getSubAtributo(mensajes['disenioDeAltoNivel'])}" var="defectosInyectados_disenioAltoNivel"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['disenioDeAltoNivel']}
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_disenioAltoNivel.getSubAtributo('Plan')}" var="defectosInyectados_disenioAltoNivel_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_disenioAltoNivel_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_disenioAltoNivel.getSubAtributo('Real')}" var="defectosInyectados_disenioAltoNivel_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_disenioAltoNivel_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_disenioAltoNivel.getSubAtributo('Real porcentaje')}" var="defectosInyectados_disenioAltoNivel_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_disenioAltoNivel_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{defectosInyectados.getSubAtributo(mensajes['planDePruebaDeIntegracion'])}" var="defectosInyectados_planPruebaIntegracion"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['planDePruebaDeIntegracion']}
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_planPruebaIntegracion.getSubAtributo('Plan')}" var="defectosInyectados_planPruebaIntegracion_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_planPruebaIntegracion_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_planPruebaIntegracion.getSubAtributo('Real')}" var="defectosInyectados_planPruebaIntegracion_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_planPruebaIntegracion_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_planPruebaIntegracion.getSubAtributo('Real porcentaje')}" var="defectosInyectados_planPruebaIntegracion_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_planPruebaIntegracion_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{defectosInyectados.getSubAtributo(mensajes['inspeccionDeDisenioDeAltoNivelHLD'])}" var="defectosInyectados_inspeccionDisenioDetallado"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['inspeccionDeDisenioDeAltoNivelHLD']}
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_inspeccionDisenioDetallado.getSubAtributo('Plan')}" var="defectosInyectados_inspeccionDisenioDetallado_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_inspeccionDisenioDetallado_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_inspeccionDisenioDetallado.getSubAtributo('Real')}" var="defectosInyectados_inspeccionDisenioDetallado_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_inspeccionDisenioDetallado_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_inspeccionDisenioDetallado.getSubAtributo('Real porcentaje')}" var="defectosInyectados_inspeccionDisenioDetallado_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_inspeccionDisenioDetallado_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{defectosInyectados.getSubAtributo(mensajes['disenioDetallado'])}" var="defectosInyectados_disenioDetallado"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['disenioDetallado']}
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_disenioDetallado.getSubAtributo('Plan')}" var="defectosInyectados_disenioDetallado_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_disenioDetallado_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_disenioDetallado.getSubAtributo('Real')}" var="defectosInyectados_disenioDetallado_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_disenioDetallado_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_disenioDetallado.getSubAtributo('Real porcentaje')}" var="defectosInyectados_disenioDetallado_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_disenioDetallado_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{defectosInyectados.getSubAtributo(mensajes['revisionDeDisenioDetallado'])}" var="defectosInyectados_revisionDisenioDetallado"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['revisionDeDisenioDetallado']}
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_revisionDisenioDetallado.getSubAtributo('Plan')}" var="defectosInyectados_revisionDisenioDetallado_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_revisionDisenioDetallado_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_revisionDisenioDetallado.getSubAtributo('Real')}" var="defectosInyectados_revisionDisenioDetallado_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_revisionDisenioDetallado_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_revisionDisenioDetallado.getSubAtributo('Real porcentaje')}" var="defectosInyectados_revisionDisenioDetallado_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_revisionDisenioDetallado_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{defectosInyectados.getSubAtributo(mensajes['desarrolloDePrueba'])}" var="defectosInyectados_desarrolloPrueba"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['desarrolloDePrueba']}
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_desarrolloPrueba.getSubAtributo('Plan')}" var="defectosInyectados_desarrolloPrueba_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_desarrolloPrueba_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_desarrolloPrueba.getSubAtributo('Real')}" var="defectosInyectados_desarrolloPrueba_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_desarrolloPrueba_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_desarrolloPrueba.getSubAtributo('Real porcentaje')}" var="defectosInyectados_desarrolloPrueba_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_desarrolloPrueba_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{defectosInyectados.getSubAtributo(mensajes['inspeccionDeDisenioDetalladoDLD'])}" var="defectosInyectados_inspeccionDisenioDetallado"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['inspeccionDeDisenioDetalladoDLD']}
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_inspeccionDisenioDetallado.getSubAtributo('Plan')}" var="defectosInyectados_inspeccionDisenioDetallado_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_inspeccionDisenioDetallado_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_inspeccionDisenioDetallado.getSubAtributo('Real')}" var="defectosInyectados_inspeccionDisenioDetallado_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_inspeccionDisenioDetallado_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_inspeccionDisenioDetallado.getSubAtributo('Real porcentaje')}" var="defectosInyectados_inspeccionDisenioDetallado_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_inspeccionDisenioDetallado_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{defectosInyectados.getSubAtributo(mensajes['codigo'])}" var="defectosInyectados_codigo"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['codigo']}
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_codigo.getSubAtributo('Plan')}" var="defectosInyectados_codigo_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_codigo_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_codigo.getSubAtributo('Real')}" var="defectosInyectados_codigo_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_codigo_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_codigo.getSubAtributo('Real porcentaje')}" var="defectosInyectados_codigo_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_codigo_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{defectosInyectados.getSubAtributo(mensajes['revisionDeCodigo'])}" var="defectosInyectados_revisionCodigo"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['revisionDeCodigo']}
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_revisionCodigo.getSubAtributo('Plan')}" var="defectosInyectados_revisionCodigo_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_revisionCodigo_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_revisionCodigo.getSubAtributo('Real')}" var="defectosInyectados_revisionCodigo_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_revisionCodigo_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_revisionCodigo.getSubAtributo('Real porcentaje')}" var="defectosInyectados_revisionCodigo_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_revisionCodigo_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{defectosInyectados.getSubAtributo(mensajes['compilacion'])}" var="defectosInyectados_compilacion"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['compilacion']}
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_compilacion.getSubAtributo('Plan')}" var="defectosInyectados_compilacion_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_compilacion_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_compilacion.getSubAtributo('Real')}" var="defectosInyectados_compilacion_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_compilacion_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_compilacion.getSubAtributo('Real porcentaje')}" var="defectosInyectados_compilacion_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_compilacion_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{defectosInyectados.getSubAtributo(mensajes['inspeccionDeCodigo'])}" var="defectosInyectados_inspeccionCodigo"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['inspeccionDeCodigo']}
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_inspeccionCodigo.getSubAtributo('Plan')}" var="defectosInyectados_inspeccionCodigo_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_inspeccionCodigo_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_inspeccionCodigo.getSubAtributo('Real')}" var="defectosInyectados_inspeccionCodigo_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_inspeccionCodigo_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_inspeccionCodigo.getSubAtributo('Real porcentaje')}" var="defectosInyectados_inspeccionCodigo_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_inspeccionCodigo_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{defectosInyectados.getSubAtributo(mensajes['pruebaDeUnidad'])}" var="defectosInyectados_pruebaUnidad"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['pruebaDeUnidad']}
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_pruebaUnidad.getSubAtributo('Plan')}" var="defectosInyectados_pruebaUnidad_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_pruebaUnidad_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_pruebaUnidad.getSubAtributo('Real')}" var="defectosInyectados_pruebaUnidad_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_pruebaUnidad_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_pruebaUnidad.getSubAtributo('Real porcentaje')}" var="defectosInyectados_pruebaUnidad_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_pruebaUnidad_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{defectosInyectados.getSubAtributo(mensajes['pruebaDeConstruccionEIntegracion'])}" var="defectosInyectados_pruebaConstruccionIntegracion"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['pruebaDeConstruccionEIntegracion']}
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_pruebaConstruccionIntegracion.getSubAtributo('Plan')}" var="defectosInyectados_pruebaConstruccionIntegracion_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_pruebaConstruccionIntegracion_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_pruebaConstruccionIntegracion.getSubAtributo('Real')}" var="defectosInyectados_pruebaConstruccionIntegracion_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_pruebaConstruccionIntegracion_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_pruebaConstruccionIntegracion.getSubAtributo('Real porcentaje')}" var="defectosInyectados_pruebaConstruccionIntegracion_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_pruebaConstruccionIntegracion_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{defectosInyectados.getSubAtributo(mensajes['pruebaDeSistema'])}" var="defectosInyectados_pruebaSistema"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['pruebaDeSistema']}
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_pruebaSistema.getSubAtributo('Plan')}" var="defectosInyectados_pruebaSistema_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_pruebaSistema_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_pruebaSistema.getSubAtributo('Real')}" var="defectosInyectados_pruebaSistema_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_pruebaSistema_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_pruebaSistema.getSubAtributo('Real porcentaje')}" var="defectosInyectados_pruebaSistema_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_pruebaSistema_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{defectosInyectados.getSubAtributo('Total')}" var="defectosInyectados_Total"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['total']}
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_Total.getSubAtributo('Plan')}" var="defectosInyectados_Total_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_Total_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_Total.getSubAtributo('Real')}" var="defectosInyectados_Total_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_Total_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosInyectados_Total.getSubAtributo('Real porcentaje')}" var="defectosInyectados_Total_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosInyectados_Total_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <!-- DEFECTOS REMOVIDOS-->
+
+
+                                    <p:row>
+                                        <p:column rowspan="1" colspan="7" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            Defectos removidos
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['plan']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['real']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['real']}%
+                                        </p:column>
+                                    </p:row>
+
+                                    <c:set value="#{calidadBean.sump.getAtributo('Defectos removidos')}" var="defectosRemovidos"/>
+
+
+                                    <p:row>
+                                        <c:set value="#{defectosRemovidos.getSubAtributo(mensajes['estrategiaYPlaneacion'])}" var="defectosRemovidos_planeacionEstrategia"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['estrategiaYPlaneacion']}
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_planeacionEstrategia.getSubAtributo('Plan')}" var="defectosRemovidos_planeacionEstrategia_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_planeacionEstrategia_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_planeacionEstrategia.getSubAtributo('Real')}" var="defectosRemovidos_planeacionEstrategia_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_planeacionEstrategia_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_planeacionEstrategia.getSubAtributo('Real porcentaje')}" var="defectosRemovidos_planeacionEstrategia_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_planeacionEstrategia_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{defectosRemovidos.getSubAtributo(mensajes['requerimientos'])}" var="defectosRemovidos_requerimientos"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['requerimientos']}
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_requerimientos.getSubAtributo('Plan')}" var="defectosRemovidos_requerimientos_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_requerimientos_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_requerimientos.getSubAtributo('Real')}" var="defectosRemovidos_requerimientos_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_requerimientos_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_requerimientos.getSubAtributo('Real porcentaje')}" var="defectosRemovidos_requerimientos_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_requerimientos_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{defectosRemovidos.getSubAtributo(mensajes['planDePruebaDeSistema'])}" var="defectosRemovidos_planPruebaSistema"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['planDePruebaDeSistema']}
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_planPruebaSistema.getSubAtributo('Plan')}" var="defectosRemovidos_planPruebaSistema_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_planPruebaSistema_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_planPruebaSistema.getSubAtributo('Real')}" var="defectosRemovidos_planPruebaSistema_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_planPruebaSistema_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_planPruebaSistema.getSubAtributo('Real porcentaje')}" var="defectosRemovidos_planPruebaSistema_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_planPruebaSistema_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{defectosRemovidos.getSubAtributo(mensajes['inspeccionDeRequerimientos'])}" var="defectosRemovidos_inspeccionRequerimientos"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['inspeccionDeRequerimientos']}
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_inspeccionRequerimientos.getSubAtributo('Plan')}" var="defectosRemovidos_inspeccionRequerimientos_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_inspeccionRequerimientos_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_inspeccionRequerimientos.getSubAtributo('Real')}" var="defectosRemovidos_inspeccionRequerimientos_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_inspeccionRequerimientos_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_inspeccionRequerimientos.getSubAtributo('Real porcentaje')}" var="defectosRemovidos_inspeccionRequerimientos_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_inspeccionRequerimientos_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{defectosRemovidos.getSubAtributo(mensajes['disenioDeAltoNivel'])}" var="defectosRemovidos_disenioAltoNivel"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['disenioDeAltoNivel']}
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_disenioAltoNivel.getSubAtributo('Plan')}" var="defectosRemovidos_disenioAltoNivel_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_disenioAltoNivel_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_disenioAltoNivel.getSubAtributo('Real')}" var="defectosRemovidos_disenioAltoNivel_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_disenioAltoNivel_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_disenioAltoNivel.getSubAtributo('Real porcentaje')}" var="defectosRemovidos_disenioAltoNivel_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_disenioAltoNivel_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{defectosRemovidos.getSubAtributo(mensajes['planDePruebaDeIntegracion'])}" var="defectosRemovidos_planPruebaIntegracion"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['planDePruebaDeIntegracion']}
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_planPruebaIntegracion.getSubAtributo('Plan')}" var="defectosRemovidos_planPruebaIntegracion_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_planPruebaIntegracion_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_planPruebaIntegracion.getSubAtributo('Real')}" var="defectosRemovidos_planPruebaIntegracion_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_planPruebaIntegracion_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_planPruebaIntegracion.getSubAtributo('Real porcentaje')}" var="defectosRemovidos_planPruebaIntegracion_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_planPruebaIntegracion_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{defectosRemovidos.getSubAtributo(mensajes['inspeccionDeDisenioDeAltoNivelHLD'])}" var="defectosRemovidos_inspeccionDisenioAltoNivel"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['inspeccionDeDisenioDeAltoNivelHLD']}
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_inspeccionDisenioAltoNivel.getSubAtributo('Plan')}" var="defectosRemovidos_inspeccionDisenioAltoNivel_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_inspeccionDisenioAltoNivel_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_inspeccionDisenioAltoNivel.getSubAtributo('Real')}" var="defectosRemovidos_inspeccionDisenioAltoNivel_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_inspeccionDisenioAltoNivel_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_inspeccionDisenioAltoNivel.getSubAtributo('Real porcentaje')}" var="defectosRemovidos_inspeccionDisenioAltoNivel_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_inspeccionDisenioAltoNivel_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{defectosRemovidos.getSubAtributo(mensajes['disenioDetallado'])}" var="defectosRemovidos_disenioDetallado"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['disenioDetallado']}
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_disenioDetallado.getSubAtributo('Plan')}" var="defectosRemovidos_disenioDetallado_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_disenioDetallado_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_disenioDetallado.getSubAtributo('Real')}" var="defectosRemovidos_disenioDetallado_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_disenioDetallado_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_disenioDetallado.getSubAtributo('Real porcentaje')}" var="defectosRemovidos_disenioDetallado_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_disenioDetallado_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{defectosRemovidos.getSubAtributo(mensajes['revisionDeDisenioDetallado'])}" var="defectosRemovidos_revisionDisenioDetallado"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['revisionDeDisenioDetallado']}
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_revisionDisenioDetallado.getSubAtributo('Plan')}" var="defectosRemovidos_revisionDisenioDetallado_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_revisionDisenioDetallado_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_revisionDisenioDetallado.getSubAtributo('Real')}" var="defectosRemovidos_revisionDisenioDetallado_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_revisionDisenioDetallado_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_revisionDisenioDetallado.getSubAtributo('Real porcentaje')}" var="defectosRemovidos_revisionDisenioDetallado_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_revisionDisenioDetallado_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{defectosRemovidos.getSubAtributo(mensajes['desarrolloDePrueba'])}" var="defectosRemovidos_desarrolloPrueba"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['desarrolloDePrueba']}
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_desarrolloPrueba.getSubAtributo('Plan')}" var="defectosRemovidos_desarrolloPrueba_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_desarrolloPrueba_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_desarrolloPrueba.getSubAtributo('Real')}" var="defectosRemovidos_desarrolloPrueba_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_desarrolloPrueba_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_desarrolloPrueba.getSubAtributo('Real porcentaje')}" var="defectosRemovidos_desarrolloPrueba_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_desarrolloPrueba_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{defectosRemovidos.getSubAtributo(mensajes['inspeccionDeDisenioDetalladoDLD'])}" var="defectosRemovidos_inspeccionDisenioDetallado"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['inspeccionDeDisenioDetalladoDLD']}
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_inspeccionDisenioDetallado.getSubAtributo('Plan')}" var="defectosRemovidos_inspeccionDisenioDetallado_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_inspeccionDisenioDetallado_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_inspeccionDisenioDetallado.getSubAtributo('Real')}" var="defectosRemovidos_inspeccionDisenioDetallado_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_inspeccionDisenioDetallado_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_inspeccionDisenioDetallado.getSubAtributo('Real porcentaje')}" var="defectosRemovidos_inspeccionDisenioDetallado_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_inspeccionDisenioDetallado_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{defectosRemovidos.getSubAtributo(mensajes['codigo'])}" var="defectosRemovidos_codigo"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['codigo']}
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_codigo.getSubAtributo('Plan')}" var="defectosRemovidos_codigo_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_codigo_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_codigo.getSubAtributo('Real')}" var="defectosRemovidos_codigo_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_codigo_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_codigo.getSubAtributo('Real porcentaje')}" var="defectosRemovidos_codigo_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_codigo_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{defectosRemovidos.getSubAtributo(mensajes['revisionDeCodigo'])}" var="defectosRemovidos_revisionCodigo"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['revisionDeCodigo']}
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_revisionCodigo.getSubAtributo('Plan')}" var="defectosRemovidos_revisionCodigo_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_revisionCodigo_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_revisionCodigo.getSubAtributo('Real')}" var="defectosRemovidos_revisionCodigo_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_revisionCodigo_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_revisionCodigo.getSubAtributo('Real porcentaje')}" var="defectosRemovidos_revisionCodigo_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_revisionCodigo_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{defectosRemovidos.getSubAtributo(mensajes['compilacion'])}" var="defectosRemovidos_compilacion"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['compilacion']}
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_compilacion.getSubAtributo('Plan')}" var="defectosRemovidos_compilacion_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_compilacion_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_compilacion.getSubAtributo('Real')}" var="defectosRemovidos_compilacion_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_compilacion_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_compilacion.getSubAtributo('Real porcentaje')}" var="defectosRemovidos_compilacion_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_compilacion_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{defectosRemovidos.getSubAtributo(mensajes['inspeccionDeCodigo'])}" var="defectosRemovidos_inspeccionCodigo"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['inspeccionDeCodigo']}
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_inspeccionCodigo.getSubAtributo('Plan')}" var="defectosRemovidos_inspeccionCodigo_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_inspeccionCodigo_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_inspeccionCodigo.getSubAtributo('Real')}" var="defectosRemovidos_inspeccionCodigo_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_inspeccionCodigo_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_inspeccionCodigo.getSubAtributo('Real porcentaje')}" var="defectosRemovidos_inspeccionCodigo_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_inspeccionCodigo_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{defectosRemovidos.getSubAtributo(mensajes['pruebaDeUnidad'])}" var="defectosRemovidos_pruebaUnidad"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['pruebaDeUnidad']}
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_pruebaUnidad.getSubAtributo('Plan')}" var="defectosRemovidos_pruebaUnidad_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_pruebaUnidad_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_pruebaUnidad.getSubAtributo('Real')}" var="defectosRemovidos_pruebaUnidad_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_pruebaUnidad_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_pruebaUnidad.getSubAtributo('Real porcentaje')}" var="defectosRemovidos_pruebaUnidad_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_pruebaUnidad_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{defectosRemovidos.getSubAtributo(mensajes['pruebaDeConstruccionEIntegracion'])}" var="defectosRemovidos_pruebaConstruccionIntegracion"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['pruebaDeConstruccionEIntegracion']}
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_pruebaConstruccionIntegracion.getSubAtributo('Plan')}" var="defectosRemovidos_pruebaConstruccionIntegracion_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_pruebaConstruccionIntegracion_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_pruebaConstruccionIntegracion.getSubAtributo('Real')}" var="defectosRemovidos_pruebaConstruccionIntegracion_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_pruebaConstruccionIntegracion_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_pruebaConstruccionIntegracion.getSubAtributo('Real porcentaje')}" var="defectosRemovidos_pruebaConstruccionIntegracion_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_pruebaConstruccionIntegracion_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{defectosRemovidos.getSubAtributo(mensajes['pruebaDeSistema'])}" var="defectosRemovidos_pruebaSistema"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['pruebaDeSistema']}
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_pruebaSistema.getSubAtributo('Plan')}" var="defectosRemovidos_pruebaSistema_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_pruebaSistema_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_pruebaSistema.getSubAtributo('Real')}" var="defectosRemovidos_pruebaSistema_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_pruebaSistema_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_pruebaSistema.getSubAtributo('Real porcentaje')}" var="defectosRemovidos_pruebaSistema_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_pruebaSistema_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{defectosRemovidos.getSubAtributo('Total')}" var="defectosRemovidos_Total"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['total']}
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_Total.getSubAtributo('Plan')}" var="defectosRemovidos_Total_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_Total_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_Total.getSubAtributo('Real')}" var="defectosRemovidos_Total_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_Total_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidos_Total.getSubAtributo('Real porcentaje')}" var="defectosRemovidos_Total_RealPorcentaje"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidos_Total_RealPorcentaje.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+
+                                    <p:row>
+                                        <c:set value="#{defectosRemovidos.getSubAtributo('Prueba de aceptación')}" var="defectosRemovidosPruebaAceptacion"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['pruebaDeAceptacion']}
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidosPruebaAceptacion.getSubAtributo('Plan')}" var="defectosRemovidosPruebaAceptacion_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidosPruebaAceptacion_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidosPruebaAceptacion.getSubAtributo('Real')}" var="defectosRemovidosPruebaAceptacion_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidosPruebaAceptacion_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{defectosRemovidos.getSubAtributo('Vida de producto')}" var="defectosRemovidosVidaProducto"/>
+                                        <p:column rowspan="1" colspan="7">
+                                            #{mensajes['vidaDeProducto']}
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidosVidaProducto.getSubAtributo('Plan')}" var="defectosRemovidosVidaProducto_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidosVidaProducto_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{defectosRemovidosPruebaAceptacion.getSubAtributo('Real')}" var="defectosRemovidosVidaProducto_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{defectosRemovidosVidaProducto_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+
+
+                                    <!-- RESUMEN-->
+
+
+                                    <p:row>
+                                        <p:column rowspan="1" colspan="8" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['resumen']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['plan']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['real']}
+                                        </p:column>
+                                    </p:row>
+
+
+                                    <c:set value="#{calidadBean.sump.getAtributo('Resumen')}" var="resumen"/>
+
+                                    <p:row>
+                                        <c:set value="#{resumen.getSubAtributo('Código/hora')}" var="resumen_codigoHora"/>
+                                        <p:column rowspan="1" colspan="8">
+                                            #{mensajes['codigo']}/#{mensajes['hora']}
+                                        </p:column>
+                                        <c:set value="#{resumen_codigoHora.getSubAtributo('Plan')}" var="resumen_codigoHora_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText id="resumencodigoHoraPlan" value="#{resumen_codigoHora_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{resumen_codigoHora.getSubAtributo('Real')}" var="resumen_codigoHora_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText id="resumencodigoHoraReal" value="#{resumen_codigoHora_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{resumen.getSubAtributo('CPI (índice de costo-desempeño)')}" var="resumen_CPI"/>
+                                        <p:column rowspan="1" colspan="8">
+                                            #{mensajes['cpi']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{resumen_CPI.getSubAtributo('Real')}" var="resumen_CPI_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText value="#{resumen_CPI_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{resumen.getSubAtributo('Porcentaje reuso')}" var="resumen_PorcentajeReuso"/>
+                                        <p:column rowspan="1" colspan="8">
+                                            #{mensajes['porcentajeDeReuso']}
+                                        </p:column>
+                                        <c:set value="#{resumen_PorcentajeReuso.getSubAtributo('Plan')}" var="resumen_PorcentajeReuso_Plan"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText id="porcentajeReusoPlan" value="#{resumen_PorcentajeReuso_Plan.valor}" disabled="true"/>
+                                        </p:column>
+                                        <c:set value="#{resumen_PorcentajeReuso.getSubAtributo('Real')}" var="resumen_PorcentajeReuso_Real"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:inputText id="porcentajeReusoReal" value="#{resumen_PorcentajeReuso_Real.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                </p:panelGrid>
+                            </h:panelGroup>
+                            <br/>
+                            
+                                <h:commandButton binding="#{calidadBean.btnGuardarSump}" class="boton center-block" value="#{calidadBean.sump.id == null ? mensajes['guardar']:mensajes['actualizar']} #{mensajes['formatoSump2']}" action="#{calidadBean.guardarFormatoSump}">
+                                    <f:ajax render="@form" execute="@form" onevent="PF('bloqueoSump').show()"/>
+                                </h:commandButton>
+                            
+                            <tsp:carg objeto="formSump" elemento="bloqueoSump"/>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <tsp:pie/>
+    </h:body>
+</html>
+

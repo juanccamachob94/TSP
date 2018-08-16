@@ -1,0 +1,653 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:tsp="tsp/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>TSPSupport</title>
+    </h:head>
+    <h:body>
+        <ui:include src="./../resources/plantillas/menu_arriba.xhtml"/>
+
+        <div class="container contenedor row">
+            <tsp:menuIzq/>
+            <div class="col m9">
+                <p:messages autoUpdate="true" closable="true"/>
+                <div class="contenido">
+                    <tsp:encabezadoProyecto/>
+                    <div class="contenidoReal">
+
+                        <p:panelGrid class="ui-datatable ui-widget tablaNormal">
+                            <f:facet name="header">
+                                <p:row>
+                                    <p:column rowspan="1" colspan="3" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                        #{mensajes['qual.info1']}
+                                    </p:column>
+                                </p:row>
+                            </f:facet>
+
+                            <p:row>
+                                <p:column rowspan="1" colspan="3" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['qual.info2']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['qual.info3']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['qual.info4']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['qual.info5']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info6']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    >10%
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info7']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    >50%
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                   #{mensajes['qual.info8']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    >70%
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info9']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    >90%
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                </p:column>
+                            </p:row>
+
+
+                            <p:row>
+                                <p:column rowspan="1" colspan="3" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['qual.info10']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['qual.info11']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['qual.info12']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['qual.info13']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info14']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    75-150
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">.
+                                     #{mensajes['qual.info15']} 100-200
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info16']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    &lt;10
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info17']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info18']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    &lt;5
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info19']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info20']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    &lt;0.5
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info21']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info22']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    &lt;0.2
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info23']}
+                                </p:column>
+                            </p:row>
+
+
+                            <p:row>
+                                <p:column rowspan="1" colspan="3" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['qual.info24']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['qual.info25']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['qual.info26']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['qual.info27']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info28']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    >2.0
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info29']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info30']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    >2.0
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info31']}
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column rowspan="1" colspan="3" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['qual.info32']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['qual.info33']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['qual.info34']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['qual.info35']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info36']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    >0.25
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info37']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info38']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    >0.5
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info39']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info40']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    >1.00
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info41']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    >0.5
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info42']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    >0.5
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                </p:column>
+                            </p:row>
+
+
+                            <p:row>
+                                <p:column rowspan="1" colspan="3" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                   #{mensajes['qual.info43']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['qual.info44']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['qual.info45']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['qual.info46']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info47']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    &lt;2
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info48']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info49']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    &lt;5
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info50']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info51']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    &lt;100
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info52']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info53']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    &lt;200
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info54']}
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column rowspan="1" colspan="3" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['qual.info55']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['qual.info56']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['qual.info57']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['qual.info58']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info59']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    0.25
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info60']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info61']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    0.25
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info62']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info63']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    2.0
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info64']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info65']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    4.0
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info66']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info67']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    0.3
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info68']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info69']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    0.2
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info70']}
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column rowspan="1" colspan="3" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                   #{mensajes['qual.info71']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['qual.info72']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['qual.info73']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['qual.info74']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info75']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    0.5
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info76']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info77']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    0.5
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info78']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info79']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    2.0
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info80']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info81']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    0.5
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info82']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info83']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    6.0
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info84']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info85']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    1.0
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info86']}
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column rowspan="1" colspan="3" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['qual.info87']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['qual.info88']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['qual.info89']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['qual.info90']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info91']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    ~70%
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info92']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info93']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    ~70%
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                   #{mensajes['qual.info94']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info95']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    ~70%
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info96']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info97']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    ~50%
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info98']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info99']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    ~90%
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info100']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info101']} &lt; #{mensajes['qual.info102']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    ~80%
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info103']}
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column rowspan="1" colspan="3" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['qual.info104']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['qual.info105']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['qual.info106']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['qual.info107']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info108']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    >75%
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info109']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info110']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    >85%
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info111']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info112']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    >97.5%
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info113']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info114']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    >99%
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    #{mensajes['qual.info115']}
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <tsp:pie/>
+    </h:body>
+</html>
+

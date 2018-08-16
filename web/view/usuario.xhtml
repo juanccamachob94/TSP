@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:tsp="tsp/facelets">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet name="css/materialize.css"/>
+        <h:outputStylesheet name="css/estilos.css"/>
+
+        <h:outputScript library="javax.faces" name="jsf.js" target="head" />
+        <h:outputScript library="primefaces" name="jquery/jquery.js" target="head" />
+        <h:outputScript library="primefaces" name="jquery/jquery-plugins.js" target="head" />
+        <script src="./../resources/js/estilos.js"></script>
+        <script src="./../resources/js/materialize.js"></script>
+        <script src="./../resources/js/script.js"></script>
+        <title>TSPSupport</title>
+    </h:head>
+    <h:body id="bodyIndex">
+        <p:growl autoUpdate="true"/>
+        <f:event type="preRenderView" listener="#{accesoBean.permitirAcceso}"/>
+        <f:metadata>
+            <f:viewAction action="#{usuarioBean.cargarUsuarioSesion}"/>
+        </f:metadata>
+        <div class="container usuario">
+            <h:form id="formIniciarSesion">
+
+                <h:panelGroup id="pgIniciarSesion">
+                    <tsp:ent id="inicioSesion_identificacion" texto="#{mensajes['identificacion']} *" valor="#{usuarioBean.usuarioSesion.identificacion}" tipo="text" m="12" i="account_box"/>
+                    <tsp:ent id="inicioSesion_clave" texto="#{mensajes['contrasenia']} *" valor="#{usuarioBean.usuarioSesion.clave}" tipo="password" m="12" i="credit_card"/>
+                    <tsp:msg boton="btnIniciarSesion"/>
+
+                    <h:commandButton id="btnIniciarSesion" binding="#{usuarioBean.btnIniciarSesion}" class="btnIniciarSesion boton center-block" value="#{mensajes['iniciarSesion']}" action="#{usuarioBean.iniciarSesion}">
+                        <f:ajax execute="pgIniciarSesion" render="formIniciarSesion" onevent="PF('bloqueoInicioSesion').show()"/>
+                    </h:commandButton>
+                </h:panelGroup>
+
+                <tsp:linkModal boton="btnModalRegistrar" clase1="link-registro subrayado" texto="#{mensajes['noEstoyRegistrado']}" clase2="linkModalRegistrar" formulario="formRegistrar" modal="modalRegistrar"/>
+                <h:panelGroup id="pgCargarModalRegistrar">
+                    <h:commandButton id="btnModalRegistrar" binding="#{usuarioBean.btnModalRegistrar}" style="display:none" class="btnModalRegistrar" value="" action="#{usuarioBean.cargarModalRegistrar}">
+                        <f:ajax execute="pgCargarModalRegistrar" render="pgCargarModalRegistrar :formRegistrar:pgRegistrar"/>
+                    </h:commandButton>
+                </h:panelGroup>
+                <tsp:carg objeto="formIniciarSesion" elemento="bloqueoInicioSesion"/>
+            </h:form>
+        </div>
+
+        <!-- Modal de registro de usuario -->
+        <div id="modalRegistrar" class="modal modal-fixed-footer">
+            <h:form onkeypress="if (event.keyCode == 13)return false;" id="formRegistrar">
+                <h:panelGroup id="pgRegistrar">
+                    <div class="modal-content row">
+                        <h5>#{mensajes['registroDeUsuario']}</h5>
+                        <tsp:ent id="registro_identificacion" texto="#{mensajes['identificacion']} *" valor="#{usuarioBean.usuarioSesion.identificacion}" tipo="text" m="12" i="account_box"/>
+                        <tsp:ent id="registro_nombre" texto="#{mensajes['nombre']} *" valor="#{usuarioBean.usuarioSesion.nombre}" tipo="text" m="6" i="face"/>
+                        <tsp:ent id="registro_apellido" texto="#{mensajes['apellido']} *" valor="#{usuarioBean.usuarioSesion.apellido}" tipo="text" m="6" i="people"/>
+                        <tsp:ent id="registro_telefono" texto="#{mensajes['telefono']} *" valor="#{usuarioBean.usuarioSesion.telefono}" tipo="number" m="6" i="phone"/>
+                        <tsp:ent id="registro_email" texto="#{mensajes['email']} *" valor="#{usuarioBean.usuarioSesion.email}" tipo="email" m="6" i="email"/>
+                        <tsp:ent id="registro_clave" texto="#{mensajes['contrasenia']} *" valor="#{usuarioBean.usuarioSesion.clave}" tipo="password" m="6" i="credit_card"/>
+                        <tsp:ent id="registro_confirmaClave" texto="#{mensajes['confirmacionContrasenia']} *" tipo="password" m="6" i="credit_card"/>
+                        <tsp:msg boton="btnRegistrar"/>
+                        <br/><br/>
+                    </div>
+                    <div class="modal-footer">
+                        <h:commandButton id="btnRegistrar" binding="#{usuarioBean.btnRegistrar}" style="display:none" class="btnRegistrar" value="" action="#{usuarioBean.registrar}">
+                            <f:ajax execute="pgRegistrar" render="pgRegistrar"/>
+                        </h:commandButton>
+                        <tsp:btnConfirm modal="modalConfirmRegistrar" texto="#{mensajes['registrarme']}" posicion="center-block"/>
+                    </div>
+                </h:panelGroup>
+            </h:form>
+        </div>
+        
+        <tsp:modalConfirm id="modalConfirmRegistrar" validacion="efectuar(formRegistrarValido(),'btnRegistrar','formRegistrar');"/>
+        
+        
+        
+        
+    </h:body>
+</html>

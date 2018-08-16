@@ -1,0 +1,158 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:tsp="tsp/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>TSPSupport</title>
+    </h:head>
+    <h:body>
+        <ui:include src="./../resources/plantillas/menu_arriba.xhtml"/>
+
+        <div class="container contenedor row">
+            <tsp:menuIzq lanzamienti="active"/>
+            <div class="col m9">
+                <p:messages autoUpdate="true" closable="true"/>
+                <div class="contenido">
+                    <tsp:encabezadoProyecto/>
+                    <div class="contenidoReal">
+                        <f:metadata>
+                            <f:viewAction action="#{compBean.cargarNuevoCcr}"/>
+                        </f:metadata>
+
+                        <h:panelGroup rendered="#{proyectoBean.poseeRolCicloActual(mensajes['gerenteDePlaneacion'])}">
+                            <div style="float:right">
+                                <a href="revision_ccr.xhtml">#{mensajes['revisarFormatosCcrSolicitados']}</a>
+                            </div>
+                            <div class="corte"/>
+                        </h:panelGroup>
+                        <div style="float:right">
+                            <a href="mis_ccr.xhtml">#{mensajes['misFormatosCCR']}</a>
+                        </div>
+                        <div class="corte"/>
+
+
+
+                        <h:form onkeypress="if (event.keyCode == 13)
+                                    return false;" id="formCCR">
+                            <c:set value="#{compBean.ccr.getAtributo('Información del cambio')}" var="infCambio"/>
+                            <p:panelGrid class="ui-datatable ui-widget tablaNormal">
+                                <f:facet name="header">
+                                    <p:row>
+                                        <p:column rowspan="1" colspan="4" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['formatoCcr']}
+                                        </p:column>
+                                    </p:row>
+                                </f:facet>
+
+                                <p:row>
+                                    <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                        #{mensajes['parte']}
+                                    </p:column>
+                                    <p:column rowspan="1" colspan="2">
+                                        <c:set value="#{compBean.ccr.getAtributo('parte')}" var="parte"/>
+                                        <h:selectOneMenu class="browser-default selectPequenio ccr_parte" value="#{parte.valor}">
+                                            <f:selectItem itemLabel="#{generalBean.mensajeSeleccion}" itemValue="#{null}"/>
+                                            <f:selectItems value="#{estrategiaBean.partesProductos}" var="producto" itemValue="#{producto.nombre}" itemLabel="#{producto.nombre}"/>
+                                        </h:selectOneMenu>
+                                    </p:column>
+                                </p:row>
+
+
+                                <p:row>
+                                    <p:column rowspan="1" colspan="4" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                        #{mensajes['informacionDelCambio']}
+                                    </p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                        #{mensajes['razonDelCambio']}
+                                    </p:column>
+                                    <p:column rowspan="1" colspan="2">
+                                        <c:set value="#{infCambio.getSubAtributo('Razón del cambio')}" var="razonCambio"/>
+                                        <h:inputTextarea class="ccr_razonCambio" value="#{razonCambio.valor}" style="height: 150px"/>
+                                    </p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                        #{mensajes['beneficiosDelCambio']}
+                                    </p:column>
+                                    <p:column rowspan="1" colspan="2">
+                                        <c:set value="#{infCambio.getSubAtributo('Beneficios del cambio')}" var="beneficiosCambio"/>
+                                        <h:inputTextarea class="ccr_beneficiosCambio" value="#{beneficiosCambio.valor}" style="height: 150px"/>
+                                    </p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                        #{mensajes['impactoDelCambio']}
+                                    </p:column>
+                                    <p:column rowspan="1" colspan="2">
+                                        <c:set value="#{infCambio.getSubAtributo('Impacto del cambio')}" var="impactoCambio"/>
+                                        <h:inputTextarea class="ccr_impactoCambio" value="#{impactoCambio.valor}" style="height: 150px"/>
+                                    </p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                        #{mensajes['descripcionDelCambio']}
+                                    </p:column>
+                                    <p:column rowspan="1" colspan="2">
+                                        <c:set value="#{infCambio.getSubAtributo('Descripción del cambio')}" var="descripcionCambio"/>
+                                        <h:inputTextarea class="ccr_infCambio" value="#{descripcionCambio.valor}" style="height: 150px"/>
+                                    </p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column rowspan="1" colspan="4" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                        #{mensajes['estado']}
+                                    </p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                        #{mensajes['aprobacion']}
+                                    </p:column>
+                                    <p:column rowspan="1" colspan="2">
+                                        <c:set value="#{compBean.ccr.getAtributo('aprobación')}" var="aprobacion"/>
+                                        <h:inputText value="#{aprobacion.valor}" disabled="true"/>
+                                    </p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                        #{mensajes['fechaDeAprobacion']}
+                                    </p:column>
+                                    <p:column rowspan="1" colspan="2">
+                                        <c:set value="#{compBean.ccr.getAtributo('Fecha aprobación')}" var="fechaAprobacion"/>
+                                        <h:inputText value="#{fechaAprobacion.valor}" disabled="true"/>
+                                    </p:column>
+                                </p:row>
+
+                            </p:panelGrid>
+
+                            <tsp:msg boton="btnGuardarCCR"/>
+
+                            <br/>
+                            <h:commandButton id="btnGuardarCCR" binding="#{compBean.btnGuardarFormatoCcr}" style="display:none" class="btnGuardarCCR" action="#{compBean.guardarCcr}">
+                                <f:ajax render="@form" execute="@form"/>
+                            </h:commandButton>
+
+                            <tsp:btnConfirm modal="modalConfirmacionGuardarCCR" texto="#{mensajes['guardarFormatoCCR']}" posicion="boton center-block"/>
+                            <tsp:modalConfirm texto="#{mensajes['vasASolicitarUnCambioDeConfiguracion']}" id="modalConfirmacionGuardarCCR" validacion="efectuar(formGuardarCCRValido(),'btnGuardarCCR','formCCR');"/>
+
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <tsp:pie/>
+    </h:body>
+</html>

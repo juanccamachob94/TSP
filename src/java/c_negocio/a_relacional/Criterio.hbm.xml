@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 25, 2017 3:30:34 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="c_negocio.a_relacional.Criterio" table="criterio" schema="public" optimistic-lock="version">
+        <id name="nombre" type="string">
+            <column name="nombre" length="50" />
+            <generator class="assigned" />
+        </id>
+        <property name="descripcion" type="string">
+            <column name="descripcion" length="500" />
+        </property>
+        <property name="tipo" type="string">
+            <column name="tipo" length="50" not-null="true" />
+        </property>
+        <set name="pyCrs" table="py_cr" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="criterio" length="50" not-null="true" />
+            </key>
+            <one-to-many class="c_negocio.a_relacional.PyCr" />
+        </set>
+    </class>
+</hibernate-mapping>

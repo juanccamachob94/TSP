@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:tsp="tsp/facelets">
+    <head>
+        <title>TODO supply a title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <ui:composition>
+            <h:panelGroup id="encabezadoProyectoSesion">
+                <h:panelGroup rendered="#{not empty proyectoBean.proyectoSesion}">
+                    <div class="panelProyecto" style="background-color: #{proyectoBean.colorFase}">
+                        <a class="modal-trigger" href="#modalImagenProyecto">
+                            <div class="col m1 s12" style="display:inline-block; padding-top: 5px">
+                                <img src="../resources/proyectos/#{proyectoBean.proyectoSesion.urlImg}" height="64px" style="max-width:100%"/>
+                            </div>
+                        </a>
+                        <div id="modalImagenProyecto" class="modal modal-fixed-footer">
+                            <div class="modal-content row">
+                                <div class="alineadoCentro">
+                                    <img src="../resources/proyectos/#{proyectoBean.proyectoSesion.urlImg}" width="100%" style="margin:auto"/>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div id="encabezado1Proyecto" class="card-panel card-titulo col m5 s12" style="display:inline-block">
+                            <span style="font-weight:bold">#{mensajes['proyecto']}:</span> #{generalBean.cadenaIncompleta(proyectoBean.proyectoSesion.nombre,30)}<br/>
+                            <span style="font-weight:bold">#{mensajes['ciclo']}:</span> #{proyectoBean.proyectoSesion.cicloActual}<br/>
+                            <span style="font-weight:bold">#{mensajes['fase']}:</span> #{proyectoBean.proyectoSesion.faseActual}
+                        </div>
+                        <div id="encabezado2Proyecto" class="card-panel card-titulo col m5 s12" style="text-align:center; display:inline-block">
+                            <span style="font-weight:bold">#{mensajes['rolesAsignadosParaElCicloActual']}</span><br/>
+                            <c:forEach var="rolUsuarioSesion" items="#{proyectoBean.rolesUSesion}">
+                                <span style="display:inline; margin-left: 5px">
+                                    #{rolUsuarioSesion}
+                                </span>
+                            </c:forEach>
+                        </div>
+                        <div style="position: absolute; margin-left: 66.4%; margin-top: -8px">
+
+                            <h:form>
+                                <h:panelGroup rendered="#{empty proyectoBean.proyectoSesion.FFin}">
+                                    <h:commandLink class="iconoSiguienteFase" action="#{proyectoBean.cargarModalPasarSiguienteFaseOCiclo}">
+                                        <i class="material-icons large" style="color:#03A9F4">navigate_next</i>
+                                        <f:ajax render=":formSiguienteFaseCiclo" execute="@this"/>
+                                    </h:commandLink>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{not empty proyectoBean.proyectoSesion.FFin}">
+                                    <i class="material-icons large" style="color:#03A9F4">done</i>
+                                </h:panelGroup>
+                            </h:form>
+                            <a class="modal-trigger linkModalSiguienteFaseOCiclo" href="#modalSiguienteFase"></a>
+                        </div>
+                        <div id="modalSiguienteFase" class="modal modal-fixed-footer">
+                            <h:form id="formSiguienteFaseCiclo">
+                                <div class="modal-content row">
+                                    <h5>#{mensajes['criteriosDeSalida']}</h5>
+                                    <ui:repeat id="repeatCriterioSalida" value="#{proyectoBean.validacionCriteriosSalida}" var="validacionCriterioSalida" varStatus="estado">
+                                        <h:selectBooleanCheckbox id="validacionCriterioSalida" value="#{proyectoBean.validacionCriteriosSalida[estado.index]}" a:type="checkbox" disabled="#{proyectoBean.criteriosSalida[estado.index].valor eq 'manual' ? 'false':'true'}"/>
+                                        <h:outputLabel style="color: #305F7B" for="validacionCriterioSalida">#{proyectoBean.criteriosSalida[estado.index].atributo}</h:outputLabel>
+                                        <br/>
+                                    </ui:repeat>
+                                    <tsp:msg boton="btnPasarSiguienteCicloFase"/>
+                                </div>
+                                <div class="modal-footer">
+                                    <h:commandButton class="boton center-block" id="btnPasarSiguienteCicloFase" binding="#{proyectoBean.btnPasarSiguienteCicloFase}" value="#{proyectoBean.proyectoSesion.faseActual eq mensajes['postmortem'] ? mensajes['irAlSiguienteCiclo']:mensajes['irALaSiguienteFase']}" action="#{proyectoBean.irSiguienteCicloOFase}">
+                                        <f:ajax render="@form" execute="@form"/>
+                                    </h:commandButton>
+                                </div>
+                            </h:form>
+                        </div>
+                        <div class="corte"/>
+                    </div>
+                </h:panelGroup>
+            </h:panelGroup>
+        </ui:composition>
+    </body>
+</html>

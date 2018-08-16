@@ -1,0 +1,188 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:tsp="tsp/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>TSPSupport</title>
+    </h:head>
+    <h:body>
+        <ui:include src="./../resources/plantillas/menu_arriba.xhtml"/>
+
+        <div class="container contenedor row">
+            <tsp:menuIzq/>
+            <div class="col m9">
+                <p:messages autoUpdate="true" closable="true"/>
+                <div class="contenido">
+                    <tsp:encabezadoProyecto/>
+                    <div class="contenidoReal">
+                        <p:panelGrid class="ui-datatable ui-widget tablaNormal">
+                            <f:facet name="header">
+                                <p:row>
+                                    <p:column rowspan="1" colspan="3" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                        #{mensajes['laun.info1']}
+                                    </p:column>
+                                </p:row>
+                            </f:facet>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['laun.info2']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['laun.info3']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['laun.info4']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['laun.info5']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['laun.info6']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['laun.info7']}
+                                    <ul>
+                                        <li>#{mensajes['laun.info8']}</li>
+                                        <li>#{mensajes['laun.info9']}</li> 
+                                        <li>#{mensajes['laun.info10']}</li>
+                                    </ul>
+                                    #{mensajes['laun.info11']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['laun.info12']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['laun.info13']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['laun.info14']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['laun.info15']}
+                                    <ul>
+                                        <li>#{mensajes['laun.info16']}</li>
+                                        <li>#{mensajes['laun.info17']}</li> 
+                                        <li>#{mensajes['laun.info18']}</li>
+                                    </ul>                                    
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['laun.info19']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['laun.info20']}
+                                    <ul>
+                                        <li>#{mensajes['laun.info21']}</li>
+                                        <li>#{mensajes['laun.info22']}</li>
+                                        <li>#{mensajes['laun.info23']}</li>
+                                    </ul>
+                                    #{mensajes['laun.info24']}
+                                    <ul>
+                                        <li>#{mensajes['laun.info25']}</li>
+                                        <li>#{mensajes['laun.info26']}</li>
+                                        <li>#{mensajes['laun.info27']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['laun.info28']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    <ul>
+                                        <li>#{mensajes['laun.info29']}</li>
+                                        <li>#{mensajes['laun.info30']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['laun.info31']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['laun.info32']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['laun.info33']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['laun.info34']}
+                                    <ul>
+                                        <li>#{mensajes['laun.info35']}</li>
+                                        <li>#{mensajes['laun.info36']}</li>       
+                                        <li>#{mensajes['laun.info37']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['laun.info38']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['laun.info39']}
+                                    <ul>
+                                        <li>#{mensajes['laun.info40']}</li>
+                                        <li>#{mensajes['laun.info41']}</li>
+                                        <li>#{mensajes['laun.info42']}</li>
+                                        <li>#{mensajes['laun.info43']}</li>                                        
+                                    </ul>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['laun.info44']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['laun.info45']}
+                                    <ul>
+                                        <li>#{mensajes['laun.info46']}</li>
+                                        <li>#{mensajes['laun.info47']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['laun.info48']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['laun.info49']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['laun.info50']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    <ul>
+                                        <li>#{mensajes['laun.info51']}</li>
+                                        <li>#{mensajes['laun.info52']}</li>
+                                        <li>#{mensajes['laun.info53']}</li>
+                                        <li>#{mensajes['laun.info54']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>                            
+                        </p:panelGrid> 
+                    </div>
+                </div>
+            </div>
+        </div>
+        <tsp:pie/>
+    </h:body>
+</html>

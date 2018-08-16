@@ -1,0 +1,212 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:tsp="tsp/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>TSPSupport</title>
+    </h:head>
+    <h:body>
+        <ui:include src="./../resources/plantillas/menu_arriba.xhtml"/>
+
+        <div class="container contenedor row">
+            <tsp:menuIzq/>
+            <div class="col m9">
+                <p:messages autoUpdate="true" closable="true"/>
+                <div class="contenido">
+                    <tsp:encabezadoProyecto/>
+                    <div class="contenidoReal">
+                        <f:metadata>
+                            <f:viewAction action="#{proyectoBean.consultarProyectosUsuarioSesion}"/>
+                            <f:viewAction action="#{graficaBean.reiniciarValoresPersonales}"/>
+                        </f:metadata>
+                        <h:form onkeypress="if (event.keyCode == 13)
+                                    return false;" id="formSeleccionProyectosUsuarioSesion">
+                            <p:panelGrid class="ui-datatable ui-widget tablaNormal">
+                                <f:facet name="header">
+                                    <p:row>
+                                        <p:column rowspan="1" colspan="15" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            Proyectos
+                                        </p:column>
+                                    </p:row>
+                                </f:facet>
+                            </p:panelGrid>
+                            <p:dataTable value="#{proyectoBean.proyectosUsuarioSesion}" var="proyectoUsuario" rowIndexVar="pos">
+                                <p:columnGroup type="header">
+                                    <p:row>
+                                        <p:column rowspan="1" colspan="1">
+                                            <f:facet name="header">
+                                                <i class="material-icons iconoTitulo">done</i>
+                                            </f:facet>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1" headerText="#{mensajes['logoDelProyecto']}"/>
+                                        <p:column rowspan="1" colspan="7" headerText="#{mensajes['nombre']}"/>
+                                        <p:column rowspan="1" colspan="1" headerText="#{mensajes['cicloActual']}"/>
+                                        <p:column rowspan="1" colspan="2" headerText="#{mensajes['faseActual']}"/>
+                                        <p:column rowspan="1" colspan="1" headerText="#{mensajes['fechaInicio']}"/>
+                                        <p:column rowspan="1" colspan="1" headerText="#{mensajes['fechaFin']}"/>
+                                    </p:row>
+                                </p:columnGroup>
+                                <p:column rowspan="1" colspan="1">
+                                    <div class="alineadoCentro">
+                                        <h:selectBooleanCheckbox id="selectorBoleanoProyectosUSesion" value="#{proyectoBean.seleccionProyectosUsuarioSesion[pos]}" a:type="checkbox">
+                                            <f:ajax render="@form" execute="@this" listener="#{generalBean.actualizar}" onevent="PF('bloqueoSeleccionProyectosUSesion').show()"/>
+                                        </h:selectBooleanCheckbox>
+                                        <h:outputLabel style="color: #305F7B" for="selectorBoleanoProyectosUSesion"/>
+                                    </div>                                    
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    <div class="alineadoCentro">
+                                        <img src="../resources/proyectos/#{proyectoUsuario.urlImg}" height="100px" width="100%" style="margin:auto"/>
+                                    </div>
+                                </p:column>
+                                <p:column rowspan="1" colspan="7">
+                                    <div style="font-weight: bold">#{proyectoUsuario.nombre}</div><br/>
+                                    #{proyectoUsuario.descripcion}
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    <div class="alineadoCentro">
+                                        #{proyectoUsuario.cicloActual}
+                                    </div>
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    <div class="alineadoCentro">
+                                        #{proyectoUsuario.faseActual}
+                                    </div>
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    <div class="alineadoCentro">
+                                        <h:panelGroup rendered="#{not empty proyectoUsuario.FInicio}">
+                                            #{generalBean.formatearDate(proyectoUsuario.FInicio)}
+                                        </h:panelGroup>
+                                    </div>
+                                </p:column>
+                                <p:column rowspan="1" colspan="1">
+                                    <div class="alineadoCentro">
+                                        <h:panelGroup rendered="#{not empty proyectoUsuario.FFin}">
+                                            #{generalBean.formatearDate(proyectoUsuario.FFin)}
+                                        </h:panelGroup>
+                                    </div>
+                                </p:column>
+                            </p:dataTable>
+                            <tsp:carg objeto="formSeleccionProyectosUsuarioSesion" elemento="bloqueoSeleccionProyectosUSesion"/>
+                        </h:form>
+
+                        <h:panelGroup rendered="#{not empty proyectoBean.proyectosUsuarioSesion}">
+                            <br/>
+                            <div class="corte"/>
+                            <h:form>
+                                <ui:repeat value="#{graficaBean.atrsDetallesGraficasPersonales}" var="atrInformacionGraficaPersonal" varStatus="estado">
+                                    <div class="col s12 m6">
+                                        <div class="card white">
+                                            <div class="card-content silver-text" style="min-height:170px">
+                                                <span class="card-title">#{atrInformacionGraficaPersonal.atributo}</span>
+                                                <p>#{atrInformacionGraficaPersonal.valor}</p>
+                                            </div>
+                                            <div class="card-action grey lighten-5">
+                                                <a onclick="abrirModalGrafica(#{estado.index + 1});
+                                                        return false;">#{mensajes['graficar']}</a>
+                                                <h:commandLink class="linkSolicitudGrafica#{estado.index + 1}" action="#{graficaBean.crearGraficaPersonal(estado.index + 1,'w')}" style="display:none">
+                                                    <f:ajax render=":formGrafica @form" execute="@this" onevent="PF('bloqueoFormaSolicitudesGraf').show()"/>
+                                                </h:commandLink>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ui:repeat>
+                                <div class="corte"/>
+                            </h:form>
+                            <div id="modalGrafica" class="modal modal-fixed-footer" style="overflow:scroll">
+                                <h:form id="formGrafica" style="width:100%; height:100%">
+                                    <h:panelGroup rendered="#{not empty graficaBean.graficaPersonal}">
+                                        <h:link onclick="exportarGrafica('grafica');
+                                                return false;">
+                                            <i class="material-icons iconoSiguienteFase">file_download</i>
+                                        </h:link>
+                                        <div class="grafica" style="#{graficaBean.tipoGraficaPersonal == 'pie'? '':'overflow:scroll'}">
+                                            <p:chart type="#{graficaBean.tipoGraficaPersonal}" model="#{graficaBean.graficaPersonal}" style="#{graficaBean.tipoGraficaPersonal == 'pie'? '' : 'width:'.concat(graficaBean.widthGrafica.concat('; '))}margin:auto" widgetVar="grafica" responsive="#{graficaBean.tipoGraficaPersonal == 'pie'? 'true' : 'false'}"/>
+                                        </div>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{not empty graficaBean.informacionGraficaPersonal}">
+                                        <br/><br/>
+                                        <ui:repeat value="#{graficaBean.informacionGraficaPersonal}" var="atrProyecto">
+                                            <p:panelGrid class="ui-datatable ui-widget tablaNormal">
+                                                <f:facet name="header">
+                                                    <p:row>
+                                                        <p:column rowspan="1" colspan="12" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                            #{atrProyecto.atributo}
+                                                        </p:column>
+                                                    </p:row>
+                                                </f:facet>
+                                                <ui:repeat value="#{atrProyecto.atributos}" var="atrCiclo">
+                                                    <p:row>
+                                                        <p:column rowspan="1" colspan="12" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                            #{mensajes['ciclo']} #{atrCiclo.atributo}
+                                                        </p:column>
+                                                    </p:row>
+                                                    <h:panelGroup rendered="#{not empty atrCiclo.atributos}">
+                                                        <p:row>
+                                                            <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                                #{mensajes['rol']}
+                                                            </p:column>
+                                                            <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                                #{mensajes['integrantes']}
+                                                            </p:column>
+                                                            <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                                #{mensajes['totalRol']}
+                                                            </p:column>
+                                                            <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                                #{mensajes['totalPersona']}
+                                                            </p:column>
+                                                        </p:row>
+                                                        <ui:repeat value="#{atrCiclo.atributos}" var="registro">
+                                                            <p:row>
+                                                                <p:column rowspan="1" colspan="1">
+                                                                    <c:set value="#{registro.getSubAtributo('Rol')}" var="rol"/>
+                                                                    #{rol.valor}
+                                                                </p:column>
+                                                                <p:column rowspan="1" colspan="1">
+                                                                    <c:set value="#{registro.getSubAtributo('N. Integrantes')}" var="nIntegrantes"/>
+                                                                    #{nIntegrantes.valor}
+                                                                </p:column>
+                                                                <p:column rowspan="1" colspan="1">
+                                                                    <c:set value="#{registro.getSubAtributo('Total rol')}" var="totalRol"/>
+                                                                    #{totalRol.valor}
+                                                                </p:column>
+                                                                <p:column rowspan="1" colspan="1">
+                                                                    <c:set value="#{registro.getSubAtributo('Total persona')}" var="totalPersona"/>
+                                                                    #{totalPersona.valor}
+                                                                </p:column>
+                                                            </p:row>
+                                                        </ui:repeat>
+                                                    </h:panelGroup>
+                                                </ui:repeat>
+                                            </p:panelGrid>
+                                            <br/>
+                                        </ui:repeat>
+                                    </h:panelGroup>
+                                    <tsp:carg objeto="formGrafica" elemento="bloqueoFormaSolicitudesGraf"/>
+                                    <div class="corte"/>
+                                </h:form>
+                                <script type="text/javascript">
+                                    function exportarGrafica(grafica) {
+                                        $('#modalGraficaExportada').openModal();
+                                        $('#modalGraficaExportada').empty().append(PF(grafica).exportAsImage());
+                                    }
+                                </script>
+                                <div class="corte"/>
+                            </div>
+                            <p:outputPanel id="modalGraficaExportada" class="modal" style="overflow:scroll" layout="block"/>
+                        </h:panelGroup>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <tsp:pie/>
+    </h:body>
+</html>
+

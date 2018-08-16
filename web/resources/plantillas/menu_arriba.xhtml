@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:tsp="tsp/facelets">
+
+    <h:head>
+        <p:growl autoUpdate="true" life="3500"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet name="css/materialize.css"/>
+        <h:outputStylesheet name="css/estilos.css"/>
+
+        <h:outputScript library="javax.faces" name="jsf.js" target="head" />
+        <h:outputScript library="primefaces" name="jquery/jquery.js" target="head" />
+        <h:outputScript library="primefaces" name="jquery/jquery-plugins.js" target="head" />
+        <script src="./../resources/js/estilos.js"></script>
+        <script src="./../resources/js/materialize.js"></script>
+        <script src="./../resources/js/script.js"></script>
+
+        <f:event type="preRenderView" listener="#{accesoBean.denegarAcceso}"/>
+    </h:head>
+    <h:body>
+        <tsp:flotante/>
+        <div id="encabezado">
+            <nav class="nav1">
+                <div class="nav-wrapper">
+                    <a href="#" class="brand-logo">
+                        <h:graphicImage value="../resources/imgs/logo.png" style="width: 243px; height: 60px"/>
+                    </a>
+                    <ul class="right hide-on-med-and-down">
+                        <li><a href="perfil.xhtml">#{mensajes['perfil']}</a></li>
+                        <li><a onclick="cerrarSesion();">#{mensajes['cerrarSesion']}</a></li>
+                        <h:form>
+                            <h:commandButton class="btnCerrarSesion" value="" action="#{usuarioBean.cerrarSesion}" style="display:none">
+                                <f:ajax render="@form" execute="@form"/>
+                            </h:commandButton>
+                        </h:form>
+                    </ul>
+                    <ul class="side-nav" id="nav-mobile">
+                        <li class="item-izquierda"><a href="perfil.xhtml">#{mensajes['perfil']}</a></li>
+                        <li class="item-izquierda"><a onclick="cerrarSesion();" href="#">#{mensajes['cerrarSesion']}</a></li>
+                        <li class="item-izquierda"><a href="inicio.xhtml">#{mensajes['inicio']}</a></li>
+                        <ul class="collapsible">
+                            <li class="item-izquierda"><a id="item_1" class="collapsible-header">#{mensajes['proyecto']}</a>
+                                <div class="collapsible-body">
+                                    <ul>
+                                        <a class="item-izquierda-inf" href="nuevo_proyecto.xhtml"><li>#{mensajes['crearProyecto']}</li></a>
+                                        <a href="mis_proyectos.xhtml"><li>#{mensajes['misProyectos']}</li></a>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </ul>
+                    <a id="btnMenuIzquierdaMaterialize" href="#" data-activates="nav-mobile" class="button-collapse" style="display: none"><i class="material-icons">menu</i></a>
+                    <a id="btnLlamadaMenuIzqMaterialize" onclick="desplegarMenuIzquierda();
+                            return false;"> <i class="material-icons icono-menu-izq">menu</i></a>
+                </div>
+            </nav>
+            <script type="text/javascript">
+                $('.button-collapse').sideNav();
+                $(function () {
+                    $(".drag-target").click(function (){
+                        permanente('#encabezado');
+                    });
+                });
+            </script>
+            <div class="nav2">
+                <ul class="left hide-on-med-and-down nav2-ul">
+                    <a href="inicio.xhtml" class="nav2-a"><li class="nav2-li"><i class="material-icons tiny">play_arrow</i>#{mensajes['inicio']}</li></a>
+                    <a href="#" class="nav2-a dropdown-button menuDesplegable" data-activates="dropdown2"><li class="nav2-li"><i class="material-icons tiny">dashboard</i>#{mensajes['proyecto']}<i class="material-icons icono-desplegable right tiny">play_arrow</i></li></a>
+                    <ul id="dropdown2" class="dropdown-content nav2-ul-desplegable">
+                        <li class="nav2-li-desplegable"><a class="nav2-li-a-desplegable" href="nuevo_proyecto.xhtml"><i style="float:left" class="material-icons tiny">library_books</i>#{mensajes['crearProyecto']}</a></li>
+                        <li class="nav2-li-desplegable"><a class="nav2-li-a-desplegable" href="mis_proyectos.xhtml"><i class="material-icons tiny">pause_circle_filled</i>#{mensajes['misProyectos']}</a></li>
+                    </ul>
+                </ul>
+                <h:form onkeypress="if (event.keyCode == 13)return false;" id="formProyectoSesion" class="flotante">
+                    <h:panelGroup id="pgProyectoSesion" rendered="#{not empty proyectoBean.proyectoSesion}">
+                        <tsp:msg boton="btnModalProyectoSesion"/>
+                        <h:commandButton id="btnModalProyectoSesion" style="display:none" class="btnModalProyectoSesion" value="" action="#{proyectoBean.cargarProyectosUsuarioSesion}">
+                            <f:ajax execute="pgProyectoSesion" render="pgProyectoSesion formProyectosUsuarioSesion"/>
+                        </h:commandButton>
+                    </h:panelGroup>
+                </h:form>
+                <h:panelGroup id="pgBotonProyectoSesion">
+                    <h:panelGroup rendered="#{not empty proyectoBean.proyectoSesion}">
+                        <tsp:btnModal texto="#{generalBean.cadenaIncompleta(proyectoBean.proyectoSesion.nombre,40)}" boton="btnModalProyectoSesion" clase1="btn-ModalProyectosUsuarioSesion" clase2="linkModalProyectosUsuarioSesion" modal="modalProyectosUsuarioSesion" posicion="right" formulario="formProyectoSesion"/>
+                        <p:tooltip for="btn-ModalProyectosUsuarioSesion" value="#{mensajes['cicloYFaseActual']}: #{proyectoBean.informacionProyectoSesion}" position="left"/>
+                    </h:panelGroup>
+                </h:panelGroup>
+                <div class="corte"/>
+            </div>
+        </div>
+        <!-- Modal de proyectos del usuario sesión -->
+        <div id="modalProyectosUsuarioSesion" class="modal modal-fixed-footer">
+            <h:form onkeypress="if (event.keyCode == 13)return false;" id="formProyectosUsuarioSesion">
+                <h:panelGroup id="pgProyectosUsuarioSesion" rendered="#{not empty proyectoBean.proyectoSesion}">
+                    <div class="modal-content row">
+                        <h5>#{mensajes['tusProyectos']}</h5>
+                        <h:selectOneRadio value="#{proyectoBean.proyectoSesion}" converter="convertidorProyecto" style="overflow:scroll">
+                            <f:selectItems value="#{proyectoBean.proyectosUsuarioSesion}" var="proyecto" itemLabel="#{proyecto.nombre}" itemValue="#{proyecto}"/>
+                        </h:selectOneRadio>
+                        <br/><br/><br/>
+                        <div class="corte"/>
+                        <tsp:msg boton="btnSeleccionarProyectoSesion"/>
+                    </div>
+                    <div class="modal-footer">
+                        <h:commandButton id="btnSeleccionarProyectoSesion" binding="#{proyectoBean.btnSeleccionarProyectoSesion}" class="btnSeleccionarProyectoSesion boton center-block" value="#{mensajes['seleccionar']}" action="#{proyectoBean.seleccionarProyectoSesion}">
+                            <f:ajax execute="pgProyectosUsuarioSesion" render="pgProyectosUsuarioSesion"/>
+                        </h:commandButton>
+                    </div>
+                </h:panelGroup>
+            </h:form>
+        </div>
+
+        <div class="encabezado-auxiliar"></div>
+    </h:body>
+</html>

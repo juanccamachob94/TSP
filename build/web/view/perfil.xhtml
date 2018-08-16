@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:tsp="tsp/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>TSPSupport</title>
+    </h:head>
+    <h:body>
+        <ui:include src="./../resources/plantillas/menu_arriba.xhtml"/>
+
+        <div class="container contenedor row">
+            <tsp:menuIzq/>
+            <div class="col m9">
+                <p:messages autoUpdate="true" closable="true"/>
+                <div class="contenido">
+                    <tsp:encabezadoProyecto/>
+                    <div class="contenidoReal">
+                        <f:metadata>
+                            <f:viewAction action="#{usuarioBean.cargarDatosUsuarioActualizado}"/>
+                        </f:metadata>
+                        <h:form onkeypress="if (event.keyCode == 13)
+                                    return false;">
+                            <h5>#{mensajes['datosPersonales']}</h5><br/>
+                            <tsp:ent id="perfil_identificacion" texto="#{mensajes['identificacion']} *" valor="#{usuarioBean.usuarioActualizado.identificacion}" tipo="number" m="12" i="account_box" deshabilitado="true"/>
+                            <tsp:ent id="perfil_nombre" texto="#{mensajes['nombre']} *" valor="#{usuarioBean.usuarioActualizado.nombre}" tipo="text" m="6" i="face"/><br/>
+                            <tsp:ent id="perfil_apellido" texto="#{mensajes['apellido']} *" valor="#{usuarioBean.usuarioActualizado.apellido}" tipo="text" m="6" i="people"/><br/>
+                            <tsp:ent id="perfil_telefono" texto="#{mensajes['telefono']} *" valor="#{usuarioBean.usuarioActualizado.telefono}" tipo="number" m="6" i="phone"/><br/>
+                            <tsp:ent id="perfil_email" texto="#{mensajes['email']} *" valor="#{usuarioBean.usuarioActualizado.email}" tipo="email" m="6" i="email"/><br/>
+                            <h:commandButton class="boton center-block" value="Actualizar datos personales" action="#{usuarioBean.actualizarDatos}">
+                                <f:ajax render="@form" execute="@form"/>
+                            </h:commandButton>
+                        </h:form>
+                        <h:form>
+                            <h:commandLink action="#{usuarioBean.cargarValidacionClave}">
+                                <h6>#{mensajes['cambiarContrasenia']}</h6>
+                                <f:ajax render=":formCambioClave" execute="@this"/>
+                            </h:commandLink>
+                        </h:form>
+
+                        <a class="modal-trigger linkModalCambioClave" href="#modalCambioClave">
+
+                        </a>
+                        <div id="modalCambioClave" class="modal modal-fixed-footer">
+                            <h:form id="formCambioClave">
+                                <div class="modal-content row">
+                                    <h:panelGroup rendered="#{empty usuarioBean.claveValidacion}">
+                                        <tsp:ent id="perfil_claveInvalidada" texto="#{mensajes['contrasenia']} *" valor="#{usuarioBean.claveValidacion}" tipo="password" m="8" i="credit_card"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{not empty usuarioBean.claveValidacion}">
+                                        <tsp:ent id="perfil_claveInvalidada2" texto="#{mensajes['contrasenia']} *" valor="#{usuarioBean.usuarioActualizado.clave}" tipo="password" m="8" i="credit_card"/>
+                                        <tsp:ent id="perfil_confirmacionClave" texto="#{mensajes['confirmacionContrasenia']} *" valor="#{usuarioBean.confirmacionClave}" tipo="password" m="8" i="credit_card"/>
+                                    </h:panelGroup>
+                                </div>
+                                <div class="modal-footer">
+                                    <h:panelGroup rendered="#{empty usuarioBean.claveValidacion}">
+                                        <h:commandButton value="#{mensajes['siguiente']}" class="boton center-block" action="#{usuarioBean.validarClaveUsuarioSesion}">
+                                            <f:ajax render="@form" execute="@form"/>
+                                        </h:commandButton>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{not empty usuarioBean.claveValidacion}">
+                                        <h:commandButton value="#{mensajes['aceptar']}" class="boton center-block" action="#{usuarioBean.cambiarClaveUsuarioSesion}">
+                                            <f:ajax render="@form" execute="@form"/>
+                                        </h:commandButton>                                    
+                                    </h:panelGroup>
+                                </div>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <tsp:pie/>
+    </h:body>
+</html>
+

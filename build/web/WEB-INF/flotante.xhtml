@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+    <head>
+        <title>TODO supply a title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <ui:composition>
+            <div class="fixed-action-btn vertical" style="bottom: 45px; right: 24px;">
+                <a class="btn-floating btn-large btnFlotante">
+                    <i class="large material-icons">search</i>
+                </a>
+                <ul>
+                    <h:panelGroup rendered="#{not empty proyectoBean.proyectoSesion}">
+                        <li><a class="btn-floating yellow modal-trigger" href="#modalAccesoRapidoFormatos"><i class="material-icons">content_copy</i></a></li>
+                    </h:panelGroup>
+                    <li><a class="btn-floating red modal-trigger" href="#modalVideos"><i class="material-icons">help</i></a></li>
+                </ul>
+            </div>
+            <div class="modal" id="modalAccesoRapidoFormatos">
+                <div class="modal-content">
+                    <h5>#{mensajes['formatosTSP']}</h5>
+                    <div class="row">
+                        <div class="col s6 m16">
+                            <a href="ccr.xhtml">
+                                <div class="card alineadoCentro">
+                                    CCR
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col s6 m16">
+                            <a href="itl.xhtml">
+                                <div class="card alineadoCentro">
+                                    ITL
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col s6 m16">
+                            <a href="logd.xhtml">
+                                <div class="card alineadoCentro">
+                                    LOGD
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col s6 m16">
+                            <a href="logt.xhtml">
+                                <div class="card alineadoCentro">
+                                    LOGT
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col s6 m16">
+                            <a href="peer.xhtml">
+                                <div class="card alineadoCentro">
+                                    PEER
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col s6 m16">
+                            <a href="pip.xhtml">
+                                <div class="card alineadoCentro">
+                                    PIP
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col s6 m16">
+                            <a href="schedule.xhtml">
+                                <div class="card alineadoCentro">
+                                    SCHEDULE
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col s6 m16">
+                            <a href="strat.xhtml">
+                                <div class="card alineadoCentro">
+                                    STRAT
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col s6 m16">
+                            <a href="sump.xhtml">
+                                <div class="card alineadoCentro">
+                                    SUMP
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col s6 m16">
+                            <a href="sumq.xhtml">
+                                <div class="card alineadoCentro">
+                                    SUMQ
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col s6 m16">
+                            <a href="task.xhtml">
+                                <div class="card alineadoCentro">
+                                    TASK
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col s6 m16">
+                            <a href="week.xhtml">
+                                <div class="card alineadoCentro">
+                                    WEEK
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ui:composition>
+    </body>
+</html>

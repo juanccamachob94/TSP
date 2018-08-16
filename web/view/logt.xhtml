@@ -1,0 +1,140 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:tsp="tsp/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>TSPSupport</title>
+    </h:head>
+    <h:body>
+        <ui:include src="./../resources/plantillas/menu_arriba.xhtml"/>
+
+        <div class="container contenedor row">
+            <tsp:menuIzq/>
+            <div class="col m9">
+                <p:messages autoUpdate="true" closable="true"/>
+                <div class="contenido">
+                    <tsp:encabezadoProyecto/>
+                    <div class="contenidoReal">
+
+                        <h:form>
+                            <a onclick="$('.btnExportarExcel').click();
+                                    return false;" style="float:right">
+                                <div class="iconoExcel" style="width: 25px; height: 30px"/>
+                            </a>
+                            <p:commandButton class="btnExportarExcel" value="#{mensajes['generarExcel']}" ajax="false" actionListener="#{reportesBean.exportarFormatoExcel(tiempoBean.logt,true)}" style="display:none">
+                                <p:fileDownload value="#{reportesBean.archivoExcel}" />
+                            </p:commandButton>
+                            <div class="corte"/>
+                        </h:form>
+                        <h:form onkeypress="if (event.keyCode == 13)
+                                    return false;" id="formLOGT">
+                            <h:panelGroup id="pgLOGT">
+                                <p:panelGrid class="ui-datatable ui-widget tablaNormal">
+                                    <f:facet name="header">
+                                        <p:row>
+                                            <p:column rowspan="1" colspan="12" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                #{mensajes['formatoLogt']}
+                                            </p:column>
+                                        </p:row>
+                                    </f:facet>
+                                    <p:row>
+                                        <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['rol']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="10">
+                                            <h:panelGroup id="pgRolLOGT">
+                                                <h:selectOneMenu class="browser-default selectPequenio" value="#{tiempoBean.rolFiltro}">
+                                                    <f:selectItem itemLabel="#{generalBean.mensajeSeleccion}" itemValue="#{null}"/>
+                                                    <f:selectItems value="#{lanzamientoBean.rolesTSP}" var="rolTSP" itemValue="#{rolTSP.nombre}" itemLabel="#{rolTSP.nombre}"/>
+                                                    <f:ajax event="change" execute="@this" render="@form" listener="#{generalBean.actualizar}"/>
+                                                </h:selectOneMenu>
+                                            </h:panelGroup>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['integrantes']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="10">
+                                            <h:panelGroup id="pgIntegranteLOGT">
+                                                <h:selectOneMenu class="browser-default selectPequenio" value="#{tiempoBean.integranteFiltro}">
+                                                    <f:selectItem itemLabel="#{generalBean.mensajeSeleccion}" itemValue="#{null}"/>
+                                                    <f:selectItems value="#{tiempoBean.integrantesRol}" var="identificacionRol" itemValue="#{identificacionRol}" itemLabel="#{identificacionRol}"/>
+                                                    <f:ajax event="change" execute="@this" render="@form" listener="#{tiempoBean.cargarLogtUsuarioRol}"/>
+                                                </h:selectOneMenu>
+                                            </h:panelGroup>
+                                        </p:column>
+                                    </p:row>
+
+                                    <ui:repeat value="#{tiempoBean.logt.atributos}" var="registro">
+                                        <p:row>
+                                            <p:column rowspan="1" colspan="8" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                #{mensajes['tarea']}
+                                            </p:column>
+                                            <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                
+                                                #{mensajes['fechaHoraInicio']}
+                                            </p:column>
+                                            <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                #{mensajes['fechaHoraDeFinalizacion']}
+                                            </p:column>
+                                            <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                #{mensajes['tiempoDedicado']}
+                                            </p:column>
+                                            <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                #{mensajes['tiempoInterrumpido']}
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <c:set value="#{registro.getSubAtributo('Tarea')}" var="tarea"/>
+                                            <p:column rowspan="1" colspan="8">
+                                                #{tarea.valor}
+                                            </p:column>
+                                            <p:column rowspan="1" colspan="1">
+                                                <c:set value="#{registro.getSubAtributo('Fecha-hora inicio')}" var="fechaHoraInicio"/>
+                                                #{fechaHoraInicio.valor}
+                                            </p:column>
+                                            <p:column rowspan="1" colspan="1">
+                                                <c:set value="#{registro.getSubAtributo('Fecha-hora finalización')}" var="fechaHoraFinalizacion"/>
+                                                #{fechaHoraFinalizacion.valor}
+                                            </p:column>
+                                            <p:column rowspan="1" colspan="1">
+                                                <c:set value="#{registro.getSubAtributo('Tiempo dedicado')}" var="tiempoDedicado"/>
+                                                #{tiempoDedicado.valor}
+                                            </p:column>
+                                            <p:column rowspan="1" colspan="1">
+                                                <c:set value="#{registro.getSubAtributo('Tiempo interrumpido')}" var="tiempoInterrumpido"/>
+                                                #{tiempoInterrumpido.valor}
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column rowspan="1" colspan="12" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                #{mensajes['comentarios']}
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column rowspan="1" colspan="12">
+                                                <c:set value="#{registro.getSubAtributo('Comentarios')}" var="comentarios"/>
+                                                <h:inputTextarea value="#{comentarios.valor}"/>
+                                            </p:column>
+                                        </p:row>
+                                    </ui:repeat>
+
+                                </p:panelGrid>
+                            </h:panelGroup>
+                        </h:form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <tsp:pie/>
+    </h:body>
+</html>
+

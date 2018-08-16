@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd">
+<hibernate-reverse-engineering>
+  <schema-selection match-catalog="tsp" match-schema="public"/>
+  <table-filter match-name="ciclo"/>
+  <table-filter match-name="py_cr"/>
+  <table-filter match-name="criterio"/>
+  <table-filter match-name="rol"/>
+  <table-filter match-name="rl_cl"/>
+  <table-filter match-name="usuario"/>
+  <table-filter match-name="parte"/>
+  <table-filter match-name="fase"/>
+  <table-filter match-name="documento"/>
+  <table-filter match-name="proyecto"/>
+  <table-filter match-name="opciontsp"/>
+  <table-filter match-name="meta"/>
+</hibernate-reverse-engineering>

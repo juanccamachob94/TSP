@@ -1,0 +1,206 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:tsp="tsp/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>TSPSupport</title>
+    </h:head>
+    <h:body>
+        <ui:include src="./../resources/plantillas/menu_arriba.xhtml"/>
+
+        <div class="container contenedor row">
+            <tsp:menuIzq/>
+            <div class="col m9">
+                <p:messages autoUpdate="true" closable="true"/>
+                <div class="contenido">
+                    <tsp:encabezadoProyecto/>
+                    <div class="contenidoReal">
+                        <p:panelGrid class="ui-datatable ui-widget tablaNormal">
+                            <f:facet name="header">
+                                <p:row>
+                                    <p:column rowspan="1" colspan="3" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                        #{mensajes['impn.info1']}
+                                    </p:column>
+                                </p:row>
+                            </f:facet>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['impn.info2']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['impn.info3']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['impn.info4']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['impn.info5']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['impn.info6']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['impn.info7']}
+                                    <ul>
+                                        <li>#{mensajes['impn.info8']}</li>
+                                        <li>#{mensajes['impn.info9']}</li>
+                                        <li>#{mensajes['impn.info10']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['impn.info11']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['impn.info12']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['impn.info13']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['impn.info14']}
+                                    <ul>
+                                        <li>#{mensajes['impn.info15']}</li>
+                                        <li>#{mensajes['impn.info16']}</li>
+                                        <li>#{mensajes['impn.info17']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['impn.info18']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['impn.info19']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['impn.info20']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['impn.info21']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['impn.info22']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['impn.info23']}
+                                    <ul>
+                                        <li>#{mensajes['impn.info24']}</li>
+                                        <li>#{mensajes['impn.info25']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['impn.info26']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['impn.info27']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['impn.info28']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['impn.info29']}
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['impn.info30']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['impn.info31']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['impn.info32']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['impn.info33']}
+                                    <ul>
+                                        <li>#{mensajes['impn.info34']}</li>
+                                        <li>#{mensajes['impn.info35']}</li>
+                                        <li>#{mensajes['impn.info36']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['impn.info37']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['impn.info38']}
+                                </p:column>
+                            </p:row>     
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['impn.info39']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['impn.info40']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['impn.info41']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['impn.info42']}
+                                    <ul>
+                                        <li>#{mensajes['impn.info43']}</li>
+                                        <li>#{mensajes['impn.info44']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>     
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['impn.info45']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    <ul>
+                                        <li>#{mensajes['impn.info46']}</li>
+                                        <li>#{mensajes['impn.info47']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>                             
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['impn.info48']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    <ul>
+                                        <li>#{mensajes['impn.info49']}</li>
+                                        <li>#{mensajes['impn.info50']}</li>
+                                        <li>#{mensajes['impn.info51']}</li>
+                                        <li>#{mensajes['impn.info52']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>                            
+                        </p:panelGrid>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <tsp:pie/>
+    </h:body>
+</html>

@@ -1,0 +1,542 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:tsp="tsp/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>TSPSupport</title>
+    </h:head>
+    <h:body>
+        <ui:include src="./../resources/plantillas/menu_arriba.xhtml"/>
+
+        <div class="container contenedor row">
+            <tsp:menuIzq/>
+            <div class="col m9">
+                <p:messages autoUpdate="true" closable="true"/>
+                <div class="contenido">
+                    <tsp:encabezadoProyecto/>
+                    <div class="contenidoReal">
+                        <f:metadata>
+                            <f:viewAction action="#{compBean.cargarPeer}"/>
+                        </f:metadata>
+                        <!-- Exportar a hoja de cálculo -->
+                        <h:form>
+                            <a onclick="$('.btnExportarExcel').click(); return false;" style="float:right">
+                                <div class="iconoExcel" style="width: 25px; height: 30px"/>
+                            </a>
+                            <p:commandButton class="btnExportarExcel" value="#{mensajes['generarExcel']}" ajax="false" actionListener="#{reportesBean.exportarFormatoExcel(compBean.peer,false)}" style="display:none">
+                                <p:fileDownload value="#{reportesBean.archivoExcel}" />
+                            </p:commandButton>
+                            <div class="corte"/>
+                        </h:form>
+                        <h:form onkeypress="if (event.keyCode == 13)return false;" id="formPEER">
+                            <h:panelGroup id="pgPEER">
+                                <p:panelGrid class="ui-datatable ui-widget tablaNormal">
+                                    <f:facet name="header">
+                                        <p:row>
+                                            <p:column rowspan="1" colspan="3" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                #{mensajes['formatoPeer']}
+                                            </p:column>
+                                        </p:row>
+                                    </f:facet>
+                                    <!-- Trabajo y dificultad -->
+                                    <c:set value="#{compBean.peer.getAtributo('Trabajo y dificultad')}" var="trabajoDificultad"/>
+                                    <p:row>
+                                        <p:column rowspan="1" colspan="3" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['trabajoYDificultadPorCadaRol']}
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['rol']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['trabajoRequerido']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['dificultad']}
+                                        </p:column>
+                                    </p:row>
+                                    <c:set value="#{trabajoDificultad.getSubAtributo(mensajes['liderDeProyecto'])}" var="trabajoDificultadliderProyecto"/>
+                                    <p:row>
+                                        <p:column rowspan="1" colspan="1">
+                                            #{mensajes['liderDeProyecto']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <c:set value="#{trabajoDificultadliderProyecto.getSubAtributo('Trabajo requerido')}" var="trabajoDificultadliderProyectotrabajoRequerido"/>
+                                            <h:inputText id="trabajoLiderProyecto" value="#{trabajoDificultadliderProyectotrabajoRequerido.valor}" a:type="number" a:step="any">
+                                                <f:ajax render="@this :formPEER:totalTrabajo :formPEER:totalDificultad" execute="@this" event="change" listener="#{compBean.actualizarTotalTrabajoDificultadPeer(trabajoDificultadliderProyectotrabajoRequerido)}"/>
+                                            </h:inputText>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <c:set value="#{trabajoDificultadliderProyecto.getSubAtributo('Dificultad del rol')}" var="trabajoDificultadliderProyectodificultad"/>
+                                            <h:inputText id="dificultadLiderProyecto" value="#{trabajoDificultadliderProyectodificultad.valor}" a:type="number" a:step="any">
+                                                <f:ajax render="@this :formPEER:totalTrabajo :formPEER:totalDificultad" execute="@this" event="change" listener="#{compBean.actualizarTotalTrabajoDificultadPeer(trabajoDificultadliderProyectodificultad)}"/>
+                                            </h:inputText>
+                                        </p:column>
+                                    </p:row>
+                                    <c:set value="#{trabajoDificultad.getSubAtributo(mensajes['gerenteDeDesarrollo'])}" var="trabajoDificultadgerenteDesarrollo"/>
+                                    <p:row>
+                                        <p:column rowspan="1" colspan="1">
+                                            #{mensajes['gerenteDeDesarrollo']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <c:set value="#{trabajoDificultadgerenteDesarrollo.getSubAtributo('Trabajo requerido')}" var="trabajoDificultadgerenteDesarrollotrabajoRequerido"/>
+                                            <h:inputText value="#{trabajoDificultadgerenteDesarrollotrabajoRequerido.valor}" a:type="number" a:step="any">
+                                                <f:ajax render="@this :formPEER:totalTrabajo :formPEER:totalDificultad" execute="@this" event="change" listener="#{compBean.actualizarTotalTrabajoDificultadPeer(trabajoDificultadgerenteDesarrollotrabajoRequerido)}"/>
+                                            </h:inputText>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <c:set value="#{trabajoDificultadgerenteDesarrollo.getSubAtributo('Dificultad del rol')}" var="trabajoDificultadgerenteDesarrollodificultad"/>
+                                            <h:inputText value="#{trabajoDificultadgerenteDesarrollodificultad.valor}" a:type="number" a:step="any">
+                                                <f:ajax render="@this :formPEER:totalTrabajo :formPEER:totalDificultad" execute="@this" event="change" listener="#{compBean.actualizarTotalTrabajoDificultadPeer(trabajoDificultadgerenteDesarrollodificultad)}"/>
+                                            </h:inputText>
+                                        </p:column>
+                                    </p:row>
+                                    <c:set value="#{trabajoDificultad.getSubAtributo(mensajes['gerenteDePlaneacion'])}" var="trabajoDificultadgerentePlaneacion"/>
+                                    <p:row>
+                                        <p:column rowspan="1" colspan="1">
+                                            #{mensajes['gerenteDePlaneacion']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <c:set value="#{trabajoDificultadgerentePlaneacion.getSubAtributo('Trabajo requerido')}" var="trabajoDificultadgerentePlaneaciontrabajoRequerido"/>
+                                            <h:inputText value="#{trabajoDificultadgerentePlaneaciontrabajoRequerido.valor}" a:type="number" a:step="any">
+                                                <f:ajax render="@this :formPEER:totalTrabajo :formPEER:totalDificultad" execute="@this" event="change" listener="#{compBean.actualizarTotalTrabajoDificultadPeer(trabajoDificultadgerentePlaneaciontrabajoRequerido)}"/>
+                                            </h:inputText>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <c:set value="#{trabajoDificultadgerentePlaneacion.getSubAtributo('Dificultad del rol')}" var="trabajoDificultadgerentePlaneaciondificultad"/>
+                                            <h:inputText value="#{trabajoDificultadgerentePlaneaciondificultad.valor}" a:type="number" a:step="any">
+                                                <f:ajax render="@this :formPEER:totalTrabajo :formPEER:totalDificultad" execute="@this" event="change" listener="#{compBean.actualizarTotalTrabajoDificultadPeer(trabajoDificultadgerentePlaneaciondificultad)}"/>
+                                            </h:inputText>
+                                        </p:column>
+                                    </p:row>
+                                    <c:set value="#{trabajoDificultad.getSubAtributo(mensajes['gerenteDeCalidadProceso'])}" var="trabajoDificultadgerenteCalidadProceso"/>
+                                    <p:row>
+                                        <p:column rowspan="1" colspan="1">
+                                            #{mensajes['gerenteDeCalidadProceso']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <c:set value="#{trabajoDificultadgerenteCalidadProceso.getSubAtributo('Trabajo requerido')}" var="trabajoDificultadgerenteCalidadProcesotrabajoRequerido"/>
+                                            <h:inputText value="#{trabajoDificultadgerenteCalidadProcesotrabajoRequerido.valor}" a:type="number" a:step="any">
+                                                <f:ajax render="@this :formPEER:totalTrabajo :formPEER:totalDificultad" execute="@this" event="change" listener="#{compBean.actualizarTotalTrabajoDificultadPeer(trabajoDificultadgerenteCalidadProcesotrabajoRequerido)}"/>
+                                            </h:inputText>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <c:set value="#{trabajoDificultadgerenteCalidadProceso.getSubAtributo('Dificultad del rol')}" var="trabajoDificultadgerenteCalidadProcesodificultad"/>
+                                            <h:inputText value="#{trabajoDificultadgerenteCalidadProcesodificultad.valor}" a:type="number" a:step="any">
+                                                <f:ajax render="@this :formPEER:totalTrabajo :formPEER:totalDificultad" execute="@this" event="change" listener="#{compBean.actualizarTotalTrabajoDificultadPeer(trabajoDificultadgerenteCalidadProcesodificultad)}"/>
+                                            </h:inputText>
+                                        </p:column>
+                                    </p:row>
+                                    <c:set value="#{trabajoDificultad.getSubAtributo(mensajes['gerenteDeSoporte'])}" var="trabajoDificultadgerenteSoporte"/>
+                                    <p:row>
+                                        <p:column rowspan="1" colspan="1">
+                                            #{mensajes['gerenteDeSoporte']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <c:set value="#{trabajoDificultadgerenteSoporte.getSubAtributo('Trabajo requerido')}" var="trabajoDificultadgerenteSoportetrabajoRequerido"/>
+                                            <h:inputText value="#{trabajoDificultadgerenteSoportetrabajoRequerido.valor}" a:type="number" a:step="any">
+                                                <f:ajax render="@this :formPEER:totalTrabajo :formPEER:totalDificultad" execute="@this" event="change" listener="#{compBean.actualizarTotalTrabajoDificultadPeer(trabajoDificultadgerenteSoportetrabajoRequerido)}"/>
+                                            </h:inputText>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <c:set value="#{trabajoDificultadgerenteSoporte.getSubAtributo('Dificultad del rol')}" var="trabajoDificultadgerenteSoportedificultad"/>
+                                            <h:inputText value="#{trabajoDificultadgerenteSoportedificultad.valor}" a:type="number" a:step="any">
+                                                <f:ajax render="@this :formPEER:totalTrabajo :formPEER:totalDificultad" execute="@this" event="change" listener="#{compBean.actualizarTotalTrabajoDificultadPeer(trabajoDificultadgerenteSoportedificultad)}"/>
+                                            </h:inputText>
+                                        </p:column>
+                                    </p:row>
+                                    <c:set value="#{trabajoDificultad.getSubAtributo('Total')}" var="trabajoDificultadtotalTrabajoDificultad"/>
+                                    <p:row>
+                                        <p:column rowspan="1" colspan="1">
+                                            #{mensajes['total']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <c:set value="#{trabajoDificultadtotalTrabajoDificultad.getSubAtributo('Trabajo requerido')}" var="trabajoDificultadtotalTrabajoDificultadtrabajoRequerido"/>
+                                            <h:inputText class="peer_totalTrabajo" id="totalTrabajo" value="#{trabajoDificultadtotalTrabajoDificultadtrabajoRequerido.valor}" disabled="true"/>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <c:set value="#{trabajoDificultadtotalTrabajoDificultad.getSubAtributo('Dificultad del rol')}" var="trabajoDificultadtotalTrabajoDificultaddificultad"/>
+                                            <h:inputText class="peer_totalDificultad" id="totalDificultad" value="#{trabajoDificultadtotalTrabajoDificultaddificultad.valor}" disabled="true"/>
+                                        </p:column>
+                                    </p:row>
+                                </p:panelGrid>
+                                <!-- Clasificación por criterios -->
+                                <c:set value="#{compBean.peer.getAtributo('Criterios equipo')}" var="criteriosEquipo"/>
+                                <table class="ui-datatable ui-widget tablaHTML">                                    
+                                    <tr>
+                                        <td rowspan="1" colspan="12" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['evaluacionDeCriteriosDelEquipo']}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50%">
+                                            #{mensajes['espirituDeEquipo']}
+                                        </td>
+                                        <td width="50%">
+                                            <c:set value="#{criteriosEquipo.getSubAtributo('Espíritu de equipo')}" var="espirituEquipo"/>
+                                            <h:selectOneRadio class="radioButtonPequenio" value="#{espirituEquipo.valor}">
+                                                <f:selectItem itemLabel="1" itemValue="1"/>
+                                                <f:selectItem itemLabel="2" itemValue="2"/>
+                                                <f:selectItem itemLabel="3" itemValue="3"/>
+                                                <f:selectItem itemLabel="4" itemValue="4"/>
+                                                <f:selectItem itemLabel="5" itemValue="5"/>
+                                            </h:selectOneRadio>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50%">
+                                            #{mensajes['efectividadGeneral']}
+                                        </td>
+                                        <td width="50%">
+                                            <c:set value="#{criteriosEquipo.getSubAtributo('Efectividad general')}" var="efectividadGeneral"/>
+                                            <h:selectOneRadio class="radioButtonPequenio" value="#{efectividadGeneral.valor}" >
+                                                <f:selectItem itemLabel="1" itemValue="1"/>
+                                                <f:selectItem itemLabel="2" itemValue="2"/>
+                                                <f:selectItem itemLabel="3" itemValue="3"/>
+                                                <f:selectItem itemLabel="4" itemValue="4"/>
+                                                <f:selectItem itemLabel="5" itemValue="5"/>
+                                            </h:selectOneRadio>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50%">
+                                            #{mensajes['experienciaGratificante']}
+                                        </td>
+                                        <td width="50%">
+                                            <c:set value="#{criteriosEquipo.getSubAtributo('Experiencia gratificante')}" var="experienciaGratificante"/>
+                                            <h:selectOneRadio class="radioButtonPequenio" value="#{experienciaGratificante.valor}" >
+                                                <f:selectItem itemLabel="1" itemValue="1"/>
+                                                <f:selectItem itemLabel="2" itemValue="2"/>
+                                                <f:selectItem itemLabel="3" itemValue="3"/>
+                                                <f:selectItem itemLabel="4" itemValue="4"/>
+                                                <f:selectItem itemLabel="5" itemValue="5"/>
+                                            </h:selectOneRadio>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td width="50%">
+                                            #{mensajes['productividadDeEquipo']}
+                                        </td>
+                                        <td width="50%">
+                                            <c:set value="#{criteriosEquipo.getSubAtributo('Productividad de equipo')}" var="productividadEquipo"/>
+                                            <h:selectOneRadio class="radioButtonPequenio" value="#{productividadEquipo.valor}" >
+                                                <f:selectItem itemLabel="1" itemValue="1"/>
+                                                <f:selectItem itemLabel="2" itemValue="2"/>
+                                                <f:selectItem itemLabel="3" itemValue="3"/>
+                                                <f:selectItem itemLabel="4" itemValue="4"/>
+                                                <f:selectItem itemLabel="5" itemValue="5"/>
+                                            </h:selectOneRadio>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50%">
+                                            #{mensajes['calidadDelProceso']}
+                                        </td>
+                                        <td width="50%">
+                                            <c:set value="#{criteriosEquipo.getSubAtributo('Calidad del proceso')}" var="calidadProceso"/>
+                                            <h:selectOneRadio class="radioButtonPequenio" value="#{calidadProceso.valor}" >
+                                                <f:selectItem itemLabel="1" itemValue="1"/>
+                                                <f:selectItem itemLabel="2" itemValue="2"/>
+                                                <f:selectItem itemLabel="3" itemValue="3"/>
+                                                <f:selectItem itemLabel="4" itemValue="4"/>
+                                                <f:selectItem itemLabel="5" itemValue="5"/>
+                                            </h:selectOneRadio>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50%">
+                                            #{mensajes['calidadDelProducto']}
+                                        </td>
+                                        <td width="50%">
+                                            <c:set value="#{criteriosEquipo.getSubAtributo('Calidad del producto')}" var="calidadProducto"/>
+                                            <h:selectOneRadio class="radioButtonPequenio" value="#{calidadProducto.valor}" >
+                                                <f:selectItem itemLabel="1" itemValue="1"/>
+                                                <f:selectItem itemLabel="2" itemValue="2"/>
+                                                <f:selectItem itemLabel="3" itemValue="3"/>
+                                                <f:selectItem itemLabel="4" itemValue="4"/>
+                                                <f:selectItem itemLabel="5" itemValue="5"/>
+                                            </h:selectOneRadio>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <!-- Contribución general -->
+                                <c:set value="#{compBean.peer.getAtributo('Contribución general')}" var="contribucionGeneral"/>
+                                <table class="ui-datatable ui-widget tablaHTML">                                    
+                                    <tr>
+                                        <td rowspan="1" colspan="12" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['contribucionGeneral']}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50%">
+                                            #{mensajes['liderDeProyecto']}
+                                        </td>
+                                        <td width="50%">
+                                            <c:set value="#{contribucionGeneral.getSubAtributo(mensajes['liderDeProyecto'])}" var="contribucionGeneralLiderProyecto"/>
+                                            <h:selectOneRadio class="radioButtonPequenio" value="#{contribucionGeneralLiderProyecto.valor}" >
+                                                <f:selectItem itemLabel="1" itemValue="1"/>
+                                                <f:selectItem itemLabel="2" itemValue="2"/>
+                                                <f:selectItem itemLabel="3" itemValue="3"/>
+                                                <f:selectItem itemLabel="4" itemValue="4"/>
+                                                <f:selectItem itemLabel="5" itemValue="5"/>
+                                            </h:selectOneRadio>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50%">
+                                            #{mensajes['gerenteDeDesarrollo']}
+                                        </td>
+                                        <td width="50%">
+                                            <c:set value="#{contribucionGeneral.getSubAtributo(mensajes['gerenteDeDesarrollo'])}" var="contribucionGeneralGerenteDesarrollo"/>
+                                            <h:selectOneRadio class="radioButtonPequenio" value="#{contribucionGeneralGerenteDesarrollo.valor}" >
+                                                <f:selectItem itemLabel="1" itemValue="1"/>
+                                                <f:selectItem itemLabel="2" itemValue="2"/>
+                                                <f:selectItem itemLabel="3" itemValue="3"/>
+                                                <f:selectItem itemLabel="4" itemValue="4"/>
+                                                <f:selectItem itemLabel="5" itemValue="5"/>
+                                            </h:selectOneRadio>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50%">
+                                            #{mensajes['gerenteDeCalidadProceso']}
+                                        </td>
+                                        <td width="50%">
+                                            <c:set value="#{contribucionGeneral.getSubAtributo(mensajes['gerenteDeCalidadProceso'])}" var="contribucionGeneralGerenteCalidadProceso"/>
+                                            <h:selectOneRadio class="radioButtonPequenio" value="#{contribucionGeneralGerenteCalidadProceso.valor}" >
+                                                <f:selectItem itemLabel="1" itemValue="1"/>
+                                                <f:selectItem itemLabel="2" itemValue="2"/>
+                                                <f:selectItem itemLabel="3" itemValue="3"/>
+                                                <f:selectItem itemLabel="4" itemValue="4"/>
+                                                <f:selectItem itemLabel="5" itemValue="5"/>
+                                            </h:selectOneRadio>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50%">
+                                            #{mensajes['gerenteDeSoporte']}
+                                        </td>
+                                        <td width="50%">
+                                            <c:set value="#{contribucionGeneral.getSubAtributo(mensajes['gerenteDeSoporte'])}" var="contribucionGeneralGerenteSoporte"/>
+                                            <h:selectOneRadio class="radioButtonPequenio" value="#{contribucionGeneralGerenteSoporte.valor}" >
+                                                <f:selectItem itemLabel="1" itemValue="1"/>
+                                                <f:selectItem itemLabel="2" itemValue="2"/>
+                                                <f:selectItem itemLabel="3" itemValue="3"/>
+                                                <f:selectItem itemLabel="4" itemValue="4"/>
+                                                <f:selectItem itemLabel="5" itemValue="5"/>
+                                            </h:selectOneRadio>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50%">
+                                            #{mensajes['gerenteDePlaneacion']}
+                                        </td>
+                                        <td width="50%">
+                                            <c:set value="#{contribucionGeneral.getSubAtributo(mensajes['gerenteDePlaneacion'])}" var="contribucionGeneralGerentePlaneacion"/>
+                                            <h:selectOneRadio class="radioButtonPequenio" value="#{contribucionGeneralGerentePlaneacion.valor}" >
+                                                <f:selectItem itemLabel="1" itemValue="1"/>
+                                                <f:selectItem itemLabel="2" itemValue="2"/>
+                                                <f:selectItem itemLabel="3" itemValue="3"/>
+                                                <f:selectItem itemLabel="4" itemValue="4"/>
+                                                <f:selectItem itemLabel="5" itemValue="5"/>
+                                            </h:selectOneRadio>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <!-- Ayuda y soporte -->
+                                <c:set value="#{compBean.peer.getAtributo('Ayuda y soporte')}" var="ayudaSoporte"/>
+                                <table class="ui-datatable ui-widget tablaHTML">                                    
+                                    <tr>
+                                        <td rowspan="1" colspan="12" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['ayudaYSoporte']}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50%">
+                                            #{mensajes['liderDeProyecto']}
+                                        </td>
+                                        <td width="50%">
+                                            <c:set value="#{ayudaSoporte.getSubAtributo(mensajes['liderDeProyecto'])}" var="ayudaSoporteLiderProyecto"/>
+                                            <h:selectOneRadio class="radioButtonPequenio" value="#{ayudaSoporteLiderProyecto.valor}" >
+                                                <f:selectItem itemLabel="1" itemValue="1"/>
+                                                <f:selectItem itemLabel="2" itemValue="2"/>
+                                                <f:selectItem itemLabel="3" itemValue="3"/>
+                                                <f:selectItem itemLabel="4" itemValue="4"/>
+                                                <f:selectItem itemLabel="5" itemValue="5"/>
+                                            </h:selectOneRadio>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50%">
+                                            #{mensajes['gerenteDeDesarrollo']}
+                                        </td>
+                                        <td width="50%">
+                                            <c:set value="#{ayudaSoporte.getSubAtributo(mensajes['gerenteDeDesarrollo'])}" var="ayudaSoporteGerenteDesarrollo"/>
+                                            <h:selectOneRadio class="radioButtonPequenio" value="#{ayudaSoporteGerenteDesarrollo.valor}" >
+                                                <f:selectItem itemLabel="1" itemValue="1"/>
+                                                <f:selectItem itemLabel="2" itemValue="2"/>
+                                                <f:selectItem itemLabel="3" itemValue="3"/>
+                                                <f:selectItem itemLabel="4" itemValue="4"/>
+                                                <f:selectItem itemLabel="5" itemValue="5"/>
+                                            </h:selectOneRadio>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50%">
+                                            #{mensajes['gerenteDeCalidadProceso']}
+                                        </td>
+                                        <td width="50%">
+                                            <c:set value="#{ayudaSoporte.getSubAtributo(mensajes['gerenteDeCalidadProceso'])}" var="ayudaSoporteGerenteCalidadProceso"/>
+                                            <h:selectOneRadio class="radioButtonPequenio" value="#{ayudaSoporteGerenteCalidadProceso.valor}" >
+                                                <f:selectItem itemLabel="1" itemValue="1"/>
+                                                <f:selectItem itemLabel="2" itemValue="2"/>
+                                                <f:selectItem itemLabel="3" itemValue="3"/>
+                                                <f:selectItem itemLabel="4" itemValue="4"/>
+                                                <f:selectItem itemLabel="5" itemValue="5"/>
+                                            </h:selectOneRadio>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50%">
+                                            #{mensajes['gerenteDeSoporte']}
+                                        </td>
+                                        <td width="50%">
+                                            <c:set value="#{ayudaSoporte.getSubAtributo(mensajes['gerenteDeSoporte'])}" var="ayudaSoporteGerenteSoporte"/>
+                                            <h:selectOneRadio class="radioButtonPequenio" value="#{ayudaSoporteGerenteSoporte.valor}" >
+                                                <f:selectItem itemLabel="1" itemValue="1"/>
+                                                <f:selectItem itemLabel="2" itemValue="2"/>
+                                                <f:selectItem itemLabel="3" itemValue="3"/>
+                                                <f:selectItem itemLabel="4" itemValue="4"/>
+                                                <f:selectItem itemLabel="5" itemValue="5"/>
+                                            </h:selectOneRadio>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50%">
+                                            #{mensajes['gerenteDePlaneacion']}
+                                        </td>
+                                        <td width="50%">
+                                            <c:set value="#{ayudaSoporte.getSubAtributo(mensajes['gerenteDePlaneacion'])}" var="ayudaSoporteGerentePlaneacion"/>
+                                            <h:selectOneRadio class="radioButtonPequenio" value="#{ayudaSoporteGerentePlaneacion.valor}" >
+                                                <f:selectItem itemLabel="1" itemValue="1"/>
+                                                <f:selectItem itemLabel="2" itemValue="2"/>
+                                                <f:selectItem itemLabel="3" itemValue="3"/>
+                                                <f:selectItem itemLabel="4" itemValue="4"/>
+                                                <f:selectItem itemLabel="5" itemValue="5"/>
+                                            </h:selectOneRadio>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <!-- Desempeño -->
+                                <c:set value="#{compBean.peer.getAtributo('Desempeño')}" var="desempenio"/>
+                                <table class="ui-datatable ui-widget tablaHTML">                                    
+                                    <tr>
+                                        <td rowspan="1" colspan="12" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['desempenio']}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50%">
+                                            #{mensajes['liderDeProyecto']}
+                                        </td>
+                                        <td width="50%">
+                                            <c:set value="#{desempenio.getSubAtributo(mensajes['liderDeProyecto'])}" var="desempenioLiderProyecto"/>
+                                            <h:selectOneRadio class="radioButtonPequenio" value="#{desempenioLiderProyecto.valor}" >
+                                                <f:selectItem itemLabel="1" itemValue="1"/>
+                                                <f:selectItem itemLabel="2" itemValue="2"/>
+                                                <f:selectItem itemLabel="3" itemValue="3"/>
+                                                <f:selectItem itemLabel="4" itemValue="4"/>
+                                                <f:selectItem itemLabel="5" itemValue="5"/>
+                                            </h:selectOneRadio>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50%">
+                                            #{mensajes['gerenteDeDesarrollo']}
+                                        </td>
+                                        <td width="50%">
+                                            <c:set value="#{desempenio.getSubAtributo(mensajes['gerenteDeDesarrollo'])}" var="desempenioGerenteDesarrollo"/>
+                                            <h:selectOneRadio class="radioButtonPequenio" value="#{desempenioGerenteDesarrollo.valor}" >
+                                                <f:selectItem itemLabel="1" itemValue="1"/>
+                                                <f:selectItem itemLabel="2" itemValue="2"/>
+                                                <f:selectItem itemLabel="3" itemValue="3"/>
+                                                <f:selectItem itemLabel="4" itemValue="4"/>
+                                                <f:selectItem itemLabel="5" itemValue="5"/>
+                                            </h:selectOneRadio>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50%">
+                                            #{mensajes['gerenteDeCalidadProceso']}
+                                        </td>
+                                        <td width="50%">
+                                            <c:set value="#{desempenio.getSubAtributo(mensajes['gerenteDeCalidadProceso'])}" var="desempenioGerenteCalidadProceso"/>
+                                            <h:selectOneRadio class="radioButtonPequenio" value="#{desempenioGerenteCalidadProceso.valor}" >
+                                                <f:selectItem itemLabel="1" itemValue="1"/>
+                                                <f:selectItem itemLabel="2" itemValue="2"/>
+                                                <f:selectItem itemLabel="3" itemValue="3"/>
+                                                <f:selectItem itemLabel="4" itemValue="4"/>
+                                                <f:selectItem itemLabel="5" itemValue="5"/>
+                                            </h:selectOneRadio>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50%">
+                                            #{mensajes['gerenteDeSoporte']}
+                                        </td>
+                                        <td width="50%">
+                                            <c:set value="#{desempenio.getSubAtributo(mensajes['gerenteDeSoporte'])}" var="desempenioGerenteSoporte"/>
+                                            <h:selectOneRadio class="radioButtonPequenio" value="#{desempenioGerenteSoporte.valor}" >
+                                                <f:selectItem itemLabel="1" itemValue="1"/>
+                                                <f:selectItem itemLabel="2" itemValue="2"/>
+                                                <f:selectItem itemLabel="3" itemValue="3"/>
+                                                <f:selectItem itemLabel="4" itemValue="4"/>
+                                                <f:selectItem itemLabel="5" itemValue="5"/>
+                                            </h:selectOneRadio>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50%">
+                                            #{mensajes['gerenteDePlaneacion']}
+                                        </td>
+                                        <td width="50%">
+                                            <c:set value="#{desempenio.getSubAtributo(mensajes['gerenteDePlaneacion'])}" var="desempenioGerentePlaneacion"/>
+                                            <h:selectOneRadio class="radioButtonPequenio" value="#{desempenioGerentePlaneacion.valor}" >
+                                                <f:selectItem itemLabel="1" itemValue="1"/>
+                                                <f:selectItem itemLabel="2" itemValue="2"/>
+                                                <f:selectItem itemLabel="3" itemValue="3"/>
+                                                <f:selectItem itemLabel="4" itemValue="4"/>
+                                                <f:selectItem itemLabel="5" itemValue="5"/>
+                                            </h:selectOneRadio>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </h:panelGroup>
+                            <div class="corte"/>
+                            <tsp:msg boton="btnGuardarPEER"/>
+                            <h:commandButton id="btnGuardarPEER" class="btnGuardarPEER" binding="#{compBean.btnGuardarFormatoPeer}" style="display:none" action="#{compBean.actualizarPeer}">
+                                <f:ajax render="@form" execute="@form"/>
+                            </h:commandButton>
+                        </h:form>
+                        <h:panelGroup rendered="#{proyectoBean.proyectoSesion.faseActual eq mensajes['postmortem']}">
+                            <br/>
+                            <h:button class="boton center-block" value="#{mensajes['guardarFormatoPeer']}" onclick="efectuar(formPEERValido(), 'btnGuardarPEER', 'formPEER'); return false;"/>
+                        </h:panelGroup>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <tsp:pie/>
+    </h:body>
+</html>
+

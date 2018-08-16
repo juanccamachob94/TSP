@@ -1,0 +1,165 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:tsp="tsp/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>TSPSupport</title>
+    </h:head>
+    <h:body>
+        <ui:include src="./../resources/plantillas/menu_arriba.xhtml"/>
+
+        <div class="container contenedor row">
+            <tsp:menuIzq/>
+            <div class="col m9">
+                <p:messages autoUpdate="true" closable="true"/>
+                <div class="contenido">
+                    <tsp:encabezadoProyecto/>
+                    <div class="contenidoReal">
+                        <p:panelGrid class="ui-datatable ui-widget tablaNormal">
+                            <f:facet name="header">
+                                <p:row>
+                                    <p:column rowspan="1" colspan="3" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                        #{mensajes['stratn.info1']}
+                                    </p:column>
+                                </p:row>
+                            </f:facet>
+
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['stratn.info2']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['stratn.info3']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['stratn.info4']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    <ul>
+                                        <li>#{mensajes['stratn.info5']}</li>
+                                        <li>#{mensajes['stratn.info6']}</li> 
+                                        <li>#{mensajes['stratn.info7']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['stratn.info8']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['stratn.info9']}
+                                    <ul>
+                                        <li>#{mensajes['stratn.info10']}</li>
+                                        <li>#{mensajes['stratn.info11']}</li> 
+                                    </ul>
+                                    #{mensajes['stratn.info12']}
+                                    <ul>
+                                        <li>#{mensajes['stratn.info13']}</li>
+                                        <li>#{mensajes['stratn.info14']}</li>
+                                    </ul>
+                                    #{mensajes['stratn.info15']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['stratn.info16']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['stratn.info17']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['stratn.info18']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['stratn.info19']}
+                                    <ul>
+                                        <li>#{mensajes['stratn.info20']}</li>
+                                        <li>#{mensajes['stratn.info21']}</li> 
+                                        <li>#{mensajes['stratn.info22']}</li>
+                                    </ul>
+                                    #{mensajes['stratn.info23']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['stratn.info24']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['stratn.info25']}
+                                    <ul>
+                                        <li>#{mensajes['stratn.info26']}</li>
+                                        <li>#{mensajes['stratn.info27']}</li>
+                                    </ul>
+                                    #{mensajes['stratn.info28']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['stratn.info29']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['stratn.info30']}
+                                    <li>#{mensajes['stratn.info31']}</li>
+                                    <li>#{mensajes['stratn.info32']}</li>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['stratn.info33']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['stratn.info34']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['stratn.info35']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['stratn.info36']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['stratn.info37']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['stratn.info38']}
+                                    <li>#{mensajes['stratn.info39']}</li>
+                                    <li>#{mensajes['stratn.info40']}</li>
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['stratn.info41']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    <ul>
+                                        <li>#{mensajes['stratn.info42']}</li>
+                                        <li>#{mensajes['stratn.info43']}</li>
+                                        <li>#{mensajes['stratn.info44']}</li>
+                                        <li>#{mensajes['stratn.info45']}</li>
+                                        <li>#{mensajes['stratn.info46']}</li>
+                                        <li>#{mensajes['stratn.info47']}</li>
+                                        <li>#{mensajes['stratn.info48']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>                            
+                        </p:panelGrid> 
+                    </div>
+                </div>
+            </div>
+        </div>
+        <tsp:pie/>
+    </h:body>
+</html>

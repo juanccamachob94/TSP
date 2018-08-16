@@ -1,0 +1,353 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:tsp="tsp/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>TSPSupport</title>
+    </h:head>
+    <h:body>
+        <ui:include src="./../resources/plantillas/menu_arriba.xhtml"/>
+
+        <div class="container contenedor row">
+            <tsp:menuIzq lanzamienti="active"/>
+            <div class="col m9">
+                <p:messages autoUpdate="true" closable="true"/>
+                <div class="contenido">
+                    <tsp:encabezadoProyecto/>
+                    <div class="contenidoReal">
+                        <f:metadata>
+                            <f:viewAction action="#{semanalBean.cargarWeek}"/>
+                        </f:metadata>
+
+                        <!-- Exportar a hoja de cálculo -->
+                        <h:form id="formExcelWeek">
+                            <h:panelGroup rendered="#{semanalBean.existeWeek}">
+                                <a onclick="$('.btnExportarExcel').click();
+                                        return false;" style="float:right">
+                                    <div class="iconoExcel" style="width: 25px; height: 30px"/>
+                                </a>
+                                <p:commandButton class="btnExportarExcel" value="#{mensajes['generarExcel']}" ajax="false" actionListener="#{reportesBean.exportarFormatoExcel(semanalBean.week,false)}" style="display:none">
+                                    <p:fileDownload value="#{reportesBean.archivoExcel}" />
+                                </p:commandButton>
+                                <div class="corte"/>
+                            </h:panelGroup>
+                        </h:form>
+
+
+                        <h:form onkeypress="if (event.keyCode == 13)
+                                    return false;" id="formWeek">
+                            <h:panelGroup id="pgWeek">
+                                <p:panelGrid class="ui-datatable ui-widget tablaNormal" rendered="#{semanalBean.existeWeek}">
+
+
+                                    <f:facet name="header">
+                                        <p:row>
+                                            <p:column rowspan="1" colspan="8" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                <c:set value="#{semanalBean.week.getAtributo('semana')}" var="semanaWeek"/>
+                                                #{mensajes['formatoWeek']} (#{mensajes['semana']} #{semanaWeek.valor})
+                                            </p:column>
+                                        </p:row>
+                                    </f:facet>
+
+
+                                    <p:row>
+                                        <p:column rowspan="1" colspan="6" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['informacionSemanal']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['plan']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['real']}
+                                        </p:column>
+                                    </p:row>
+                                    <c:set value="#{semanalBean.week.getAtributo('Información semanal')}" var="infoSemanal"/>
+                                    <p:row>
+                                        <p:column rowspan="1" colspan="6">
+                                            <h:outputText value="Horas del proyecto para esta semana"/>
+                                        </p:column>
+                                        <c:set value="#{infoSemanal.getSubAtributo('Horas Semana')}" var="horasSemana"/>
+                                        <c:set value="#{horasSemana.getSubAtributo('Plan')}" var="planHorasSemana"/>
+                                        <c:set value="#{horasSemana.getSubAtributo('Real')}" var="realHorasSemana"/>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:outputText value="#{planHorasSemana.valor}"/>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:outputText value="#{realHorasSemana.valor}"/>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <c:set value="#{infoSemanal.getSubAtributo('Horas Ciclo')}" var="horasCiclo"/>
+                                        <c:set value="#{horasCiclo.getSubAtributo('Plan')}" var="planHorasCiclo"/>
+                                        <c:set value="#{horasCiclo.getSubAtributo('Real')}" var="realHorasCiclo"/>
+                                        <p:column rowspan="1" colspan="6">
+                                            <h:outputText value="Horas del proyecto para este ciclo a la fecha"/>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:outputText value="#{planHorasCiclo.valor}"/>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:outputText value="#{realHorasCiclo.valor}"/>
+                                        </p:column>
+
+                                    </p:row>
+                                    <p:row>
+                                        <c:set value="#{infoSemanal.getSubAtributo('VG Semana')}" var="vgSemana"/>
+                                        <c:set value="#{vgSemana.getSubAtributo('Plan')}" var="planVGSemana"/>
+                                        <c:set value="#{vgSemana.getSubAtributo('Real')}" var="realVGSemana"/>
+                                        <p:column rowspan="1" colspan="6">
+                                            <h:outputText value="Valor ganado para esta semana"/>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:outputText value="#{planVGSemana.valor}"/>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:outputText value="#{realVGSemana.valor}"/>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <c:set value="#{infoSemanal.getSubAtributo('VG Ciclo')}" var="vgCiclo"/>
+                                        <c:set value="#{vgCiclo.getSubAtributo('Plan')}" var="planVGCiclo"/>
+                                        <c:set value="#{vgCiclo.getSubAtributo('Real')}" var="realVGCiclo"/>
+                                        <p:column rowspan="1" colspan="6">
+                                            <h:outputText value="Valor ganado este ciclo a la fecha"/>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:outputText value="#{planVGCiclo.valor}"/>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:outputText value="#{realVGCiclo.valor}"/>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <c:set value="#{infoSemanal.getSubAtributo('Total horas Fase Actual')}" var="totalHorasFaseActual"/>
+                                        <c:set value="#{totalHorasFaseActual.getSubAtributo('Plan')}" var="planTotalHorasFaseActual"/>
+                                        <c:set value="#{totalHorasFaseActual.getSubAtributo('Real')}" var="realTotalHorasFaseActual"/>
+                                        <p:column rowspan="1" colspan="6">
+                                            <h:outputText value="Horas totales para las tareas completadas en esta fase hasta la fecha"/>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:outputText value="#{planTotalHorasFaseActual.valor}"/>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:outputText value="#{realTotalHorasFaseActual.valor}"/>
+                                        </p:column>
+                                    </p:row>
+
+
+                                    <p:row>
+                                        <p:column rowspan="1" colspan="4" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['informacionSemanal']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['horasPlaneadas']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['horasReales']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['valorGanado']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['valorPlaneado']}
+                                        </p:column>
+                                    </p:row>
+                                    <c:set value="#{semanalBean.week.getAtributo('Información semanal integrantes')}" var="informacionIntegrantes"/>
+                                    <p:row>
+                                        <c:set value="#{informacionIntegrantes.getSubAtributo(mensajes['liderDeProyecto'])}" var="liderProyecto"/>
+                                        <c:set value="#{liderProyecto.getSubAtributo('Horas planeadas')}" var="liderProyectoHorasPlaneadas"/>
+                                        <c:set value="#{liderProyecto.getSubAtributo('Horas reales')}" var="liderProyectoHorasReales"/>
+                                        <c:set value="#{liderProyecto.getSubAtributo('VG')}" var="liderProyectoVG"/>
+                                        <c:set value="#{liderProyecto.getSubAtributo('VP')}" var="liderProyectoVP"/>
+                                        <p:column rowspan="1" colspan="4">
+                                            #{mensajes['liderDeProyecto']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:outputText value="#{liderProyectoHorasPlaneadas.valor}"/>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:outputText value="#{liderProyectoHorasReales.valor}"/>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:outputText value="#{liderProyectoVG.valor}"/>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:outputText value="#{liderProyectoVP.valor}"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{informacionIntegrantes.getSubAtributo(mensajes['gerenteDeDesarrollo'])}" var="gerenteDesarrollo"/>
+                                        <c:set value="#{gerenteDesarrollo.getSubAtributo('Horas planeadas')}" var="gerenteDesarrolloHorasPlaneadas"/>
+                                        <c:set value="#{gerenteDesarrollo.getSubAtributo('Horas reales')}" var="gerenteDesarrolloHorasReales"/>
+                                        <c:set value="#{gerenteDesarrollo.getSubAtributo('VG')}" var="gerenteDesarrolloVG"/>
+                                        <c:set value="#{gerenteDesarrollo.getSubAtributo('VP')}" var="gerenteDesarrolloVP"/>
+                                        <p:column rowspan="1" colspan="4">
+                                            #{mensajes['gerenteDeDesarrollo']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:outputText value="#{gerenteDesarrolloHorasPlaneadas.valor}"/>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:outputText value="#{gerenteDesarrolloHorasReales.valor}"/>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:outputText value="#{gerenteDesarrolloVG.valor}"/>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:outputText value="#{gerenteDesarrolloVP.valor}"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{informacionIntegrantes.getSubAtributo(mensajes['gerenteDePlaneacion'])}" var="gerentePlaneacion"/>
+                                        <c:set value="#{gerentePlaneacion.getSubAtributo('Horas planeadas')}" var="gerentePlaneacionHorasPlaneadas"/>
+                                        <c:set value="#{gerentePlaneacion.getSubAtributo('Horas reales')}" var="gerentePlaneacionHorasReales"/>
+                                        <c:set value="#{gerentePlaneacion.getSubAtributo('VG')}" var="gerentePlaneacionVG"/>
+                                        <c:set value="#{gerentePlaneacion.getSubAtributo('VP')}" var="gerentePlaneacionVP"/>
+                                        <p:column rowspan="1" colspan="4">
+                                            #{mensajes['gerenteDePlaneacion']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:outputText value="#{gerentePlaneacionHorasPlaneadas.valor}"/>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:outputText value="#{gerentePlaneacionHorasReales.valor}"/>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:outputText value="#{gerentePlaneacionVG.valor}"/>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:outputText value="#{gerentePlaneacionVP.valor}"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{informacionIntegrantes.getSubAtributo(mensajes['gerenteDeCalidadProceso'])}" var="gerenteCalidadProceso"/>
+                                        <c:set value="#{gerenteCalidadProceso.getSubAtributo('Horas planeadas')}" var="gerenteCalidadProcesoHorasPlaneadas"/>
+                                        <c:set value="#{gerenteCalidadProceso.getSubAtributo('Horas reales')}" var="gerenteCalidadProcesoHorasReales"/>
+                                        <c:set value="#{gerenteCalidadProceso.getSubAtributo('VG')}" var="gerenteCalidadProcesoVG"/>
+                                        <c:set value="#{gerenteCalidadProceso.getSubAtributo('VP')}" var="gerenteCalidadProcesoVP"/>
+                                        <p:column rowspan="1" colspan="4">
+                                            #{mensajes['gerenteDeCalidadProceso']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:outputText value="#{gerenteCalidadProcesoHorasPlaneadas.valor}"/>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:outputText value="#{gerenteCalidadProcesoHorasReales.valor}"/>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:outputText value="#{gerenteCalidadProcesoVG.valor}"/>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:outputText value="#{gerenteCalidadProcesoVP.valor}"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{informacionIntegrantes.getSubAtributo(mensajes['gerenteDeSoporte'])}" var="gerenteSoporte"/>
+                                        <c:set value="#{gerenteSoporte.getSubAtributo('Horas planeadas')}" var="gerenteSoporteHorasPlaneadas"/>
+                                        <c:set value="#{gerenteSoporte.getSubAtributo('Horas reales')}" var="gerenteSoporteHorasReales"/>
+                                        <c:set value="#{gerenteSoporte.getSubAtributo('VG')}" var="gerenteSoporteVG"/>
+                                        <c:set value="#{gerenteSoporte.getSubAtributo('VP')}" var="gerenteSoporteVP"/>
+                                        <p:column rowspan="1" colspan="4">
+                                            #{mensajes['gerenteDeSoporte']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:outputText value="#{gerenteSoporteHorasPlaneadas.valor}"/>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:outputText value="#{gerenteSoporteHorasReales.valor}"/>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:outputText value="#{gerenteSoporteVG.valor}"/>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:outputText value="#{gerenteSoporteVP.valor}"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <c:set value="#{informacionIntegrantes.getSubAtributo('Totales integrantes')}" var="totalesIntegrantes"/>
+                                        <c:set value="#{totalesIntegrantes.getSubAtributo('Horas planeadas')}" var="totalesIntegrantesHorasPlaneadas"/>
+                                        <c:set value="#{totalesIntegrantes.getSubAtributo('Horas reales')}" var="totalesIntegrantesHorasReales"/>
+                                        <c:set value="#{totalesIntegrantes.getSubAtributo('VG')}" var="totalesIntegrantesVG"/>
+                                        <p:column rowspan="1" colspan="4">
+                                            #{mensajes['total']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:outputText value="#{totalesIntegrantesHorasPlaneadas.valor}"/>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:outputText value="#{totalesIntegrantesHorasReales.valor}"/>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:outputText value=""/>
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1">
+                                            <h:outputText value="#{totalesIntegrantesVG.valor}"/>
+                                        </p:column>
+                                    </p:row>
+                                </p:panelGrid>
+                                <c:set value="#{semanalBean.week.getAtributo('Tareas completas').atributos}" var="tareasCompletas"/>
+                                <p:dataTable class="tablaNormal" value="#{tareasCompletas}" var="tarea" rendered="#{semanalBean.existeWeek}">
+                                    <p:columnGroup type="header">
+                                        <p:row>
+                                            <p:column rowspan="1" colspan="4" headerText="#{mensajes['tareasCompletadas']}"/>
+                                            <p:column rowspan="1" colspan="1" headerText="#{mensajes['horasPlaneadas']}"/>
+                                            <p:column rowspan="1" colspan="1" headerText="#{mensajes['horasReales']}"/>
+                                            <p:column rowspan="1" colspan="1" headerText="#{mensajes['valorGanado']}"/>
+                                            <p:column rowspan="1" colspan="1" headerText="#{mensajes['semanaPlaneada']}"/>
+                                        </p:row>
+                                    </p:columnGroup>
+
+
+                                    <p:column rowspan="1" colspan="4">
+                                        <c:set value="#{tarea.getSubAtributo('Nombre tarea')}" var="nombreTarea"/>
+                                        <h:outputText value="#{nombreTarea.valor}"/>
+                                    </p:column>                                    
+                                    <p:column rowspan="1" colspan="1">
+                                        <c:set value="#{tarea.getSubAtributo('Horas planeadas')}" var="horasPlaneadasTarea"/>
+                                        <h:outputText value="#{horasPlaneadasTarea.valor}"/>
+                                    </p:column>
+                                    <p:column rowspan="1" colspan="1">
+                                        <c:set value="#{tarea.getSubAtributo('Horas reales')}" var="horasRealesTarea"/>
+                                        <h:outputText value="#{horasRealesTarea.valor}"/>
+                                    </p:column>
+                                    <p:column rowspan="1" colspan="1">
+                                        <c:set value="#{tarea.getSubAtributo('VG')}" var="VGTarea"/>
+                                        <h:outputText value="#{VGTarea.valor}"/>
+                                    </p:column>
+                                    <p:column rowspan="1" colspan="1">
+                                        <c:set value="#{tarea.getSubAtributo('Semana planeada')}" var="semanaPlaneadaTarea"/>
+                                        <h:outputText value="#{semanaPlaneadaTarea.valor}"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </h:panelGroup>
+                            <tsp:carg objeto="formWeek:pgWeek" elemento="bloqueoWeek"/>
+                        </h:form>
+                        <h:form onkeypress="if (event.keyCode == 13)
+                                    return false;" id="formGenerarWeekSemanaActual">
+                            <h:panelGroup id="pgGenerarWeekSemanaActual">
+                                <br/>
+                                <h:commandButton id="btnGenerarWeek" binding="#{semanalBean.btnGenerarWeek}" value="#{mensajes['generarWeek']}" class="boton center-block" action="#{semanalBean.generarWeekSemanaActual}">
+                                    <f:ajax render=":formWeek:pgWeek :formExcelWeek" execute="@form" onevent="PF('bloqueoWeek').show()"/>
+                                </h:commandButton>
+                            </h:panelGroup>                        
+                        </h:form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <tsp:pie/>
+    </h:body>
+</html>
+

@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 25, 2017 3:30:34 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="c_negocio.a_relacional.Documento" table="documento" schema="public" optimistic-lock="version">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="documento" class="c_negocio.a_relacional.Documento" fetch="select">
+            <column name="padre" />
+        </many-to-one>
+        <many-to-one name="rlCl" class="c_negocio.a_relacional.RlCl" fetch="select">
+            <column name="n_ciclo" precision="2" scale="0" not-null="true" />
+            <column name="proyecto" length="500" not-null="true" />
+            <column name="usuario" length="11" not-null="true" />
+            <column name="rol" length="50" not-null="true" />
+        </many-to-one>
+        <property name="nombre" type="string">
+            <column name="nombre" length="50" not-null="true" />
+        </property>
+        <property name="fechaCreacion" type="timestamp">
+            <column name="fecha_creacion" length="29" not-null="true" />
+        </property>
+        <property name="tipo" type="string">
+            <column name="tipo" length="50" not-null="true" />
+        </property>
+        <property name="extension" type="string">
+            <column name="extension" length="50" not-null="true" />
+        </property>
+        <property name="url" type="string">
+            <column name="url" length="2000" />
+        </property>
+        <property name="editable" type="boolean">
+            <column name="editable" not-null="true" />
+        </property>
+        <set name="documentos" table="documento" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="padre" />
+            </key>
+            <one-to-many class="c_negocio.a_relacional.Documento" />
+        </set>
+    </class>
+</hibernate-mapping>

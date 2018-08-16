@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+    <head>
+        <title>TODO supply a title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <ui:composition>
+           <h:button value="#{texto}" id="#{clase1}" class="boton #{posicion} #{clase1}" onclick="$('##{formulario} .errorCentrado').html('');$('.#{boton}').click(); return false;" a:disabled="#{inhabilitado}"/>
+           <h:panelGroup rendered="#{modal eq 'modalInterrupcionPrevista'}">
+               <a class="#{clase2}" onclick="abrirModalInterrupcionPrevista(); return false;"></a>
+           </h:panelGroup>
+           <h:panelGroup rendered="#{modal eq 'modalInterrupcionImprevista'}">
+               <a class="#{clase2}" onclick="abrirModalInterrupcionNoPrevista(); return false;"></a>
+           </h:panelGroup>
+           <h:panelGroup rendered="#{not(modal eq 'modalInterrupcionImprevista' or modal eq 'modalInterrupcionPrevista')}">
+             <a class="modal-trigger #{clase2}" href="##{modal}"></a>
+           </h:panelGroup>
+        </ui:composition>
+    </body>
+</html>

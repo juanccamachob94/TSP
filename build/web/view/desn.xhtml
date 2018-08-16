@@ -1,0 +1,201 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:tsp="tsp/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>TSPSupport</title>
+    </h:head>
+    <h:body>
+        <ui:include src="./../resources/plantillas/menu_arriba.xhtml"/>
+
+        <div class="container contenedor row">
+            <tsp:menuIzq/>
+            <div class="col m9">
+                <p:messages autoUpdate="true" closable="true"/>
+                <div class="contenido">
+                    <tsp:encabezadoProyecto/>
+                    <div class="contenidoReal">
+                        <p:panelGrid class="ui-datatable ui-widget tablaNormal">
+                            <f:facet name="header">
+                                <p:row>
+                                    <p:column rowspan="1" colspan="3" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                        #{mensajes['desn.info1']}
+                                    </p:column>
+                                </p:row>
+                            </f:facet>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['desn.info2']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['desn.info3']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['desn.info4']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['desn.info5']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['desn.info6']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['desn.info7']}
+                                    <ul>
+                                        <li>#{mensajes['desn.info8']}</li>
+                                        <li>#{mensajes['desn.info9']}</li>
+                                        <li>#{mensajes['desn.info10']}</li>
+                                        <li>#{mensajes['desn.info11']}</li>
+                                    </ul>
+                                    #{mensajes['desn.info12']}
+                                    <ul>
+                                        <li>#{mensajes['desn.info13']}</li>
+                                        <li>#{mensajes['desn.info14']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['desn.info15']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['desn.info16']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['desn.info17']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['desn.info18']}
+                                    <ul>
+                                        <li>#{mensajes['desn.info19']}</li>
+                                        <li>#{mensajes['desn.info20']}</li>
+                                        <li>#{mensajes['desn.info21']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['desn.info22']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['desn.info23']}
+                                    <ul>
+                                        <li>#{mensajes['desn.info24']}</li>
+                                        <li>#{mensajes['desn.info25']}</li>
+                                        <li>#{mensajes['desn.info26']}</li>
+                                        <li>#{mensajes['desn.info27']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['desn.info28']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['desn.info29']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['desn.info30']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['desn.info31']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['desn.info32']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['desn.info33']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['desn.info34']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    <ul>
+                                        <li>#{mensajes['desn.info35']}</li>
+                                        <li>#{mensajes['desn.info36']}</li>
+                                    </ul>
+                                    #{mensajes['desn.info37']}
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['desn.info38']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['desn.info39']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['desn.info40']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['desn.info41']}
+                                    <ul>
+                                        <li>#{mensajes['desn.info42']}</li>
+                                        <li>#{mensajes['desn.info43']}</li>
+                                        <li>#{mensajes['desn.info44']}</li>
+                                        <li>#{mensajes['desn.info45']}</li>
+                                    </ul>
+                                    #{mensajes['desn.info46']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['desn.info47']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['desn.info48']}
+                                    <ul>
+                                        <li>#{mensajes['desn.info49']}</li>
+                                        <li>#{mensajes['desn.info50']}</li>
+                                        <li>#{mensajes['desn.info51']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>     
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['desn.info52']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['desn.info53']}
+                                </p:column>
+                            </p:row>                             
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['desn.info54']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    <ul>
+                                        <li>#{mensajes['desn.info55']}</li>
+                                        <li>#{mensajes['desn.info56']}</li>
+                                        <li>#{mensajes['desn.info57']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>                            
+                        </p:panelGrid>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <tsp:pie/>
+    </h:body>
+</html>

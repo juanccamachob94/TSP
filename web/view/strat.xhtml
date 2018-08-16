@@ -1,0 +1,302 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:tsp="tsp/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>TSPSupport</title>
+    </h:head>
+    <h:body>
+        <ui:include src="./../resources/plantillas/menu_arriba.xhtml"/>
+
+        <div class="container contenedor row">
+            <tsp:menuIzq estrategia="active"/>
+            <div class="col m9">
+                <p:messages autoUpdate="true" closable="true"/>
+                <div class="contenido">
+                    <tsp:encabezadoProyecto/>
+                    <div class="contenidoReal">
+                        <f:metadata>
+                            <f:viewAction action="#{estrategiaBean.cargarStrat}"/>
+                        </f:metadata>
+                        <!-- Exportar a hoja de cálculo -->
+                        <h:form>
+                            <a onclick="$('.btnExportarExcel').click(); return false;" style="float:right">
+                                <div class="iconoExcel" style="width: 25px; height: 30px"/>
+                            </a>
+                            <p:commandButton class="btnExportarExcel" value="#{mensajes['generarExcel']}" ajax="false" actionListener="#{reportesBean.exportarFormatoExcel(estrategiaBean.strat,true)}" style="display:none">
+                                <p:fileDownload value="#{reportesBean.archivoExcel}" />
+                            </p:commandButton>
+                            <div class="corte"/>
+                        </h:form>
+
+                        <h:form onkeypress="if (event.keyCode == 13)
+                                    return false;" id="formPartes">
+                            <h:panelGroup id="pgPartes">
+                                <!-- Título -->
+                                <p:dataTable var="item" value="#{generalBean.lista}">
+                                    <p:columnGroup type="header">
+                                        <p:row>
+                                            <p:column rowspan="1" colspan="#{proyectoBean.proyectoSesion.NCiclos * 2 + 10}" headerText="STRAT"/>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column rowspan="2" colspan="4" headerText="#{mensajes['parte']}" />
+                                            <p:column rowspan="2" colspan="4" headerText="#{mensajes['funcion']}" />
+                                            <p:column rowspan="1" colspan="#{proyectoBean.proyectoSesion.NCiclos}" headerText="#{proyectoBean.valorDeCriterio('Unidad de tamaño')}" />
+                                            <p:column rowspan="1" colspan="#{proyectoBean.proyectoSesion.NCiclos}" headerText="#{mensajes['horas']}" />
+                                            <p:column rowspan="2" colspan="1">
+                                                <f:facet name="header">
+                                                    <i class="material-icons iconoTitulo">delete</i>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column rowspan="2" colspan="1">
+                                                <f:facet name="header">
+                                                    <i class="material-icons iconoTitulo">lightbulb_outline</i>
+                                                </f:facet>
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <ui:repeat value="#{estrategiaBean.listaHeader('tamaño')}" var="tamanio">
+                                                <p:column rowspan="1" colspan="1" headerText="#{tamanio}" />
+                                            </ui:repeat>
+                                            <c:forEach items="#{estrategiaBean.listaHeader('horas')}" var="hora" varStatus="status">
+                                                <p:column rowspan="1" colspan="1" headerText="#{hora}" />
+                                            </c:forEach>
+                                        </p:row>
+                                    </p:columnGroup>
+                                </p:dataTable>
+
+                                <!-- Contenido -->
+                                <p:treeTable id="tablaPartes" class=" validate tablaNormal" style="border:none;" value="#{estrategiaBean.nodoProyecto}" var="parte">
+                                    <p:column headerText="#{mensajes['parte']}" colspan="4">
+                                        <h:commandLink action="#{estrategiaBean.consultarParte(parte)}">
+                                            <h:outputText class="subrayado" value="#{generalBean.cadenaIncompleta(parte.nombre,19)}"/>
+                                            <f:ajax render=":formNuevaParte:pgNuevaParte" execute="@this"/>
+                                        </h:commandLink>
+                                        <h:panelGroup rendered="#{parte.tipo != mensajes['tipoParteModulo']}">
+                                            <h:panelGroup id="agregarParteHija#{generalBean.unir(parte.nombre)}">
+                                                <h:commandLink action="#{estrategiaBean.cargarNuevaParte(parte)}">
+                                                    <f:ajax render=":formNuevaParte:pgNuevaParte" execute="agregarParteHija#{generalBean.unir(parte.nombre)}"/>
+                                                    <i class="material-icons small iconoCelda">add</i>
+                                                </h:commandLink>
+                                            </h:panelGroup>
+                                        </h:panelGroup>
+                                        <h:panelGroup id="eliminarParte#{generalBean.unir(parte.nombre)}">
+                                            <h:commandLink class="eliminacionParte#{generalBean.unir(parte.nombre)}" action="#{estrategiaBean.eliminarParte(parte)}">
+                                                <f:ajax render=":formPartes:tablaPartes formPartes:totalesStrat" execute="eliminarParte#{generalBean.unir(parte.nombre)}"/>
+                                            </h:commandLink>
+                                            <a onclick="mostrarModal(this, 'modalEliminacionParte#{generalBean.unir(parte.nombre)}');
+                                                    return false;">
+                                                <i class="material-icons small iconoCelda">clear</i>
+                                            </a>
+                                            <tsp:modalConfirm id="modalEliminacionParte#{generalBean.unir(parte.nombre)}" validacion="efectuar([true],'eliminacionParte#{generalBean.unir(parte.nombre)}','');"/>
+                                        </h:panelGroup>
+                                    </p:column>
+                                    <p:column headerText="#{mensajes['funciones']}" colspan="4">
+                                        <h:panelGroup rendered="#{!estrategiaBean.tieneHijos(parte)}">
+                                            <table>
+                                                <tbody>
+                                                    <ui:repeat value="#{estrategiaBean.funciones(parte,'funcion')}" var="miAtributo2">
+                                                        <tr>
+                                                            <td>
+                                                                <h:inputText  value="#{miAtributo2.valor}" a:placeholder="#{mensajes['nombreDeLaFuncion']}">
+                                                                    <f:ajax event="change" listener="#{generalBean.actualizar}"  execute="@this"/>
+                                                                </h:inputText>
+                                                            </td>
+                                                        </tr>
+                                                    </ui:repeat>  
+
+                                                </tbody>
+                                            </table>
+                                        </h:panelGroup>
+                                    </p:column>
+                                    <p:column headerText="#{mensajes['tamanio']}" colspan="#{proyectoBean.proyectoSesion.NCiclos}">
+                                        <h:panelGroup rendered="#{!estrategiaBean.tieneHijos(parte)}">
+                                            <ui:repeat value="#{estrategiaBean.funcionesDeParte(parte)}" var="atributo">
+                                                <table>
+                                                    <tbody>
+                                                        <tr>
+                                                            <ui:repeat value="#{atributo.obtLista('TAM_Ciclo')}" var="atributo3">
+                                                                <td>
+                                                                    <h:inputText class="center" value="#{atributo3.valor}" a:placeholder="0" a:type="number" a:step="any">
+                                                                        <f:ajax event="change" listener="#{generalBean.hacerPositivo(atributo3)}"  execute="@this" render="@this formPartes:totalesStrat"/>
+                                                                    </h:inputText>
+                                                                </td>
+                                                            </ui:repeat>  
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </ui:repeat>
+                                        </h:panelGroup>
+                                    </p:column>
+                                    <p:column headerText="#{mensajes['horas']}" colspan="#{proyectoBean.proyectoSesion.NCiclos}">
+                                        <h:panelGroup rendered="#{!estrategiaBean.tieneHijos(parte)}">
+                                            <ui:repeat value="#{estrategiaBean.funcionesDeParte(parte)}" var="atributo">
+                                                <table>
+                                                    <tbody>
+                                                        <tr>
+                                                            <ui:repeat value="#{atributo.obtLista('Horas_Ciclo')}" var="atributo3">
+                                                                <td>
+                                                                    <h:inputText class="center" value="#{atributo3.valor}" a:placeholder="0" a:type="number" a:step="any">
+                                                                        <f:ajax event="change" listener="#{generalBean.hacerPositivo(atributo3)}"  execute="@this" render="@this formPartes:totalesStrat"/>
+                                                                    </h:inputText>
+                                                                </td>
+                                                            </ui:repeat>  
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </ui:repeat>
+                                        </h:panelGroup>
+                                    </p:column>
+
+                                    <p:column headerText="#{mensajes['accionesFuncion']}">
+                                        <h:panelGroup rendered="#{!estrategiaBean.tieneHijos(parte)}">
+                                            <table>
+                                                <h:panelGroup rendered="#{estrategiaBean.tamFuncionesParte(parte) > 1}">
+                                                    <ui:repeat value="#{estrategiaBean.funcionesDeParte(parte)}" var="item">
+                                                        <tr>
+                                                            <td>
+                                                                <div class="alineadoCentro">
+                                                                    <h:commandLink actionListener="#{estrategiaBean.eliminarFuncion(parte, item)}">
+                                                                        <f:ajax render="formPartes:pgPartes"/>
+                                                                        <i class="material-icons small iconoCelda">highlight_off</i>
+                                                                    </h:commandLink>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </ui:repeat>
+                                                </h:panelGroup>
+
+                                                <h:panelGroup rendered="#{estrategiaBean.tamFuncionesParte(parte) == 1}">
+                                                    <tr>
+                                                        <td>
+                                                            <div class="alineadoCentro">  
+                                                                <i class="material-icons small">remove</i>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </h:panelGroup>
+                                            </table>
+                                        </h:panelGroup>
+                                    </p:column>
+
+                                    <p:column headerText="#{mensajes['accionesParte']}" colspan="1">
+                                        <div class="alineadoCentro">
+                                            <h:panelGroup rendered="#{!estrategiaBean.tieneHijos(parte)}">
+                                                <h:panelGroup id="agregarFuncion#{generalBean.unir(parte.nombre)}">
+                                                    <h:commandLink action="#{estrategiaBean.crearRegistroStrat(parte)}">
+                                                        <f:ajax render=":formPartes:tablaPartes" execute="agregarFuncion#{generalBean.unir(parte.nombre)}"/>
+                                                        <i class="material-icons small iconoCelda">add</i>
+                                                    </h:commandLink>
+                                                </h:panelGroup>
+                                            </h:panelGroup>
+
+
+                                        </div>
+
+                                    </p:column>
+
+
+                                </p:treeTable>
+                                <!--Totales-->
+                                <p:dataTable id="totalesStrat" var="item" value="#{generalBean.lista}">
+                                    <p:columnGroup type="header">
+                                        <p:row>
+                                            <p:column rowspan="1" colspan="8" headerText="#{mensajes['total']}"/>
+                                            <ui:repeat value="#{estrategiaBean.listaHeader('tamaño')}" var="tamanio">
+                                                <p:column rowspan="1" colspan="1" headerText="#{estrategiaBean.totalTamanio(tamanio)}" />
+                                            </ui:repeat>
+                                            <c:forEach items="#{estrategiaBean.listaHeader('horas')}" var="hora" varStatus="status">
+                                                <p:column rowspan="1" colspan="1" headerText="#{estrategiaBean.totalHoras(hora)}" />
+                                            </c:forEach>
+                                            <p:column rowspan="1" colspan="2" headerText=""/>
+                                        </p:row>
+                                    </p:columnGroup>
+                                </p:dataTable>
+
+
+
+
+                                <br/>
+                                <h:panelGroup rendered="#{planeacionBean.tieneRol(mensajes['gerenteDeDesarrollo'])}">
+                                    <h:panelGroup rendered="#{proyectoBean.proyectoSesion.faseActual eq mensajes['estrategia']}">
+                                        <h:panelGroup id="pgBotonAgregarParte">
+                                            <h:commandLink class="btn btn-floating right" action="#{estrategiaBean.cargarNuevaParte(estrategiaBean.nodoProyecto.data)}">
+                                                <i class="material-icons">add</i>
+                                                <f:ajax execute="pgBotonAgregarParte" render=":formNuevaParte:pgNuevaParte"/>
+                                            </h:commandLink>
+                                        </h:panelGroup>
+                                    </h:panelGroup>
+
+                                    <a class="modal-trigger linkModalNuevaParte" href="#modalNuevaParte"></a>
+                                    <div class="corte"/>
+                                    <h:panelGroup rendered="#{proyectoBean.proyectoSesion.faseActual eq mensajes['estrategia']}">
+                                        <h:commandButton value="#{estrategiaBean.strat.id == null ? mensajes['guardar']:mensajes['actualizar']} #{mensajes['formatoStrat']}"  class="boton center-block" action="#{estrategiaBean.guardarStrat}">
+                                            <f:ajax render="@form" execute="@form"/>
+                                        </h:commandButton>
+                                    </h:panelGroup>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                        </h:form>
+
+
+
+
+
+                        <div id="modalNuevaParte" class="modal modal-fixed-footer">
+                            <h:form onkeypress="if (event.keyCode == 13)
+                                        return false;" id="formNuevaParte">
+                                <h:panelGroup id="pgNuevaParte">
+                                    <div class="modal-content row">
+
+                                        <c:choose>
+                                            <c:when test="#{estrategiaBean.idParteConsultada == -1}">
+                                                <h5 style="float:left;">#{mensajes['nuevo']} #{estrategiaBean.nuevaParte.tipo}</h5> <h:panelGroup rendered="#{estrategiaBean.nuevaParte.tipo != mensajes['tipoParteProducto']}"><h5>&nbsp;para el #{estrategiaBean.nuevaParte.parte.tipo} #{estrategiaBean.nuevaParte.parte.nombre}</h5></h:panelGroup>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <h5 style="float:left;">#{estrategiaBean.nuevaParte.tipo}</h5> <h:panelGroup rendered="#{estrategiaBean.nuevaParte.tipo != mensajes['tipoParteProducto']}"><h5>&nbsp;del #{estrategiaBean.nuevaParte.parte.tipo} #{estrategiaBean.nuevaParte.parte.nombre}</h5></h:panelGroup>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        <div class="corte"/>
+                                        <tsp:ent id="nombreNuevaParte" texto="#{mensajes['nombre']} *" valor="#{estrategiaBean.nuevaParte.nombre}" tipo="text" m="8" i="store"/><div class="corte"/>
+                                        <tsp:text id="descripcionNuevaParte" texto="#{mensajes['descripcion']} *" valor="#{estrategiaBean.nuevaParte.descripcion}" tipo="text" m="12" i="description" max="500"/><div class="corte"/>
+                                        <tsp:text id="observacionNuevaParte" texto="#{mensajes['observacion']}" valor="#{estrategiaBean.nuevaParte.observacion}" tipo="text" m="12" i="comments" max="500"/>                                        
+                                        <c:choose>
+                                            <c:when test="#{estrategiaBean.idParteConsultada == -1}">
+                                                <tsp:msg boton="btnCrearParte"/>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <tsp:msg boton="btnActualizarParte"/>
+                                            </c:otherwise>
+                                        </c:choose>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <h:panelGroup rendered="#{estrategiaBean.idParteConsultada == -1}">
+                                            <h:commandButton id="btnCrearParte" binding="#{estrategiaBean.btnCrearParte}" value="#{mensajes['crear']} #{estrategiaBean.nuevaParte.tipo}" class="boton center-block" action="#{estrategiaBean.crearParteStrat}">
+                                                <f:ajax render=":formPartes:pgPartes" execute="pgNuevaParte"/>
+                                            </h:commandButton> 
+                                        </h:panelGroup>
+
+                                        <h:panelGroup rendered="#{estrategiaBean.idParteConsultada > -1}">
+                                            <h:commandButton id="btnActualizarParte" binding="#{estrategiaBean.btnActualizarParte}" value="#{mensajes['actualizar']} #{estrategiaBean.nuevaParte.tipo}" class="boton center-block" action="#{estrategiaBean.actualizarParteStrat}">
+                                                <f:ajax render=":formPartes:pgPartes" execute="pgNuevaParte"/>
+                                            </h:commandButton>
+                                        </h:panelGroup>
+                                    </div>
+                                </h:panelGroup>
+                            </h:form>                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <tsp:pie/>
+    </h:body>
+</html>
+

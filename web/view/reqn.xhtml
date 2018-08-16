@@ -1,0 +1,208 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:tsp="tsp/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>TSPSupport</title>
+    </h:head>
+    <h:body>
+        <ui:include src="./../resources/plantillas/menu_arriba.xhtml"/>
+
+        <div class="container contenedor row">
+            <tsp:menuIzq/>
+            <div class="col m9">
+                <p:messages autoUpdate="true" closable="true"/>
+                <div class="contenido">
+                    <tsp:encabezadoProyecto/>
+                    <div class="contenidoReal">
+                        <p:panelGrid class="ui-datatable ui-widget tablaNormal">
+                            <f:facet name="header">
+                                <p:row>
+                                    <p:column rowspan="1" colspan="3" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                        #{mensajes['reqn.info1']}
+                                    </p:column>
+                                </p:row>
+                            </f:facet>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['reqn.info2']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['reqn.info3']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['reqn.info4']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['reqn.info5']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['reqn.info6']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['reqn.info7']}
+                                    <ul>
+                                        <li>#{mensajes['reqn.info8']}</li>
+                                        <li>#{mensajes['reqn.info9']}</li>
+                                        <li>#{mensajes['reqn.info10']}</li>
+                                    </ul>
+                                    #{mensajes['reqn.info11']}
+                                    <ul>
+                                        <li>#{mensajes['reqn.info12']}</li>
+                                        <li>#{mensajes['reqn.info13']}</li>
+                                        <li>#{mensajes['reqn.info14']}</li>
+                                    </ul>
+                                    #{mensajes['reqn.info15']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['reqn.info16']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['reqn.info17']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['reqn.info18']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['reqn.info19']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['reqn.info20']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['reqn.info21']}
+                                    <ul>
+                                        <li>#{mensajes['reqn.info22']}</li>
+                                        <li>#{mensajes['reqn.info23']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['reqn.info24']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['reqn.info25']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['reqn.info26']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['reqn.info27']}
+                                    <ul>
+                                        <li>#{mensajes['reqn.info28']}</li>
+                                        <li>#{mensajes['reqn.info29']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['reqn.info30']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['reqn.info31']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['reqn.info32']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    <ul>
+                                        <li>#{mensajes['reqn.info33']}</li>
+                                        <li>#{mensajes['reqn.info34']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['reqn.info35']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['reqn.info36']}
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['reqn.info37']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['reqn.info38']}
+                                    <ul>
+                                        <li>#{mensajes['reqn.info39']}</li>
+                                        <li>#{mensajes['reqn.info40']}</li>
+                                        <li>#{mensajes['reqn.info41']}</li>
+                                        <li>#{mensajes['reqn.info42']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['reqn.info43']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['reqn.info44']}
+                                    <ul>
+                                        <li>#{mensajes['reqn.info45']}</li>
+                                        <li>#{mensajes['reqn.info46']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['reqn.info47']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    <ul>
+                                        <li>#{mensajes['reqn.info48']}</li>
+                                        <li>#{mensajes['reqn.info49']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>      
+                            <p:row>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['reqn.info50']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    #{mensajes['reqn.info51']}
+                                </p:column>
+                            </p:row>                             
+                            <p:row>
+                                <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                    #{mensajes['reqn.info52']}
+                                </p:column>
+                                <p:column rowspan="1" colspan="2">
+                                    <ul>
+                                        <li>#{mensajes['reqn.info53']}</li>
+                                        <li>#{mensajes['reqn.info54']}</li>
+                                        <li>#{mensajes['reqn.info55']}</li>
+                                        <li>#{mensajes['reqn.info56']}</li>
+                                    </ul>
+                                </p:column>
+                            </p:row>                            
+                        </p:panelGrid>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <tsp:pie/>
+    </h:body>
+</html>

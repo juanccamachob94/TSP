@@ -1,0 +1,1207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:tsp="tsp/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <head>
+        <title>TODO supply a title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <ui:composition>
+            <h:panelGroup id="pgMenuIzquierda">
+                <div id="menu-izquierda" class="menu-izquierda col m3 s12">
+                    <ul class="collapsible lista-rich">
+                        <h:panelGroup rendered="#{not empty proyectoBean.proyectoSesion}">
+                            <c:set value="#{proyectoBean.proyectoSesion.faseActual}" var="faseActual"/>
+                            <c:set value="#{proyectoBean.proyectoSesion.cicloActual}" var="cicloActual"/>
+                            <li class="bold item-li"><a class="collapsible-header item-a #{faseActual eq mensajes['lanzamiento']? 'active':''}">#{mensajes['lanzamiento']}</a>
+                                <div class="collapsible-body">
+                                    <ul>
+                                        <a href="asignacion_roles.xhtml"><li class="li-izquierda">#{mensajes['asignarRoles']}</li></a>
+                                        <a href="definicion_metas.xhtml"><li class="li-izquierda">#{mensajes['definirMetas']}</li></a>
+                                        <a href="lau#{cicloActual == 1? '1':'n'}.xhtml"><li class="li-izquierda">#{mensajes['ayuda']}: LAU#{cicloActual == 1? '1':'N'}</li></a>
+                                    </ul>
+                                </div>
+                            </li>
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{not empty proyectoBean.proyectoSesion}">
+                            <li class="bold item-li"><a class="collapsible-header item-a #{faseActual eq mensajes['estrategia']? 'active':''}">#{mensajes['estrategia']}</a>
+                                <div class="collapsible-body">
+                                    <ul>
+                                        <a href="strat.xhtml"><li class="li-izquierda">STRAT</li></a>
+                                        <a href="strat#{cicloActual == 1? '1':'n'}.xhtml"><li class="li-izquierda">#{mensajes['ayuda']}: STRAT#{cicloActual == 1? '1':'N'}</li></a>
+                                    </ul>
+                                </div>
+                            </li>
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{not empty proyectoBean.proyectoSesion}">
+                            <li class="bold item-li"><a class="collapsible-header item-a #{faseActual eq mensajes['planeacion']? 'active':''}">#{mensajes['planeacion']}</a>
+                                <div class="collapsible-body">
+                                    <ul>
+                                        <a href="srs.xhtml"><li class="li-izquierda">SRS</li></a>
+                                        <a href="logt.xhtml"><li class="li-izquierda">LOGT</li></a>
+                                        <a href="task.xhtml"><li class="li-izquierda">TASK</li></a>
+                                        <a href="plan#{cicloActual == 1? '1':'n'}.xhtml"><li class="li-izquierda">#{mensajes['ayuda']}: PLAN#{cicloActual == 1? '1':'N'}</li></a>
+                                    </ul>
+                                </div>
+                            </li>
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{not empty proyectoBean.proyectoSesion}">
+                            <li class="bold item-li"><a class="collapsible-header item-a #{faseActual eq mensajes['requerimientos']? 'active':''}">#{mensajes['requerimientos']}</a>
+                                <div class="collapsible-body">
+                                    <ul>
+                                        <a href="req#{cicloActual == 1? '1':'n'}.xhtml"><li class="li-izquierda">#{mensajes['ayuda']}: REQ#{cicloActual == 1? '1':'N'}</li></a>
+                                    </ul>
+                                </div>
+                            </li>
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{not empty proyectoBean.proyectoSesion}">
+                            <li class="bold item-li"><a class="collapsible-header item-a #{faseActual eq mensajes['disenio']? 'active':''}">#{mensajes['disenio']}</a>
+                                <div class="collapsible-body">
+                                    <ul>
+                                        <a href="des#{cicloActual == 1? '1':'n'}.xhtml"><li class="li-izquierda">#{mensajes['ayuda']}: DES#{cicloActual == 1? '1':'N'}</li></a>
+                                    </ul>
+                                </div>
+                            </li>
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{not empty proyectoBean.proyectoSesion}">
+                            <li class="bold item-li"><a class="collapsible-header item-a #{faseActual eq mensajes['implementacion']? 'active':''}">#{mensajes['implementacion']}</a>
+                                <div class="collapsible-body">
+                                    <ul>
+                                        <a href="imp#{cicloActual == 1? '1':'n'}.xhtml"><li class="li-izquierda">#{mensajes['ayuda']}: IMP#{cicloActual == 1? '1':'N'}</li></a>
+                                    </ul>
+                                </div>
+                            </li>
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{not empty proyectoBean.proyectoSesion}">
+                            <li class="bold item-li"><a class="collapsible-header item-a #{faseActual eq mensajes['prueba']? 'active':''}">#{mensajes['prueba']}</a>
+                                <div class="collapsible-body">
+                                    <ul>
+                                        <a href="logd.xhtml"><li class="li-izquierda">LOGD</li></a>
+                                        <a href="itl.xhtml"><li class="li-izquierda">ITL</li></a>
+                                    </ul>
+                                </div>
+                            </li>
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{not empty proyectoBean.proyectoSesion}">
+                            <li class="bold item-li"><a class="collapsible-header item-a #{faseActual eq mensajes['postmortem']? 'active':''}">#{mensajes['postmortem']}</a>
+                                <div class="collapsible-body">
+                                    <ul>
+                                        <a href="peer.xhtml"><li class="li-izquierda">PEER</li></a>
+                                        <a href="metas.xhtml"><li class="li-izquierda">#{mensajes['cumplimientoDeMetas']}</li></a>
+                                        <a href="resultados.xhtml"><li class="li-izquierda">#{mensajes['resultados']}</li></a>
+                                    </ul>
+                                </div>
+                            </li>
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{not empty proyectoBean.proyectoSesion}">
+                            <li class="bold item-li"><a class="collapsible-header item-a">#{mensajes['formatosSemanales']}</a>
+                                <div class="collapsible-body">
+                                    <ul>
+                                        <a href="schedule.xhtml"><li class="li-izquierda">SCHEDULE</li></a>
+                                        <a href="week.xhtml"><li class="li-izquierda">WEEK</li></a>
+                                    </ul>
+                                </div>
+                            </li>
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{not empty proyectoBean.proyectoSesion}">
+                            <li class="bold item-li"><a class="collapsible-header item-a">#{mensajes['otrosFormatos']}</a>
+                                <div class="collapsible-body">
+                                    <ul>
+                                        <a href="qual.xhtml"><li class="li-izquierda">QUAL</li></a>
+                                        <a href="sump.xhtml"><li class="li-izquierda">SUMP</li></a>
+                                        <a href="sumq.xhtml"><li class="li-izquierda">SUMQ</li></a>
+                                        <a href="ccr.xhtml"><li class="li-izquierda">CCR</li></a>
+                                        <a href="pip.xhtml"><li class="li-izquierda">PIP</li></a>
+                                    </ul>
+                                </div>
+                            </li>
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{not empty proyectoBean.proyectoSesion}">
+                            <li class="bold item-li"><a class="collapsible-header item-a">#{mensajes['analisisDeTamanio']}</a>
+                                <div class="collapsible-body">
+                                    <ul>
+                                        <a href="codigo.xhtml"><li class="li-izquierda">#{mensajes['codigo']}</li></a>
+                                    </ul>
+                                </div>
+                            </li>
+                        </h:panelGroup>
+                        <li class="bold item-li"><a class="collapsible-header item-a #{empty proyectoBean.proyectoSesion ? 'active':''}">#{mensajes['informacion']}</a>
+                            <div class="collapsible-body">
+                                <ul>
+                                    <a href="tsp.xhtml"><li class="li-izquierda">#{mensajes['metodologiaTSP']}</li></a>
+                                    <a href="desarrolladores.xhtml"><li class="li-izquierda">#{mensajes['desarrolladores']}</li></a>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <h:panelGroup id="pgRegistrosTiempo">
+
+                    <h:panelGroup rendered="#{!planeacionBean.tieneUnicamenteRol(mensajes['instructor'])}">
+                    
+                    
+                    <!-- Nuevo módulo de registro de tiempo antes de TASK -->
+                    <h:panelGroup rendered="#{not empty proyectoBean.proyectoSesion}">
+                        <h:panelGroup rendered="#{proyectoBean.proyectoSesion.faseActual eq mensajes['lanzamiento'] or proyectoBean.proyectoSesion.faseActual eq mensajes['estrategia']}">
+                            <br/>
+                            <div class="col m12 tarjeta">
+                                <h6 class="panel">#{mensajes['registroDeTiempo']}</h6>
+                                <div class="contenidoTarjeta">
+                                    <h:form onkeypress="if (event.keyCode == 13) return false;" id="formularioLOGTNoPlaneado">
+                                        <h:panelGroup id="pgInformacionTareaIniciadaNoPlaneado" rendered="#{tiempoBean.actividadIniciada}">
+                                            <div class="row margen-row">
+                                                <div class="col m12">
+                                                    <c:set value="#{tiempoBean.registroLogt.getSubAtributo('Fecha-hora inicio')}" var="fechaHoraInicioNoPlaneado"/>
+                                                    <c:set value="#{tiempoBean.registroLogt.getSubAtributo('Tiempo interrumpido')}" var="tiempoInterrumpidoNoPlaneado"/>
+                                                    <div class="alineadoCentro">
+                                                        <h:outputText value="#{mensajes['fechaYHoraDeInicio']}: #{fechaHoraInicioNoPlaneado.valor}"/>
+                                                        <div class="corte"/>
+                                                        <h:panelGroup rendered="#{tiempoInterrumpidoNoPlaneado.valor != '0'}">
+                                                            <h:outputText value="#{mensajes['actualDeInterrupciones']}: #{tiempoInterrumpidoNoPlaneado.valor} #{mensajes['minutos']}"/>
+                                                        </h:panelGroup>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </h:panelGroup>
+                                        
+                                        <h:panelGroup id="pgSelectorRol">
+
+                                            <div class="col m2">
+                                                <h:outputText value="#{mensajes['rol']}:"/>
+                                            </div>
+                                            <div class="col m10 todo-horizontal">
+                                                <h:panelGroup rendered="#{!tiempoBean.actividadIniciada}">
+                                                    <h:selectOneMenu class="browser-default selectPequenio" value="#{tiempoBean.rolSeleccionado}">
+                                                        <f:selectItem itemLabel="#{generalBean.mensajeSeleccion}" itemValue="#{null}"/>
+                                                        <f:selectItems value="#{proyectoBean.rolesUSesion}" var="rol" itemValue="#{rol}" itemLabel="#{rol}"/>
+                                                        <f:ajax event="change" listener="#{generalBean.actualizar}" execute="pgSelectorRol" render="formularioLOGTNoPlaneado:pgSelectorTareaNoPlaneado"/>
+                                                    </h:selectOneMenu>
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{tiempoBean.actividadIniciada}">
+                                                    <h:selectOneMenu class="browser-default selectPequenio" value="#{tiempoBean.rolSeleccionado}" disabled="true">
+                                                        <f:selectItem itemLabel="#{generalBean.mensajeSeleccion}" itemValue="#{null}"/>
+                                                        <f:selectItems value="#{proyectoBean.rolesUSesion}" var="rol" itemValue="#{rol}" itemLabel="#{rol}"/>
+                                                        <f:ajax event="change" listener="#{generalBean.actualizar}" execute="pgSelectorRol" render="formularioLOGTNoPlaneado:pgSelectorTareaNoPlaneado"/>
+                                                    </h:selectOneMenu>
+                                                </h:panelGroup>
+                                            </div>
+                                        </h:panelGroup>
+                                        
+                                        <h:panelGroup id="pgSelectorTareaNoPlaneado">
+                                            <div class="col m2">
+                                                <h:outputText value="#{mensajes['tarea']}:"/>
+                                            </div>
+                                            <div class="col m10 todo-horizontal">
+                                                <h:panelGroup rendered="#{!tiempoBean.actividadIniciada}">
+                                                    <h:selectOneMenu class="browser-default selectPequenio" value="#{tiempoBean.tareaSeleccionada}">
+                                                        <f:selectItem itemLabel="#{generalBean.mensajeSeleccion}" itemValue="#{null}"/>
+                                                        <f:selectItems value="#{planeacionBean.tareasAntesPlaneacion(tiempoBean.rolSeleccionado)}" var="tarea" itemValue="#{tarea}" itemLabel="#{tarea}"/>
+                                                        <f:ajax event="change" listener="#{generalBean.actualizar}" execute="pgSelectorTareaNoPlaneado" render="formConfirmacionActividadNoPlaneado"/>
+                                                    </h:selectOneMenu>
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{tiempoBean.actividadIniciada}">
+                                                    <h:selectOneMenu class="browser-default selectPequenio" value="#{tiempoBean.tareaSeleccionada}" disabled="true">
+                                                        <f:selectItem itemLabel="#{generalBean.mensajeSeleccion}" itemValue="#{null}"/>
+                                                        <f:selectItems value="#{planeacionBean.tareasAntesPlaneacion(tiempoBean.rolSeleccionado)}" var="tarea" itemValue="#{tarea}" itemLabel="#{tarea}"/>
+                                                        <f:ajax event="change" listener="#{generalBean.actualizar}" execute="pgSelectorTareaNoPlaneado" render="formConfirmacionActividadNoPlaneado"/>
+                                                    </h:selectOneMenu>
+                                                </h:panelGroup>
+                                            </div>
+                                        </h:panelGroup>
+                                    </h:form>
+                                    <div class="corte"/>
+                                    <div class = "col m6 s6">
+                                        <h:form onkeypress="if (event.keyCode == 13) return false;" id="formIniciarActividadNoPlaneado">
+                                            <h:panelGroup id="pgIniciarActividadNoPlaneado">
+                                                <h:commandButton id="btnIniciarActividadNoPlaneado" class="btnIniciarActividadNoPlaneado" style="display:none" value="" action="#{tiempoBean.iniciarActividadNoPlaneada}">
+                                                    <f:ajax execute="pgIniciarActividadNoPlaneado" render=":formConfirmacionInicioActividad @form :formPararActividadNoPlaneado:pgPararActividadNoPlaneado :formularioLOGTNoPlaneado :formInterrupcionPrevistaNoPlaneado:pgInterrupcionPrevistaNoPlaneado :formInterrupcionNoPrevistaNoPlaneado:pgInterrupcionNoPrevistaNoPlaneado"/>
+                                                </h:commandButton>
+                                                <h:panelGroup rendered="#{!tiempoBean.actividadIniciada}">
+                                                    <tsp:btnConfirm modal="modalConfirmIniciarActividadNoPlaneado" texto="#{mensajes['comenzar']}" posicion="boton-peque todo-horizontal separado"/>
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{tiempoBean.actividadIniciada}">
+                                                    <tsp:btnConfirm modal="modalConfirmIniciarActividadNoPlaneado" texto="#{mensajes['comenzar']}" posicion="boton-peque todo-horizontal separado" inhabilitado="disabled"/>
+                                                </h:panelGroup>
+                                            </h:panelGroup>
+                                        </h:form>
+                                    </div>
+                                    <div class = "col m6 s6">
+                                        <h:form onkeypress="if (event.keyCode == 13)
+                                                    return false;" id="formPararActividadNoPlaneado">
+                                            <h:panelGroup id="pgPararActividadNoPlaneado">
+                                                <h:commandButton id="btnPararActividadNoPlaneado" class="btnPararActividadNoPlaneado" action="#{tiempoBean.pararActividad}" value="" style="display:none">
+                                                    <f:ajax execute="pgPararActividadNoPlaneado" render="@form :formIniciarActividadNoPlaneado:pgIniciarActividadNoPlaneado :formularioLOGTNoPlaneado :formParadaActividadNoPlaneado :formInterrupcionPrevistaNoPlaneado:pgInterrupcionPrevistaNoPlaneado :formInterrupcionNoPrevistaNoPlaneado:pgInterrupcionNoPrevistaNoPlaneado"/>
+                                                </h:commandButton>
+                                                <h:panelGroup rendered="#{tiempoBean.actividadIniciada}">
+                                                    <tsp:btnConfirm modal="modalConfirmPararActividadNoPlaneado" texto="#{mensajes['parar']}" posicion="boton-peque todo-horizontal separado"/>
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{!tiempoBean.actividadIniciada}">
+                                                    <tsp:btnConfirm modal="modalConfirmPararActividadoNoPlaneado" texto="#{mensajes['parar']}" posicion="boton-peque todo-horizontal separado" inhabilitado="disabled"/>
+                                                </h:panelGroup>
+                                            </h:panelGroup>
+                                        </h:form>
+                                        <a class="modal-trigger linkModalPararActividad" href="#modalPararActividad"></a>
+                                    </div>
+                                    <div class = "col m6 s6">
+                                        <h:form onkeypress="if (event.keyCode == 13) return false;" id="formInterrupcionPrevistaNoPlaneado">
+                                            <h:panelGroup id="pgInterrupcionPrevistaNoPlaneado">
+                                                <h:commandButton id="btnInterrupcionPrevistaNoPlaneado" class="btnInterrupcionPrevistaNoPlaneado" value="" style="display:none;" action="#{tiempoBean.cargarModalInterrupcionPrevista}">
+                                                    <f:ajax execute="pgInterrupcionPrevistaNoPlaneado" render=":formModalInterrupcionPrevistaNoPlaneado:pgModalInterrupcionPrevistaNoPlaneado"/>
+                                                </h:commandButton>
+                                                <c:choose>
+                                                    <c:when test="#{!tiempoBean.actividadIniciada}">
+                                                        <tsp:btnModal texto="#{mensajes['interrPrevista']}" boton="btnInterrupcionPrevistaNoPlaneado" clase1="btn-interrupcionPrevista" clase2="linkModalInterrupcionPrevista" modal="modalInterrupcionPrevista" posicion="boton-peque todo-horizontal separado" formulario="formInterrupcionPrevistaNoPlaneado" inhabilitado="disabled"/>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <tsp:btnModal texto="#{mensajes['interrPrevista']}" boton="btnInterrupcionPrevistaNoPlaneado" clase1="btn-interrupcionPrevista" clase2="linkModalInterrupcionPrevista" modal="modalInterrupcionPrevista" posicion="boton-peque todo-horizontal separado" formulario="formInterrupcionPrevistaNoPlaneado"/>
+                                                    </c:otherwise>                               
+                                                </c:choose>
+                                            </h:panelGroup>
+                                        </h:form>
+                                    </div>
+                                    <div class = "col m6 s6">
+                                        <h:form onkeypress="if (event.keyCode == 13) return false;" id="formInterrupcionNoPrevistaNoPlaneado">
+                                            <h:panelGroup id="pgInterrupcionNoPrevistaNoPlaneado">
+                                                <h:commandButton id="btnInterrupcionNoPrevistaNoPlaneado" class="btnInterrupcionNoPrevistaNoPlaneado" value="" style="display:none;" action="#{tiempoBean.cargarModalInterrupcionNoPrevista}">
+                                                    <f:ajax execute="pgInterrupcionNoPrevistaNoPlaneado" render=":formModalInterrupcionNoPrevistaNoPlaneado:pgModalInterrupcionNoPrevistaNoPlaneado"/>
+                                                </h:commandButton>
+                                                <c:choose>
+                                                    <c:when test="#{!tiempoBean.actividadIniciada}">
+                                                        <tsp:btnModal texto="#{mensajes['interrImprevista']}" boton="btnInterrupcionNoPrevistaNoPlaneado" clase1="btn-interrupcionNoPrevista" clase2="linkModalInterrupcionNoPrevista" modal="modalInterrupcionImprevista" posicion="boton-peque todo-horizontal separado" formulario="formInterrupcionNoPrevistaNoPlaneado" inhabilitado="disabled"/>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <tsp:btnModal texto="#{mensajes['interrImprevista']}" boton="btnInterrupcionNoPrevistaNoPlaneado" clase1="btn-interrupcionNoPrevista" clase2="linkModalInterrupcionNoPrevista" modal="modalInterrupcionImprevista" posicion="boton-peque todo-horizontal separado" formulario="formInterrupcionNoPrevistaNoPlaneado"/>
+                                                    </c:otherwise>                               
+                                                </c:choose>
+                                            </h:panelGroup>
+                                        </h:form>
+                                    </div>
+                                    <br/>
+                                    <div class="corte"/>
+                                    <br/>
+                                    <h:form id="formConfirmacionActividadNoPlaneado">
+                                        <tsp:modalConfirm texto="#{mensajes['estasAPuntoDeIniciarLaActividad']} #{tiempoBean.tareaSeleccionada}" id="modalConfirmIniciarActividadNoPlaneado" validacion="efectuar([1],'btnIniciarActividadNoPlaneado','formIniciarActividadNoPlaneado');"/>
+                                        <tsp:modalConfirm texto="#{mensajes['estasAPuntoDePararLaActividad']} #{tiempoBean.tareaSeleccionada}" id="modalConfirmPararActividadNoPlaneado" validacion="efectuar([1],'btnPararActividadNoPlaneado','formPararActividadNoPlaneado');"/>
+                                    </h:form>
+                                    
+                                    <!-- Parar actividad -->
+                                    
+                                    <div id="modalPararActividad" class="modal modal-fixed-footer">
+                                        <h:form onkeypress="if (event.keyCode == 13) return false;" id="formParadaActividadNoPlaneado">
+                                            <h:panelGroup id="pgParadaActividadNoPlaneado">
+                                                <div class="modal-content row">
+                                                    <c:set value="#{tiempoBean.registroLogt.getSubAtributo('Tarea')}" var="tarea"/>
+                                                    <h5>#{mensajes['informacionDeTiempoParaLaTarea']} #{tarea.valor}</h5>
+
+                                                    <c:set value="#{tiempoBean.registroLogt.getSubAtributo('Fecha-hora inicio')}" var="inicio"/>
+                                                    <tsp:ent id="fechaHoraInicioNoPlaneado" texto="#{mensajes['fechaHoraInicio']}" valor="#{inicio.valor}" tipo="text" m="6" i="date_range" deshabilitado="true"/>
+                                                    <div class="corte"/>
+
+                                                    <c:set value="#{tiempoBean.registroLogt.getSubAtributo('Fecha-hora finalización')}" var="finalizacion"/>
+                                                    <tsp:ent id="fechaHoraFinalizacionNoPlaneado" texto="#{mensajes['fechaHoraDeFinalizacion']}" valor="#{finalizacion.valor}" tipo="text" m="6" i="date_range" deshabilitado="true"/>
+                                                    <div class="corte"/>
+
+
+                                                    <c:set value="#{tiempoBean.registroLogt.getSubAtributo('Tiempo dedicado')}" var="dedicado"/>
+                                                    <tsp:ent id="tiempoDedicadoNoPlaneado" texto="#{mensajes['tiempoRealmenteDedicado']}" valor="#{dedicado.valor}" tipo="number" m="6" i="av_timer" deshabilitado="true"/>
+                                                    <div class="corte"/>
+
+                                                    <c:set value="#{tiempoBean.registroLogt.getSubAtributo('Tiempo interrumpido')}" var="interrumpido"/>
+                                                    <div class="corte"/>
+                                                    <tsp:ent id="tiempoInterrumpidoNoPlaneado" texto="#{mensajes['tiempoTotalInterrupciones']}" valor="#{interrumpido.valor}" tipo="number" m="6" i="av_timer" deshabilitado="true"/>
+                                                    <div class="corte"/>
+
+                                                    <h:outputText value="#{mensajes['haFinalizadoLaTarea']}"/>
+                                                    <h:selectOneRadio value="#{tiempoBean.tareaFinalizada}">
+                                                        <f:selectItem itemLabel="#{mensajes['si']}" itemValue="#{true}"/>
+                                                        <f:selectItem itemLabel="#{mensajes['no']}" itemValue="#{false}"/>
+                                                    </h:selectOneRadio>
+
+                                                    <c:set value="#{tiempoBean.registroLogt.getSubAtributo('Comentarios')}" var="comentarios"/>
+                                                    <tsp:text id="comentariosNoPlaneado" texto="#{mensajes['comentarios']}" valor="#{comentarios.valor}" tipo="text" m="12" i="comments" max="500"/>
+                                                    <div class="corte"/>
+                                                    <tsp:msg boton="btnGuardarRegistroLogtNoPlaneado"/>
+                                                    <br/>
+                                                    <br/>
+                                                    <br/>
+                                                    <br/>
+                                                    <div class="corte"/>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <div class="row">
+                                                        <div class="col m6">
+                                                            <h:commandButton value="#{mensajes['guardar']}" class="center-block boton" id="btnGuardarRegistroLogtNoPlaneado" action="#{tiempoBean.guardarActividadNoPlaneada}">
+                                                                <f:ajax execute="@form" render=":formParadaActividadNoPlaneado:pgParadaActividadNoPlaneado :formularioLOGTNoPlaneado :formInterrupcionNoPrevistaNoPlaneado:pgInterrupcionNoPrevistaNoPlaneado :formInterrupcionPrevistaNoPlaneado:pgInterrupcionPrevistaNoPlaneado :formPararActividadNoPlaneado:pgPararActividadNoPlaneado :formIniciarActividadNoPlaneado:pgIniciarActividadNoPlaneado"/>
+                                                            </h:commandButton>
+                                                        </div>
+                                                        <div class="col m6">
+                                                            <h:commandButton value="#{mensajes['cancelar']}" class="center-block boton" id="btnCancelarRegistroLogt" action="#{tiempoBean.cancelarActividad}">
+                                                                <f:ajax execute="@form" render=":formParadaActividadNoPlaneado:pgParadaActividadNoPlaneado :formularioLOGTNoPlaneado :formInterrupcionNoPrevistaNoPlaneado:pgInterrupcionNoPrevistaNoPlaneado :formInterrupcionPrevistaNoPlaneado:pgInterrupcionPrevistaNoPlaneado :formPararActividadNoPlaneado:pgPararActividadNoPlaneado :formIniciarActividadNoPlaneado:pgIniciarActividadNoPlaneado"/>
+                                                            </h:commandButton>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </h:panelGroup>
+                                        </h:form>
+                                    </div>
+                                                    
+                                    <!-- Modal de interrupción prevista -->
+
+                                    <div id="modalInterrupcionPrevista" class="modal modal-fixed-footer">
+                                        <h:form onkeypress="if (event.keyCode == 13) return false;" id="formModalInterrupcionPrevistaNoPlaneado">
+                                            <h:panelGroup id="pgModalInterrupcionPrevistaNoPlaneado">
+                                                <h:panelGroup rendered="#{tiempoBean.tiempoInterrupcion != 0 or (not empty tiempoBean.fechaHoraInterrupcion)}">
+                                                    <script language="JavaScript">
+                                                        window.onbeforeunload = function confirmExit() {
+                                                            return "You have attempted to leave this page. Are you sure?";
+                                                        }
+                                                    </script>
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{tiempoBean.tiempoInterrupcion == 0 and empty tiempoBean.fechaHoraInterrupcion}">
+                                                    <script language="JavaScript">
+                                                        window.onbeforeunload = function confirmExit() {
+                                                            return null;
+                                                        }
+                                                    </script>
+                                                </h:panelGroup>
+                                                <div class="modal-content row">
+                                                    <h5>#{mensajes['interrupcionPrevista']}</h5>
+                                                    <tsp:ent id="fechaHoraInicioNoPlaneadoInterrPrevistaNoPlaneado" texto="#{mensajes['fechaHoraInicio']}" valor="#{tiempoBean.fechaHoraInterrupcion}" tipo="text" m="6" i="date_range" deshabilitado="true"/>
+                                                    <div class="corte"/>
+
+                                                    <tsp:msg boton="btnInterrupcionPrevistaNoPlaneadoModalNoPlaneado"/>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <div class="row">
+                                                        <div class="col m6">
+                                                            <h:commandButton id="btnInterrupcionPrevistaNoPlaneadoModalNoPlaneado" class="center-block boton" value="#{mensajes['terminarInterrupcion']}" action="#{tiempoBean.actualizarTiempoInterrupcion}">
+                                                                <f:ajax execute="@form" render="@form :formularioLOGTNoPlaneado"/>
+                                                            </h:commandButton>
+                                                        </div>
+                                                        <div class="col m6">
+                                                            <h:commandButton class="center-block boton btnCancelarInterrupcionPrevista" value="#{mensajes['cancelar']}" action="#{tiempoBean.cancelarInterrupcionPrevista}">
+                                                                <f:ajax execute="@form" render="@form :formularioLOGTNoPlaneado"/>
+                                                            </h:commandButton>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </h:panelGroup>
+                                        </h:form>
+                                    </div>
+                                                
+                                    <!-- Modal de interrupción imprevista -->
+                                    <div id="modalInterrupcionImprevista" class="modal modal-fixed-footer">
+                                        <h:form onkeypress="if (event.keyCode == 13) return false;" id="formModalInterrupcionNoPrevistaNoPlaneado">
+
+                                            <h:panelGroup id="pgModalInterrupcionNoPrevistaNoPlaneado">
+                                                <h:panelGroup rendered="#{tiempoBean.tiempoInterrupcion != 0 or (not empty tiempoBean.fechaHoraInterrupcion)}">
+                                                    <script language="JavaScript">
+                                                        window.onbeforeunload = function confirmExit() {
+                                                            return "You have attempted to leave this page. Are you sure?";
+                                                        }
+                                                    </script>
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{tiempoBean.tiempoInterrupcion == 0 and empty tiempoBean.fechaHoraInterrupcion}">
+                                                    <script language="JavaScript">
+                                                        window.onbeforeunload = function confirmExit() {
+                                                            return null;
+                                                        }
+                                                    </script>
+                                                </h:panelGroup>
+                                                <div class="modal-content row">
+                                                    <h5>#{mensajes['interrupcionImprevista']}</h5>
+                                                    <br/>
+                                                    <div class="corte"/>
+                                                    <h:outputText value="#{mensajes['porFavorIngreseElTiempoQueEstimaTardoSuInterrupcion']}"/>
+                                                    <br/>
+                                                    <br/>
+                                                    <div class="corte"/>
+                                                    <tsp:ent id="tiempoInterrupcionNoPlaneado" texto="#{mensajes['tiempoEnMinutos']}" valor="#{tiempoBean.tiempoInterrupcion}" tipo="decimal" m="5" i="av_timer"/>
+                                                    <div class="corte"/>
+
+                                                    <tsp:msg boton="btnInterrupcionNoPrevistaNoPlaneadoModal"/>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <div class="row">
+                                                        <div class="col m6">
+                                                            <h:commandButton id="btnInterrupcionNoPrevistaNoPlaneadoModal" class="boton center-block" value="#{mensajes['agregarInterrupcion']}" action="#{tiempoBean.agregarTiempoInterrupcion}">
+                                                                <f:ajax execute="@form" render="@form :formularioLOGTNoPlaneado"/>
+                                                            </h:commandButton>
+                                                        </div>
+                                                        <div class="col m6">
+                                                            <h:commandButton class="boton center-block btnCancelarInterrupcionNoPrevista" value="#{mensajes['cancelar']}" action="#{tiempoBean.cancelarInterrupcionNoPrevista}">
+                                                                <f:ajax execute="@form" render="@form :formularioLOGTNoPlaneado"/>
+                                                            </h:commandButton>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </h:panelGroup>
+                                        </h:form>
+                                    </div>
+                                </div>
+                            </div>
+                        </h:panelGroup>
+                    </h:panelGroup>
+                    
+                    
+                    
+                    
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+                    <!--Registro de tiempo -->
+                    <h:panelGroup rendered="#{not empty proyectoBean.proyectoSesion}">
+                        <h:panelGroup rendered="#{not (proyectoBean.proyectoSesion.faseActual eq mensajes['lanzamiento'] or proyectoBean.proyectoSesion.faseActual eq mensajes['estrategia'])}">
+                            <br/>
+                            <div class="col m12 tarjeta">
+                                <h6 class="panel">#{mensajes['registroDeTiempo']}</h6>
+                                <div class="contenidoTarjeta">
+                                    <h:form onkeypress="if (event.keyCode == 13) return false;" id="formularioLOGT">
+                                        <h:panelGroup id="pgInformacionTareaIniciada" rendered="#{tiempoBean.actividadIniciada}">
+                                            <div class="row margen-row">
+                                                <div class="col m12">
+                                                    <c:set value="#{tiempoBean.registroLogt.getSubAtributo('Fecha-hora inicio')}" var="fechaHoraInicio"/>
+                                                    <c:set value="#{tiempoBean.registroLogt.getSubAtributo('Tiempo interrumpido')}" var="tiempoInterrumpido"/>
+
+                                                    <div class="alineadoCentro">
+                                                        <h:outputText value="#{mensajes['fechaYHoraDeInicio']}: #{fechaHoraInicio.valor}"/>
+                                                        <div class="corte"/>
+                                                        <h:panelGroup rendered="#{tiempoInterrumpido.valor != '0'}">
+                                                            <h:outputText value="#{mensajes['actualDeInterrupciones']}: #{tiempoInterrumpido.valor} #{mensajes['minutos']}"/>
+                                                        </h:panelGroup>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </h:panelGroup>
+                                        <h:panelGroup id="pgSelectorRol">
+
+                                            <div class="col m2">
+                                                <h:outputText value="#{mensajes['rol']}:"/>
+                                            </div>
+                                            <div class="col m10 todo-horizontal">
+                                                <h:panelGroup rendered="#{!tiempoBean.actividadIniciada}">
+                                                    <h:selectOneMenu class="browser-default selectPequenio" value="#{tiempoBean.rolSeleccionado}">
+                                                        <f:selectItem itemLabel="#{generalBean.mensajeSeleccion}" itemValue="#{null}"/>
+                                                        <f:selectItems value="#{proyectoBean.rolesUSesion}" var="rol" itemValue="#{rol}" itemLabel="#{rol}"/>
+                                                        <f:ajax event="change" listener="#{tiempoBean.cargarTareasRolActivo}" execute="pgSelectorRol" render="formularioLOGT:pgSelectorTarea"/>
+                                                    </h:selectOneMenu>
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{tiempoBean.actividadIniciada}">
+                                                    <h:selectOneMenu class="browser-default selectPequenio" value="#{tiempoBean.rolSeleccionado}" disabled="true">
+                                                        <f:selectItem itemLabel="#{generalBean.mensajeSeleccion}" itemValue="#{null}"/>
+                                                        <f:selectItems value="#{proyectoBean.rolesUSesion}" var="rol" itemValue="#{rol}" itemLabel="#{rol}"/>
+                                                        <f:ajax event="change" listener="#{tiempoBean.cargarTareasRolActivo}" execute="pgSelectorRol" render="formularioLOGT:pgSelectorTarea"/>
+                                                    </h:selectOneMenu>
+                                                </h:panelGroup>
+                                            </div>
+
+                                        </h:panelGroup>
+                                        <h:panelGroup id="pgSelectorTarea">
+
+                                            <div class="col m2">
+                                                <h:outputText value="#{mensajes['tarea']}:"/>
+                                            </div>
+                                            <div class="col m10 todo-horizontal">
+                                                <h:panelGroup rendered="#{!tiempoBean.actividadIniciada}">
+                                                    <h:selectOneMenu class="browser-default selectPequenio" value="#{tiempoBean.tareaSeleccionada}">
+                                                        <f:selectItem itemLabel="#{generalBean.mensajeSeleccion}" itemValue="#{null}"/>
+                                                        <f:selectItems value="#{tiempoBean.tareasRolActivo}" var="tarea" itemValue="#{tarea}" itemLabel="#{tarea}"/>
+                                                        <f:ajax event="change" listener="#{generalBean.actualizar}" execute="pgSelectorTarea" render="formConfirmacionActividad"/>
+                                                    </h:selectOneMenu>
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{tiempoBean.actividadIniciada}">
+                                                    <h:selectOneMenu class="browser-default selectPequenio" value="#{tiempoBean.tareaSeleccionada}" disabled="true">
+                                                        <f:selectItem itemLabel="#{generalBean.mensajeSeleccion}" itemValue="#{null}"/>
+                                                        <f:selectItems value="#{tiempoBean.tareasRolActivo}" var="tarea" itemValue="#{tarea}" itemLabel="#{tarea}"/>
+                                                        <f:ajax event="change" listener="#{generalBean.actualizar}" execute="pgSelectorTarea" render="formConfirmacionActividad"/>
+                                                    </h:selectOneMenu>
+                                                </h:panelGroup>
+                                            </div>
+
+                                        </h:panelGroup>
+                                    </h:form>
+                                    <div class="corte"/>
+                                    <div class = "col m6 s6">
+
+
+
+                                        <h:form onkeypress="if (event.keyCode == 13)
+                                                    return false;" id="formIniciarActividad">
+                                            <h:panelGroup id="pgIniciarActividad">
+                                                <h:commandButton id="btnIniciarActividad" class="btnIniciarActividad" style="display:none" value="" action="#{tiempoBean.iniciarActividad}">
+                                                    <f:ajax execute="pgIniciarActividad" render=":formConfirmacionInicioActividad @form :formPararActividad:pgPararActividad :formularioLOGT :formInterrupcionPrevista:pgInterrupcionPrevista :formInterrupcionNoPrevista:pgInterrupcionNoPrevista"/>
+                                                </h:commandButton>
+
+                                                <h:panelGroup rendered="#{!tiempoBean.actividadIniciada}">
+                                                    <tsp:btnConfirm modal="modalConfirmIniciarActividad" texto="#{mensajes['comenzar']}" posicion="boton-peque todo-horizontal separado"/>
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{tiempoBean.actividadIniciada}">
+                                                    <tsp:btnConfirm modal="modalConfirmIniciarActividad" texto="#{mensajes['comenzar']}" posicion="boton-peque todo-horizontal separado" inhabilitado="disabled"/>
+                                                </h:panelGroup>
+
+                                            </h:panelGroup>
+                                        </h:form>
+
+
+
+
+                                    </div>
+                                    <div class = "col m6 s6">
+
+
+
+                                        <h:form onkeypress="if (event.keyCode == 13)
+                                                    return false;" id="formPararActividad">
+                                            <h:panelGroup id="pgPararActividad">
+                                                <h:commandButton id="btnPararActividad" class="btnPararActividad" action="#{tiempoBean.pararActividad}" value="" style="display:none">
+                                                    <f:ajax execute="pgPararActividad" render="@form :formIniciarActividad:pgIniciarActividad :formularioLOGT :formParadaActividad :formInterrupcionPrevista:pgInterrupcionPrevista :formInterrupcionNoPrevista:pgInterrupcionNoPrevista"/>
+                                                </h:commandButton>
+
+
+                                                <h:panelGroup rendered="#{tiempoBean.actividadIniciada}">
+                                                    <tsp:btnConfirm modal="modalConfirmPararActividad" texto="#{mensajes['parar']}" posicion="boton-peque todo-horizontal separado"/>
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{!tiempoBean.actividadIniciada}">
+                                                    <tsp:btnConfirm modal="modalConfirmPararActividad" texto="#{mensajes['parar']}" posicion="boton-peque todo-horizontal separado" inhabilitado="disabled"/>
+                                                </h:panelGroup>
+                                            </h:panelGroup>
+                                        </h:form>
+                                        <a class="modal-trigger linkModalPararActividad" href="#modalPararActividad"></a>
+
+
+
+                                    </div>
+                                    <div class = "col m6 s6">
+
+
+
+                                        <h:form onkeypress="if (event.keyCode == 13)
+                                                    return false;" id="formInterrupcionPrevista">
+                                            <h:panelGroup id="pgInterrupcionPrevista">
+                                                <h:commandButton id="btnInterrupcionPrevista" class="btnInterrupcionPrevista" value="" style="display:none;" action="#{tiempoBean.cargarModalInterrupcionPrevista}">
+                                                    <f:ajax execute="pgInterrupcionPrevista" render=":formModalInterrupcionPrevista:pgModalInterrupcionPrevista"/>
+                                                </h:commandButton>
+
+                                                <c:choose>
+                                                    <c:when test="#{!tiempoBean.actividadIniciada}">
+                                                        <tsp:btnModal texto="#{mensajes['interrPrevista']}" boton="btnInterrupcionPrevista" clase1="btn-interrupcionPrevista" clase2="linkModalInterrupcionPrevista" modal="modalInterrupcionPrevista" posicion="boton-peque todo-horizontal separado" formulario="formInterrupcionPrevista" inhabilitado="disabled"/>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <tsp:btnModal texto="#{mensajes['interrPrevista']}" boton="btnInterrupcionPrevista" clase1="btn-interrupcionPrevista" clase2="linkModalInterrupcionPrevista" modal="modalInterrupcionPrevista" posicion="boton-peque todo-horizontal separado" formulario="formInterrupcionPrevista"/>
+                                                    </c:otherwise>                               
+                                                </c:choose>
+                                            </h:panelGroup>
+                                        </h:form>
+
+
+
+
+                                    </div>
+                                    <div class = "col m6 s6">
+
+
+
+                                        <h:form onkeypress="if (event.keyCode == 13)
+                                                    return false;" id="formInterrupcionNoPrevista">
+                                            <h:panelGroup id="pgInterrupcionNoPrevista">
+                                                <h:commandButton id="btnInterrupcionNoPrevista" class="btnInterrupcionNoPrevista" value="" style="display:none;" action="#{tiempoBean.cargarModalInterrupcionNoPrevista}">
+                                                    <f:ajax execute="pgInterrupcionNoPrevista" render=":formModalInterrupcionNoPrevista:pgModalInterrupcionNoPrevista"/>
+                                                </h:commandButton>
+                                                <c:choose>
+                                                    <c:when test="#{!tiempoBean.actividadIniciada}">
+                                                        <tsp:btnModal texto="#{mensajes['interrImprevista']}" boton="btnInterrupcionNoPrevista" clase1="btn-interrupcionNoPrevista" clase2="linkModalInterrupcionNoPrevista" modal="modalInterrupcionImprevista" posicion="boton-peque todo-horizontal separado" formulario="formInterrupcionNoPrevista" inhabilitado="disabled"/>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <tsp:btnModal texto="#{mensajes['interrImprevista']}" boton="btnInterrupcionNoPrevista" clase1="btn-interrupcionNoPrevista" clase2="linkModalInterrupcionNoPrevista" modal="modalInterrupcionImprevista" posicion="boton-peque todo-horizontal separado" formulario="formInterrupcionNoPrevista"/>
+                                                    </c:otherwise>                               
+                                                </c:choose>
+                                            </h:panelGroup>
+                                        </h:form>
+
+
+
+                                    </div>
+                                    <br/>
+                                    <div class="corte"/>
+                                    <br/>
+                                    <h:form id="formConfirmacionActividad">
+                                        <tsp:modalConfirm texto="#{mensajes['estasAPuntoDeIniciarLaActividad']} #{tiempoBean.tareaSeleccionada}" id="modalConfirmIniciarActividad" validacion="efectuar([1],'btnIniciarActividad','formIniciarActividad');"/>
+                                        <tsp:modalConfirm texto="#{mensajes['estasAPuntoDePararLaActividad']} #{tiempoBean.tareaSeleccionada}" id="modalConfirmPararActividad" validacion="efectuar([1],'btnPararActividad','formPararActividad');"/>
+                                    </h:form>
+                                    <div id="modalPararActividad" class="modal modal-fixed-footer">
+                                        <h:form onkeypress="if (event.keyCode == 13)
+                                                    return false;" id="formParadaActividad">
+                                            <h:panelGroup id="pgParadaActividad">
+                                                <div class="modal-content row">
+
+                                                    <c:set value="#{tiempoBean.registroLogt.getSubAtributo('Tarea')}" var="tarea"/>
+                                                    <h5>#{mensajes['informacionDeTiempoParaLaTarea']} #{tarea.valor}</h5>
+
+                                                    <c:set value="#{tiempoBean.registroLogt.getSubAtributo('Fecha-hora inicio')}" var="inicio"/>
+                                                    <tsp:ent id="fechaHoraInicio" texto="#{mensajes['fechaHoraInicio']}" valor="#{inicio.valor}" tipo="text" m="6" i="date_range" deshabilitado="true"/>
+                                                    <div class="corte"/>
+
+                                                    <c:set value="#{tiempoBean.registroLogt.getSubAtributo('Fecha-hora finalización')}" var="finalizacion"/>
+                                                    <tsp:ent id="fechaHoraFinalizacion" texto="#{mensajes['fechaHoraDeFinalizacion']}" valor="#{finalizacion.valor}" tipo="text" m="6" i="date_range" deshabilitado="true"/>
+                                                    <div class="corte"/>
+
+
+                                                    <c:set value="#{tiempoBean.registroLogt.getSubAtributo('Tiempo dedicado')}" var="dedicado"/>
+                                                    <tsp:ent id="tiempoDedicado" texto="#{mensajes['tiempoRealmenteDedicado']}" valor="#{dedicado.valor}" tipo="number" m="6" i="av_timer" deshabilitado="true"/>
+                                                    <div class="corte"/>
+
+                                                    <c:set value="#{tiempoBean.registroLogt.getSubAtributo('Tiempo interrumpido')}" var="interrumpido"/>
+                                                    <div class="corte"/>
+                                                    <tsp:ent id="tiempoInterrumpido" texto="#{mensajes['tiempoTotalInterrupciones']}" valor="#{interrumpido.valor}" tipo="number" m="6" i="av_timer" deshabilitado="true"/>
+                                                    <div class="corte"/>
+
+                                                    <h:outputText value="#{mensajes['haFinalizadoLaTarea']}"/>
+                                                    <h:selectOneRadio value="#{tiempoBean.tareaFinalizada}">
+                                                        <f:selectItem itemLabel="#{mensajes['si']}" itemValue="#{true}"/>
+                                                        <f:selectItem itemLabel="#{mensajes['no']}" itemValue="#{false}"/>
+                                                    </h:selectOneRadio>
+
+                                                    <c:set value="#{tiempoBean.registroLogt.getSubAtributo('Comentarios')}" var="comentarios"/>
+                                                    <tsp:text id="comentarios" texto="#{mensajes['comentarios']}" valor="#{comentarios.valor}" tipo="text" m="12" i="comments" max="500"/>
+                                                    <div class="corte"/>
+                                                    <tsp:msg boton="btnGuardarRegistroLogt"/>
+                                                    <br/>
+                                                    <br/>
+                                                    <br/>
+                                                    <br/>
+                                                    <div class="corte"/>
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <div class="row">
+                                                        <div class="col m6">
+                                                            <h:commandButton binding="#{tiempoBean.btnGuardarActividad}" value="#{mensajes['guardar']}" class="center-block boton" id="btnGuardarRegistroLogt" action="#{tiempoBean.guardarActividad}">
+                                                                <f:ajax execute="@form" render=":formParadaActividad:pgParadaActividad :formularioLOGT :formInterrupcionNoPrevista:pgInterrupcionNoPrevista :formInterrupcionPrevista:pgInterrupcionPrevista :formPararActividad:pgPararActividad :formIniciarActividad:pgIniciarActividad"/>
+                                                            </h:commandButton>
+                                                        </div>
+                                                        <div class="col m6">
+                                                            <h:commandButton value="#{mensajes['cancelar']}" class="center-block boton" id="btnCancelarRegistroLogt" action="#{tiempoBean.cancelarActividad}">
+                                                                <f:ajax execute="@form" render=":formParadaActividad:pgParadaActividad :formularioLOGT :formInterrupcionNoPrevista:pgInterrupcionNoPrevista :formInterrupcionPrevista:pgInterrupcionPrevista :formPararActividad:pgPararActividad :formIniciarActividad:pgIniciarActividad"/>
+                                                            </h:commandButton>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </h:panelGroup>
+                                        </h:form>
+                                    </div>
+
+                                    <div id="modalInterrupcionPrevista" class="modal modal-fixed-footer">
+                                        <h:form onkeypress="if (event.keyCode == 13)
+                                                    return false;" id="formModalInterrupcionPrevista">
+                                            <h:panelGroup id="pgModalInterrupcionPrevista">
+                                                <h:panelGroup rendered="#{tiempoBean.tiempoInterrupcion != 0 or (not empty tiempoBean.fechaHoraInterrupcion)}">
+                                                    <script language="JavaScript">
+                                                        window.onbeforeunload = function confirmExit() {
+                                                            return "You have attempted to leave this page. Are you sure?";
+                                                        }
+                                                    </script>
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{tiempoBean.tiempoInterrupcion == 0 and empty tiempoBean.fechaHoraInterrupcion}">
+                                                    <script language="JavaScript">
+                                                        window.onbeforeunload = function confirmExit() {
+                                                            return null;
+                                                        }
+                                                    </script>
+                                                </h:panelGroup>
+                                                <div class="modal-content row">
+                                                    <h5>#{mensajes['interrupcionPrevista']}</h5>
+                                                    <tsp:ent id="fechaHoraInicioInterrPrevista" texto="#{mensajes['fechaHoraInicio']}" valor="#{tiempoBean.fechaHoraInterrupcion}" tipo="text" m="6" i="date_range" deshabilitado="true"/>
+                                                    <div class="corte"/>
+
+                                                    <tsp:msg boton="btnInterrupcionPrevistaModal"/>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <div class="row">
+                                                        <div class="col m6">
+                                                            <h:commandButton id="btnInterrupcionPrevistaModal" binding="#{tiempoBean.btnInterrupcionPrevista}" class="center-block boton" value="#{mensajes['terminarInterrupcion']}" action="#{tiempoBean.actualizarTiempoInterrupcion}">
+                                                                <f:ajax execute="@form" render="@form :formularioLOGT"/>
+                                                            </h:commandButton>
+                                                        </div>
+                                                        <div class="col m6">
+                                                            <h:commandButton class="center-block boton btnCancelarInterrupcionPrevista" value="#{mensajes['cancelar']}" action="#{tiempoBean.cancelarInterrupcionPrevista}">
+                                                                <f:ajax execute="@form" render="@form :formularioLOGT"/>
+                                                            </h:commandButton>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </h:panelGroup>
+                                        </h:form>
+                                    </div>
+
+                                    <div id="modalInterrupcionImprevista" class="modal modal-fixed-footer">
+                                        <h:form onkeypress="if (event.keyCode == 13)
+                                                    return false;" id="formModalInterrupcionNoPrevista">
+
+                                            <h:panelGroup id="pgModalInterrupcionNoPrevista">
+                                                <h:panelGroup rendered="#{tiempoBean.tiempoInterrupcion != 0 or (not empty tiempoBean.fechaHoraInterrupcion)}">
+                                                    <script language="JavaScript">
+                                                        window.onbeforeunload = function confirmExit() {
+                                                            return "You have attempted to leave this page. Are you sure?";
+                                                        }
+                                                    </script>
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{tiempoBean.tiempoInterrupcion == 0 and empty tiempoBean.fechaHoraInterrupcion}">
+                                                    <script language="JavaScript">
+                                                        window.onbeforeunload = function confirmExit() {
+                                                            return null;
+                                                        }
+                                                    </script>
+                                                </h:panelGroup>
+                                                <div class="modal-content row">
+                                                    <h5>#{mensajes['interrupcionImprevista']}</h5>
+                                                    <br/>
+                                                    <div class="corte"/>
+                                                    <h:outputText value="#{mensajes['porFavorIngreseElTiempoQueEstimaTardoSuInterrupcion']}"/>
+                                                    <br/>
+                                                    <br/>
+                                                    <div class="corte"/>
+                                                    <tsp:ent id="tiempoInterrupcion" texto="#{mensajes['tiempoEnMinutos']}" valor="#{tiempoBean.tiempoInterrupcion}" tipo="decimal" m="5" i="av_timer"/>
+                                                    <div class="corte"/>
+
+                                                    <tsp:msg boton="btnInterrupcionNoPrevistaModal"/>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <div class="row">
+                                                        <div class="col m6">
+                                                            <h:commandButton id="btnInterrupcionNoPrevistaModal" binding="#{tiempoBean.btnInterrupcionNoPrevista}" class="boton center-block" value="#{mensajes['agregarInterrupcion']}" action="#{tiempoBean.agregarTiempoInterrupcion}">
+                                                                <f:ajax execute="@form" render="@form :formularioLOGT"/>
+                                                            </h:commandButton>
+                                                        </div>
+                                                        <div class="col m6">
+                                                            <h:commandButton class="boton center-block btnCancelarInterrupcionNoPrevista" value="#{mensajes['cancelar']}" action="#{tiempoBean.cancelarInterrupcionNoPrevista}">
+                                                                <f:ajax execute="@form" render="@form :formularioLOGT"/>
+                                                            </h:commandButton>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </h:panelGroup>
+                                        </h:form>
+                                    </div>
+                                </div>
+                            </div>
+                        </h:panelGroup>
+                    </h:panelGroup>
+
+</h:panelGroup>
+
+
+</h:panelGroup>
+
+
+
+
+
+
+                    <!-- Directorio del proyecto -->
+                    <h:panelGroup rendered="#{not empty proyectoBean.proyectoSesion}">
+                        <h:panelGroup rendered="#{not (proyectoBean.proyectoSesion.faseActual eq mensajes['lanzamiento'] and proyectoBean.proyectoSesion.cicloActual == 1)}">
+                            <div class="corte"/>
+                            <br/>
+                            <!-- Formulario oculto para cargar el directorio del proyecto con un click al entrar a la página -->
+                            <h:form>
+                                <h:commandButton value="" style="display: none" class="btnCargarDirectorioProyecto" action="#{documentoBean.cargarCarpetaProyecto}">
+                                    <f:ajax render=":formDirectorioProyecto" execute="@form"/>
+                                </h:commandButton>
+                                <script type="text/javascript">
+                                    $(document).ready(function () {
+                                        $('.btnCargarDirectorioProyecto').click();
+                                    });
+                                </script>
+                            </h:form>
+                            <!-- La tarjeta donde se observa el directorio dinámico del proyecto -->
+                            <div class="col m12 s12 tarjeta">
+                                <h6 class="panel-sinmargen">#{mensajes['directorioDelProyecto']}</h6>
+                                <div class="contenidoTarjeta">
+                                    <h:form onkeypress="if (event.keyCode == 13)
+                                                return false;" id="formDirectorioProyecto">
+
+                                        <!-- Se construye el árbol de directorios con p:tree y fa-icons-->
+
+                                        <p:tree value="#{documentoBean.rootProyecto}" var="documento">
+                                            <p:treeNode type="folder" expandedIcon="fa fa-folder-open" collapsedIcon="fa fa-folder">
+                                                <h:outputText value="#{documentoBean.nombreOriginalDocumento(documento)}" class="nombreDocumento"/>
+                                                <!-- Se crean los íconos para operar un directorio. Están ordenados descendentemente a cómo se ve en la página web -->
+                                                <c:set var="cadenaIdDocumento" value="#{generalBean.unir(documentoBean.cadenaIdDocumento(documento))}"/>
+
+                                                <h:panelGroup rendered="#{documentoBean.tienePermiso(documento)}">
+
+                                                    <!-- Eliminación de documento -->
+                                                    <h:panelGroup rendered="#{documento.editable}">
+
+                                                        <h:commandLink action="#{documentoBean.eliminarDocumento(documento)}" class="btnEliminarDocumento#{cadenaIdDocumento}">
+                                                            <f:ajax render="@form" execute="@this"/>
+                                                        </h:commandLink>
+                                                        <a class="iconoDirectorio" onclick="mostrarModal(this, 'modalConfirmEliminacionDocumento#{cadenaIdDocumento}');
+                                                                return false;">
+
+                                                            <span class="fa fa-remove"/>
+                                                        </a>
+                                                        <tsp:modalConfirm texto="#{mensajes['estaAPuntoDeEliminar']} #{documentoBean.nombreOriginalDocumento(documento)} (#{documento.tipo})" id="modalConfirmEliminacionDocumento#{cadenaIdDocumento}" validacion="efectuar([1],'btnEliminarDocumento#{cadenaIdDocumento}','X');"/>
+                                                    </h:panelGroup>
+
+                                                    <!-- Agregar subarchivos/carpeta -->
+                                                    <h:commandButton style="display:none" class="btnModalSeleccionCarpetaDoc#{cadenaIdDocumento}" action="#{documentoBean.cargarModalSeleccionCarpetaArchivo(documento)}">
+                                                        <f:ajax render=":formSeleccionCarpetaArchivo" execute="@this"/>
+                                                    </h:commandButton>
+                                                    <a class="iconoDirectorio" onclick="$('.btnModalSeleccionCarpetaDoc#{cadenaIdDocumento}').click();
+                                                            return false;">
+                                                        <span class="fa fa-plus"/>
+                                                    </a>
+                                                </h:panelGroup>
+
+
+                                            </p:treeNode>
+                                            <p:treeNode type="otro" icon="fa fa-file-text-o">
+                                                <h:outputText value="#{documentoBean.nombreOriginalDocumento(documento)}" class="nombreDocumento"/>
+
+                                                <!-- Eliminación de documento -->
+                                                <h:panelGroup rendered="#{documentoBean.tienePermiso(documento)}">
+                                                    <h:panelGroup rendered="#{documento.editable}">
+
+                                                        <h:commandLink action="#{documentoBean.eliminarDocumento(documento)}" class="btnEliminarDocumento#{cadenaIdDocumento}">
+                                                            <f:ajax render="@form" execute="@this"/>
+                                                        </h:commandLink>
+                                                        <a class="iconoDirectorio" onclick="mostrarModal(this, 'modalConfirmEliminacionDocumento#{cadenaIdDocumento}');
+                                                                return false;">
+
+                                                            <span class="fa fa-remove"/>
+                                                        </a>
+                                                        <tsp:modalConfirm texto="#{mensajes['estaAPuntoDeEliminar']} #{documentoBean.nombreOriginalDocumento(documento)} (#{documento.tipo})" id="modalConfirmEliminacionDocumento#{cadenaIdDocumento}" validacion="efectuar([1],'btnEliminarDocumento#{cadenaIdDocumento}','X');"/>
+                                                    </h:panelGroup>
+                                                </h:panelGroup>
+
+                                                <!--Descarga del documento -->
+                                                <p:commandButton class="descargaDocumento#{cadenaIdDocumento}" style="display:none" ajax="false" actionListener="#{documentoBean.descargarDocumento(documento)}">
+                                                    <p:fileDownload value="#{documentoBean.documentoDescarga}" />
+                                                </p:commandButton>
+                                                <a class="iconoDirectorio" onclick="$('.descargaDocumento#{cadenaIdDocumento}').click();
+                                                        return false;">
+                                                    <span class="fa fa-download"/>
+                                                </a>
+                                            </p:treeNode>
+                                            <p:treeNode type="word" icon="fa fa-file-word-o">
+                                                <h:outputText value="#{documentoBean.nombreOriginalDocumento(documento)}" class="nombreDocumento"/>
+                                                <!-- Eliminación de documento -->
+                                                <h:panelGroup rendered="#{documentoBean.tienePermiso(documento)}">
+                                                    <h:panelGroup rendered="#{documento.editable}">
+
+                                                        <h:commandLink action="#{documentoBean.eliminarDocumento(documento)}" class="btnEliminarDocumento#{cadenaIdDocumento}">
+                                                            <f:ajax render="@form" execute="@this"/>
+                                                        </h:commandLink>
+                                                        <a class="iconoDirectorio" onclick="mostrarModal(this, 'modalConfirmEliminacionDocumento#{cadenaIdDocumento}');
+                                                                return false;">
+
+                                                            <span class="fa fa-remove"/>
+                                                        </a>
+                                                        <tsp:modalConfirm texto="#{mensajes['estaAPuntoDeEliminar']} #{documentoBean.nombreOriginalDocumento(documento)} (#{documento.tipo})" id="modalConfirmEliminacionDocumento#{cadenaIdDocumento}" validacion="efectuar([1],'btnEliminarDocumento#{cadenaIdDocumento}','X');"/>
+                                                    </h:panelGroup>
+                                                </h:panelGroup>
+
+                                                <!--Descarga del documento -->
+                                                <p:commandButton class="descargaDocumento#{cadenaIdDocumento}" style="display:none" ajax="false" actionListener="#{documentoBean.descargarDocumento(documento)}">
+                                                    <p:fileDownload value="#{documentoBean.documentoDescarga}" />
+                                                </p:commandButton>
+                                                <a class="iconoDirectorio" onclick="$('.descargaDocumento#{cadenaIdDocumento}').click();
+                                                        return false;">
+                                                    <span class="fa fa-download"/>
+                                                </a>
+                                            </p:treeNode>
+                                            <p:treeNode type="pdf" icon="fa fa-file-pdf-o">
+                                                <h:outputText value="#{documentoBean.nombreOriginalDocumento(documento)}" class="nombreDocumento"/>
+                                                <!-- Eliminación de documento -->
+                                                <h:panelGroup rendered="#{documentoBean.tienePermiso(documento)}">
+                                                    <h:panelGroup rendered="#{documento.editable}">
+
+                                                        <h:commandLink action="#{documentoBean.eliminarDocumento(documento)}" class="btnEliminarDocumento#{cadenaIdDocumento}">
+                                                            <f:ajax render="@form" execute="@this"/>
+                                                        </h:commandLink>
+                                                        <a class="iconoDirectorio" onclick="mostrarModal(this, 'modalConfirmEliminacionDocumento#{cadenaIdDocumento}');
+                                                                return false;">
+
+                                                            <span class="fa fa-remove"/>
+                                                        </a>
+                                                        <tsp:modalConfirm texto="#{mensajes['estaAPuntoDeEliminar']} #{documentoBean.nombreOriginalDocumento(documento)} (#{documento.tipo})" id="modalConfirmEliminacionDocumento#{cadenaIdDocumento}" validacion="efectuar([1],'btnEliminarDocumento#{cadenaIdDocumento}','X');"/>
+                                                    </h:panelGroup>
+                                                </h:panelGroup>
+
+                                                <!--Descarga del documento -->
+                                                <p:commandButton class="descargaDocumento#{cadenaIdDocumento}" style="display:none" ajax="false" actionListener="#{documentoBean.descargarDocumento(documento)}">
+                                                    <p:fileDownload value="#{documentoBean.documentoDescarga}" />
+                                                </p:commandButton>
+                                                <a class="iconoDirectorio" onclick="$('.descargaDocumento#{cadenaIdDocumento}').click();
+                                                        return false;">
+                                                    <span class="fa fa-download"/>
+                                                </a>
+                                            </p:treeNode>
+                                            <p:treeNode type="excel" icon="fa fa-file-excel-o">
+                                                <h:outputText value="#{documentoBean.nombreOriginalDocumento(documento)}" class="nombreDocumento"/>
+                                                <!-- Eliminación de documento -->
+                                                <h:panelGroup rendered="#{documentoBean.tienePermiso(documento)}">
+                                                    <h:panelGroup rendered="#{documento.editable}">
+
+                                                        <h:commandLink action="#{documentoBean.eliminarDocumento(documento)}" class="btnEliminarDocumento#{cadenaIdDocumento}">
+                                                            <f:ajax render="@form" execute="@this"/>
+                                                        </h:commandLink>
+                                                        <a class="iconoDirectorio" onclick="mostrarModal(this, 'modalConfirmEliminacionDocumento#{cadenaIdDocumento}');
+                                                                return false;">
+
+                                                            <span class="fa fa-remove"/>
+                                                        </a>
+                                                        <tsp:modalConfirm texto="#{mensajes['estaAPuntoDeEliminar']} #{documentoBean.nombreOriginalDocumento(documento)} (#{documento.tipo})" id="modalConfirmEliminacionDocumento#{cadenaIdDocumento}" validacion="efectuar([1],'btnEliminarDocumento#{cadenaIdDocumento}','X');"/>
+                                                    </h:panelGroup>
+                                                </h:panelGroup>
+
+                                                <!--Descarga del documento -->
+                                                <p:commandButton class="descargaDocumento#{cadenaIdDocumento}" style="display:none" ajax="false" actionListener="#{documentoBean.descargarDocumento(documento)}">
+                                                    <p:fileDownload value="#{documentoBean.documentoDescarga}" />
+                                                </p:commandButton>
+                                                <a class="iconoDirectorio" onclick="$('.descargaDocumento#{cadenaIdDocumento}').click();
+                                                        return false;">
+                                                    <span class="fa fa-download"/>
+                                                </a>
+                                            </p:treeNode>
+                                            <p:treeNode type="powerpoint" icon="fa fa-file-powerpoint-o">
+                                                <h:outputText value="#{documentoBean.nombreOriginalDocumento(documento)}" class="nombreDocumento"/>
+                                                <!-- Eliminación de documento -->
+                                                <h:panelGroup rendered="#{documentoBean.tienePermiso(documento)}">
+                                                    <h:panelGroup rendered="#{documento.editable}">
+
+                                                        <h:commandLink action="#{documentoBean.eliminarDocumento(documento)}" class="btnEliminarDocumento#{cadenaIdDocumento}">
+                                                            <f:ajax render="@form" execute="@this"/>
+                                                        </h:commandLink>
+                                                        <a class="iconoDirectorio" onclick="mostrarModal(this, 'modalConfirmEliminacionDocumento#{cadenaIdDocumento}');
+                                                                return false;">
+
+                                                            <span class="fa fa-remove"/>
+                                                        </a>
+                                                        <tsp:modalConfirm texto="#{mensajes['estaAPuntoDeEliminar']} #{documentoBean.nombreOriginalDocumento(documento)} (#{documento.tipo})" id="modalConfirmEliminacionDocumento#{cadenaIdDocumento}" validacion="efectuar([1],'btnEliminarDocumento#{cadenaIdDocumento}','X');"/>
+                                                    </h:panelGroup>
+                                                </h:panelGroup>
+
+                                                <!--Descarga del documento -->
+                                                <p:commandButton class="descargaDocumento#{cadenaIdDocumento}" style="display:none" ajax="false" actionListener="#{documentoBean.descargarDocumento(documento)}">
+                                                    <p:fileDownload value="#{documentoBean.documentoDescarga}" />
+                                                </p:commandButton>
+                                                <a class="iconoDirectorio" onclick="$('.descargaDocumento#{cadenaIdDocumento}').click();
+                                                        return false;">
+                                                    <span class="fa fa-download"/>
+                                                </a>
+                                            </p:treeNode>
+                                            <p:treeNode type="imagen" icon="fa fa-file-image-o">
+                                                <h:outputText value="#{documentoBean.nombreOriginalDocumento(documento)}" class="nombreDocumento"/>
+                                                <!-- Eliminación de documento -->
+                                                <h:panelGroup rendered="#{documentoBean.tienePermiso(documento)}">
+                                                    <h:panelGroup rendered="#{documento.editable}">
+
+                                                        <h:commandLink action="#{documentoBean.eliminarDocumento(documento)}" class="btnEliminarDocumento#{cadenaIdDocumento}">
+                                                            <f:ajax render="@form" execute="@this"/>
+                                                        </h:commandLink>
+                                                        <a class="iconoDirectorio" onclick="mostrarModal(this, 'modalConfirmEliminacionDocumento#{cadenaIdDocumento}');
+                                                                return false;">
+
+                                                            <span class="fa fa-remove"/>
+                                                        </a>
+                                                        <tsp:modalConfirm texto="#{mensajes['estaAPuntoDeEliminar']} #{documentoBean.nombreOriginalDocumento(documento)} (#{documento.tipo})" id="modalConfirmEliminacionDocumento#{cadenaIdDocumento}" validacion="efectuar([1],'btnEliminarDocumento#{cadenaIdDocumento}','X');"/>
+                                                    </h:panelGroup>
+                                                </h:panelGroup>
+
+                                                <!--Descarga del documento -->
+                                                <p:commandButton class="descargaDocumento#{cadenaIdDocumento}" style="display:none" ajax="false" actionListener="#{documentoBean.descargarDocumento(documento)}">
+                                                    <p:fileDownload value="#{documentoBean.documentoDescarga}" />
+                                                </p:commandButton>
+                                                <a class="iconoDirectorio" onclick="$('.descargaDocumento#{cadenaIdDocumento}').click();
+                                                        return false;">
+                                                    <span class="fa fa-download"/>
+                                                </a>
+                                            </p:treeNode>
+                                            <p:treeNode type="sonido" icon="fa fa-file-sound-o">
+                                                <h:outputText value="#{documentoBean.nombreOriginalDocumento(documento)}" class="nombreDocumento"/>
+                                                <!-- Eliminación de documento -->
+                                                <h:panelGroup rendered="#{documentoBean.tienePermiso(documento)}">
+                                                    <h:panelGroup rendered="#{documento.editable}">
+
+                                                        <h:commandLink action="#{documentoBean.eliminarDocumento(documento)}" class="btnEliminarDocumento#{cadenaIdDocumento}">
+                                                            <f:ajax render="@form" execute="@this"/>
+                                                        </h:commandLink>
+                                                        <a class="iconoDirectorio" onclick="mostrarModal(this, 'modalConfirmEliminacionDocumento#{cadenaIdDocumento}');
+                                                                return false;">
+
+                                                            <span class="fa fa-remove"/>
+                                                        </a>
+                                                        <tsp:modalConfirm texto="#{mensajes['estaAPuntoDeEliminar']} #{documentoBean.nombreOriginalDocumento(documento)} (#{documento.tipo})" id="modalConfirmEliminacionDocumento#{cadenaIdDocumento}" validacion="efectuar([1],'btnEliminarDocumento#{cadenaIdDocumento}','X');"/>
+                                                    </h:panelGroup>
+                                                </h:panelGroup>
+
+                                                <!--Descarga del documento -->
+                                                <p:commandButton class="descargaDocumento#{cadenaIdDocumento}" style="display:none" ajax="false" actionListener="#{documentoBean.descargarDocumento(documento)}">
+                                                    <p:fileDownload value="#{documentoBean.documentoDescarga}" />
+                                                </p:commandButton>
+                                                <a class="iconoDirectorio" onclick="$('.descargaDocumento#{cadenaIdDocumento}').click();
+                                                        return false;">
+                                                    <span class="fa fa-download"/>
+                                                </a>
+                                            </p:treeNode>
+                                            <p:treeNode type="video" icon="fa fa-file-movie-o">
+                                                <h:outputText value="#{documentoBean.nombreOriginalDocumento(documento)}" class="nombreDocumento"/>
+                                                <!-- Eliminación de documento -->
+                                                <h:panelGroup rendered="#{documentoBean.tienePermiso(documento)}">
+                                                    <h:panelGroup rendered="#{documento.editable}">
+
+                                                        <h:commandLink action="#{documentoBean.eliminarDocumento(documento)}" class="btnEliminarDocumento#{cadenaIdDocumento}">
+                                                            <f:ajax render="@form" execute="@this"/>
+                                                        </h:commandLink>
+                                                        <a class="iconoDirectorio" onclick="mostrarModal(this, 'modalConfirmEliminacionDocumento#{cadenaIdDocumento}');
+                                                                return false;">
+
+                                                            <span class="fa fa-remove"/>
+                                                        </a>
+                                                        <tsp:modalConfirm texto="#{mensajes['estaAPuntoDeEliminar']} #{documentoBean.nombreOriginalDocumento(documento)} (#{documento.tipo})" id="modalConfirmEliminacionDocumento#{cadenaIdDocumento}" validacion="efectuar([1],'btnEliminarDocumento#{cadenaIdDocumento}','X');"/>
+                                                    </h:panelGroup>
+                                                </h:panelGroup>
+
+                                                <!--Descarga del documento -->
+                                                <p:commandButton class="descargaDocumento#{cadenaIdDocumento}" style="display:none" ajax="false" actionListener="#{documentoBean.descargarDocumento(documento)}">
+                                                    <p:fileDownload value="#{documentoBean.documentoDescarga}" />
+                                                </p:commandButton>
+                                                <a class="iconoDirectorio" onclick="$('.descargaDocumento#{cadenaIdDocumento}').click();
+                                                        return false;">
+                                                    <span class="fa fa-download"/>
+                                                </a>
+                                            </p:treeNode>
+                                            <p:treeNode type="codigo" icon="fa fa-file-code-o">
+                                                <h:outputText value="#{documentoBean.nombreOriginalDocumento(documento)}" class="nombreDocumento"/>
+                                                <!-- Eliminación de documento -->
+                                                <h:panelGroup rendered="#{documentoBean.tienePermiso(documento)}">
+                                                    <h:panelGroup rendered="#{documento.editable}">
+
+                                                        <h:commandLink action="#{documentoBean.eliminarDocumento(documento)}" class="btnEliminarDocumento#{cadenaIdDocumento}">
+                                                            <f:ajax render="@form" execute="@this"/>
+                                                        </h:commandLink>
+                                                        <a class="iconoDirectorio" onclick="mostrarModal(this, 'modalConfirmEliminacionDocumento#{cadenaIdDocumento}');
+                                                                return false;">
+
+                                                            <span class="fa fa-remove"/>
+                                                        </a>
+                                                        <tsp:modalConfirm texto="#{mensajes['estaAPuntoDeEliminar']} #{documentoBean.nombreOriginalDocumento(documento)} (#{documento.tipo})" id="modalConfirmEliminacionDocumento#{cadenaIdDocumento}" validacion="efectuar([1],'btnEliminarDocumento#{cadenaIdDocumento}','X');"/>
+                                                    </h:panelGroup>
+                                                </h:panelGroup>
+
+                                                <!--Descarga del documento -->
+                                                <p:commandButton class="descargaDocumento#{cadenaIdDocumento}" style="display:none" ajax="false" actionListener="#{documentoBean.descargarDocumento(documento)}">
+                                                    <p:fileDownload value="#{documentoBean.documentoDescarga}" />
+                                                </p:commandButton>
+                                                <a class="iconoDirectorio" onclick="$('.descargaDocumento#{cadenaIdDocumento}').click();
+                                                        return false;">
+                                                    <span class="fa fa-download"/>
+                                                </a>
+                                            </p:treeNode>
+                                            <p:treeNode type="comprimido" icon="fa fa-file-zip-o">
+                                                <h:outputText value="#{documentoBean.nombreOriginalDocumento(documento)}" class="nombreDocumento"/>
+                                                <!-- Eliminación de documento -->
+                                                <h:panelGroup rendered="#{documentoBean.tienePermiso(documento)}">
+                                                    <h:panelGroup rendered="#{documento.editable}">
+
+                                                        <h:commandLink action="#{documentoBean.eliminarDocumento(documento)}" class="btnEliminarDocumento#{cadenaIdDocumento}">
+                                                            <f:ajax render="@form" execute="@this"/>
+                                                        </h:commandLink>
+                                                        <a class="iconoDirectorio" onclick="mostrarModal(this, 'modalConfirmEliminacionDocumento#{cadenaIdDocumento}');
+                                                                return false;">
+
+                                                            <span class="fa fa-remove"/>
+                                                        </a>
+                                                        <tsp:modalConfirm texto="#{mensajes['estaAPuntoDeEliminar']} #{documentoBean.nombreOriginalDocumento(documento)} (#{documento.tipo})" id="modalConfirmEliminacionDocumento#{cadenaIdDocumento}" validacion="efectuar([1],'btnEliminarDocumento#{cadenaIdDocumento}','X');"/>
+                                                    </h:panelGroup>
+                                                </h:panelGroup>
+
+                                                <!--Descarga del documento -->
+                                                <p:commandButton class="descargaDocumento#{cadenaIdDocumento}" style="display:none" ajax="false" actionListener="#{documentoBean.descargarDocumento(documento)}">
+                                                    <p:fileDownload value="#{documentoBean.documentoDescarga}" />
+                                                </p:commandButton>
+                                                <a class="iconoDirectorio" onclick="$('.descargaDocumento#{cadenaIdDocumento}').click();
+                                                        return false;">
+                                                    <span class="fa fa-download"/>
+                                                </a>
+                                            </p:treeNode>
+                                        </p:tree>
+                                    </h:form>
+                                    <a class="modal-trigger linkModalSeleccionCarpetaArchivo" href="#modalSeleccionCarpetaArchivo"></a>
+                                    <div id="modalSeleccionCarpetaArchivo" class="modal modal-fixed-footer">
+                                        <h:form onkeypress="if (event.keyCode == 13)
+                                                    return false;" id="formSeleccionCarpetaArchivo">
+                                            <h:panelGroup id="pgSeleccionCarpetaArchivo">
+                                                <div class="modal-content row" style="height: 100% !important">
+                                                    <div class="col m12">
+                                                        <h5 class="alineadoCentro">#{documentoBean.carpetaSeleccionada.nombre}</h5>
+                                                    </div>
+                                                    <div class="col m6" style="height: 80% !important">
+                                                        <h6 class="alineadoCentro">Crear carpeta</h6>
+                                                        <div class="tarjeta2 tarjeta2Carpeta" style="height: 100% !important">
+                                                            <div class="contenidoTarjeta2 contenidoTarjeta2Carpeta" style="height: 100% !important">
+                                                                <h:panelGroup id="pgCrearCarpeta">
+                                                                    <p class="justificado">#{mensajes['porFavorIngresaElNombreDeLaCarpetaQueDeseasAniadir']}</p>
+                                                                    <div class="alineadoCentro">
+                                                                        <h:graphicImage value="../resources/imgs/folder.png" style="width: 20%"/><br/>
+                                                                    </div>
+                                                                    <tsp:ent id="nombreNuevaCarpeta" texto="#{mensajes['nombreDeLaCarpeta']}" valor="#{documentoBean.nombreNuevaCarpeta}" tipo="text" m="12" i="next_week"/>
+                                                                    <h:commandButton value="#{mensajes['crearCarpeta']}" class="boton center-block" action="#{documentoBean.crearCarpeta}">
+                                                                        <f:ajax execute="formSeleccionCarpetaArchivo:pgCrearCarpeta" render=":formDirectorioProyecto formSeleccionCarpetaArchivo:pgCrearCarpeta"/>
+                                                                    </h:commandButton>
+                                                                </h:panelGroup>
+                                                                <div class="corte"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col m6" style="height: 80% !important">
+                                                        <h6 class="alineadoCentro">Subir archivo(s)</h6>
+                                                        <div class="tarjeta2 tarjeta2Archivo" style="height: 100% !important">
+                                                            <div class="contenidoTarjeta2 contenidoTarjeta2Archivo" style="height: 100% !important; overflow-y: auto">
+                                                                <p class="justificado">#{mensajes['puedesSubirArchivosSimultaneamente']} <span style="font-weight: bold">#{mensajes['subir']}</span> #{mensajes['oArrastrarArchivos']}</p>
+                                                                <h:form onkeypress="if (event.keyCode == 13)
+                                                                            return false;" enctype="multipart/form-data">
+                                                                    <p:fileUpload mode="advanced" cancelLabel="#{mensajes['cancelar']}" label="#{mensajes['seleccionar']}" uploadLabel="#{mensajes['subir']}"  fileUploadListener="#{documentoBean.subirArchivo}" multiple="true" update=":formDirectorioProyecto"/>
+                                                                </h:form>
+                                                                <div class="corte"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="corte"/>
+                                                    </div>
+                                                </div>
+                                            </h:panelGroup>
+                                        </h:form>
+                                    </div>
+                                </div>
+                            </div>
+                        </h:panelGroup>
+                    </h:panelGroup>
+                    <div class="corte"/>
+                    <br/>
+                </div>
+            </h:panelGroup>
+        </ui:composition>
+    </body>
+</html>

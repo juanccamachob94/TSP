@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 25, 2017 3:30:34 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="c_negocio.a_relacional.Usuario" table="usuario" schema="public" optimistic-lock="version">
+        <id name="identificacion" type="string">
+            <column name="identificacion" length="11" />
+            <generator class="assigned" />
+        </id>
+        <property name="nombre" type="string">
+            <column name="nombre" length="200" not-null="true" />
+        </property>
+        <property name="apellido" type="string">
+            <column name="apellido" length="200" not-null="true" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="2000" not-null="true" />
+        </property>
+        <property name="telefono" type="string">
+            <column name="telefono" length="12" not-null="true" />
+        </property>
+        <property name="clave" type="string">
+            <column name="clave" length="50000" not-null="true" />
+        </property>
+        <set name="rlCls" table="rl_cl" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="usuario" length="11" not-null="true" />
+            </key>
+            <one-to-many class="c_negocio.a_relacional.RlCl" />
+        </set>
+        <set name="proyectos" table="proyecto" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="creador" length="11" not-null="true" />
+            </key>
+            <one-to-many class="c_negocio.a_relacional.Proyecto" />
+        </set>
+    </class>
+</hibernate-mapping>

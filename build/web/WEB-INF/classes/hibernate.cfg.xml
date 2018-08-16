@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+    <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+    <property name="hibernate.connection.url">jdbc:postgresql:tsp</property>
+    <property name="hibernate.connection.username">usuario_tsp</property>
+    <property name="hibernate.connection.password">TSPSupport2017**</property>
+    <mapping resource="c_negocio/a_relacional/PyCr.hbm.xml"/>
+    <mapping resource="c_negocio/a_relacional/Parte.hbm.xml"/>
+    <mapping resource="c_negocio/a_relacional/Documento.hbm.xml"/>
+    <mapping resource="c_negocio/a_relacional/Usuario.hbm.xml"/>
+    <mapping resource="c_negocio/a_relacional/RlCl.hbm.xml"/>
+    <mapping resource="c_negocio/a_relacional/Fase.hbm.xml"/>
+    <mapping resource="c_negocio/a_relacional/Rol.hbm.xml"/>
+    <mapping resource="c_negocio/a_relacional/Proyecto.hbm.xml"/>
+    <mapping resource="c_negocio/a_relacional/Ciclo.hbm.xml"/>
+    <mapping resource="c_negocio/a_relacional/Criterio.hbm.xml"/>
+    <mapping resource="c_negocio/a_relacional/Meta.hbm.xml"/>
+    <mapping resource="c_negocio/a_relacional/Opciontsp.hbm.xml"/>
+  </session-factory>
+</hibernate-configuration>

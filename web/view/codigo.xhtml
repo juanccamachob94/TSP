@@ -1,0 +1,233 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:tsp="tsp/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>TSPSupport</title>
+    </h:head>
+    <h:body>
+        <ui:include src="./../resources/plantillas/menu_arriba.xhtml"/>
+
+        <div class="container contenedor row">
+            <tsp:menuIzq/>
+            <div class="col m9">
+                <p:messages autoUpdate="true" closable="true"/>
+                <div class="contenido">
+                    <tsp:encabezadoProyecto/>
+                    <div class="contenidoReal">
+                        <f:metadata>
+                            <f:viewAction action="#{codigoBean.reiniciarVariables}"/>
+                        </f:metadata>
+                        <div class="row card-panel">
+                            <div class="col m6 s12 card-panel tarjeta-panel-titulada">
+                                <h:panelGroup id="tituloArchivoAntes">
+                                    <h6 class="panel">#{mensajes['codigoAntes']}
+                                        <h:panelGroup rendered="#{not empty codigoBean.archivoAntes}">
+                                            #{codigoBean.archivoAntes.name}
+                                        </h:panelGroup>
+                                    </h6>
+                                </h:panelGroup>
+                                <h:form onkeypress="if (event.keyCode == 13)
+                                            return false;" id="formZipAntes" class="formZip" enctype="multipart/form-data">
+                                    <p:fileUpload label="#{mensajes['seleccionar']}" value="#{codigoBean.archivoSubidoAntes}" mode="simple" skinSimple="true"/>
+                                    <div class="corte"/>
+                                    <a onclick="$('.subirZip1').click();
+                                            return false;">
+                                        <h:panelGroup rendered="#{empty codigoBean.archivoAntes}">
+                                            <div class="cajaZip cajaZipNula"/>
+                                        </h:panelGroup>
+                                        <h:panelGroup rendered="#{not(empty codigoBean.archivoAntes)}">
+                                            <div class="cajaZip cajaZipCargada"/>
+                                        </h:panelGroup>
+                                    </a>
+                                    <div class="corte"/>
+                                    <h:commandButton class="subirZip1" action="#{codigoBean.subirCodigoAntes}" style="display: none">
+                                        <f:ajax render="@form :formValidacionCodigoAntes tituloArchivoAntes" execute="@form"/>
+                                    </h:commandButton>
+                                </h:form>
+                                <h:panelGroup id="okZip1">
+                                    <h:panelGroup rendered="#{not(empty codigoBean.archivoAntes)}">
+                                        <h:graphicImage rendered="#{codigoBean.codigoAntesValido}" value="../resources/imgs/ok.png" style="height: 150px"/>
+                                        <h:graphicImage rendered="#{!codigoBean.codigoAntesValido}" value="../resources/imgs/error.png" style="height: 150px"/>
+                                    </h:panelGroup>
+                                </h:panelGroup>
+                                <div class="corte"/>
+                                <h:form onkeypress="if (event.keyCode == 13)
+                                            return false;" id="formValidacionCodigoAntes">
+                                    <h:commandButton value="#{mensajes['validarCodigo']}" action="#{codigoBean.validarCodigoAntes}" class="boton center-block separado separado-abajo" disabled="#{empty codigoBean.archivoAntes ? 'true':'false'}">
+                                        <f:ajax render="@form okZip1 :formComparacionCodigo" execute="@form"/>
+                                    </h:commandButton>
+                                </h:form>
+                            </div>
+                            <div class="col m6 s12 card-panel tarjeta-panel-titulada">
+                                <h:panelGroup id="tituloArchivoDespues">
+                                    <h6 class="panel">#{mensajes['codigoDespues']}
+                                        <h:panelGroup rendered="#{not empty codigoBean.archivoDespues}">
+                                            #{codigoBean.archivoDespues.name}
+                                        </h:panelGroup>
+                                    </h6>
+                                </h:panelGroup>
+                                <h:form onkeypress="if (event.keyCode == 13)
+                                            return false;" id="formZipDespues" class="formZip" enctype="multipart/form-data">
+                                    <p:fileUpload label="#{mensajes['seleccionar']}" value="#{codigoBean.archivoSubidoDespues}" mode="simple" skinSimple="true"/>
+                                    <div class="corte"/>
+                                    <a onclick="$('.subirZip2').click();
+                                            return false;">
+                                        <h:panelGroup rendered="#{empty codigoBean.archivoDespues}">
+                                            <div class="cajaZip cajaZipNula"/>
+                                        </h:panelGroup>
+                                        <h:panelGroup rendered="#{not(empty codigoBean.archivoDespues)}">
+                                            <div class="cajaZip cajaZipCargada"/>
+                                        </h:panelGroup>
+                                    </a>
+                                    <div class="corte"/>
+                                    <h:commandButton class="subirZip2" action="#{codigoBean.subirCodigoDespues}" style="display: none">
+                                        <f:ajax render="@form :formValidacionCodigoDespues tituloArchivoDespues" execute="@form"/>
+                                    </h:commandButton>
+                                </h:form>
+                                <h:panelGroup id="okZip2">
+                                    <h:panelGroup rendered="#{not(empty codigoBean.archivoDespues)}">
+                                        <h:graphicImage rendered="#{codigoBean.codigoDespuesValido}" value="../resources/imgs/ok.png" style="height: 150px"/>
+                                        <h:graphicImage rendered="#{!codigoBean.codigoDespuesValido}" value="../resources/imgs/error.png" style="height: 150px"/>
+                                    </h:panelGroup>
+                                </h:panelGroup>
+                                <div class="corte"/>
+                                <h:form onkeypress="if (event.keyCode == 13)
+                                            return false;" id="formValidacionCodigoDespues">
+                                    <h:commandButton value="#{mensajes['validarCodigo']}" action="#{codigoBean.validarCodigoDespues}" class="boton center-block separado separado-abajo" disabled="#{empty codigoBean.archivoDespues ? 'true':'false'}">
+                                        <f:ajax render="@form okZip2 :formComparacionCodigo" execute="@form"/>
+                                    </h:commandButton>
+                                </h:form>
+                            </div>
+                            <div class="col m12 s12 card-panel tarjeta-panel-titulada">
+                                <h:form onkeypress="if (event.keyCode == 13)
+                                            return false;" id="formComparacionCodigo">
+                                    <h:commandButton value="#{mensajes['compararCodigo']}" action="#{codigoBean.analizar}" class="boton center-block separado separado-abajo" disabled="#{(codigoBean.codigoAntesValido and codigoBean.codigoDespuesValido)? 'false' : 'true'}">
+                                        <f:ajax render=":formBtnExcelCodigo @form :formZipAntes :formZipDespues okZip1 okZip2 pgResultadoAnalisis" execute="@form"/>
+                                    </h:commandButton>
+                                </h:form>
+                            </div>
+                        </div>
+
+                        <!-- Exportar a hoja de cálculo -->
+                        <h:form id="formBtnExcelCodigo">
+                            <a onclick="$('.btnExportarExcel').click();
+                                        return false;" style="float:right">
+                                <div class="iconoExcel" style="width: 25px; height: 30px"/>
+                            </a>
+                            <p:commandButton class="btnExportarExcel" value="#{mensajes['generarExcel']}" ajax="false" actionListener="#{reportesBean.exportarFormatoExcel(codigoBean.formatoComparacionCodigo,false)}" style="display:none">
+                                <p:fileDownload value="#{reportesBean.archivoExcel}" />
+                            </p:commandButton>
+                            <div class="corte"/>
+                        </h:form>
+                        <h:panelGroup id="pgResultadoAnalisis">
+                            <p:panelGrid class="ui-datatable ui-widget tablaNormal" rendered="#{not empty codigoBean.formatoComparacionCodigo}">
+                                <f:facet name="header">
+                                    <p:row>
+                                        <p:column rowspan="1" colspan="3" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['resumenDeComparacion']}
+                                        </p:column>
+                                    </p:row>
+                                </f:facet>
+                                <c:set value="#{codigoBean.formatoComparacionCodigo.getAtributo('cantidades')}" var="atrCantidades"/>
+                                <p:row>
+                                    <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                        #{mensajes['caracteristica']}
+                                    </p:column>
+                                    <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                        #{mensajes['cantidadEncontrada']}
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                        #{mensajes['funcionesIguales']}
+                                    </p:column>
+                                    <p:column rowspan="1" colspan="2">
+                                        <c:set value="#{atrCantidades.getSubAtributo('Código igual')}" var="codigoIgual"/>
+                                        #{codigoIgual.valor}
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                        #{mensajes['funcionesModificadas']}
+                                    </p:column>
+                                    <p:column rowspan="1" colspan="2">
+                                        <c:set value="#{atrCantidades.getSubAtributo('Código modificado')}" var="codigoModificado"/>
+                                        #{codigoModificado.valor}
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                        #{mensajes['funcionesEliminadas']}
+                                    </p:column>
+                                    <p:column rowspan="1" colspan="2">
+                                        <c:set value="#{atrCantidades.getSubAtributo('Código eliminado')}" var="codigoEliminado"/>
+                                        #{codigoEliminado.valor}
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                        #{mensajes['funcionesAgregadas']}
+                                    </p:column>
+                                    <p:column rowspan="1" colspan="2">
+                                        <c:set value="#{atrCantidades.getSubAtributo('Código agregado')}" var="codigoAgregado"/>
+                                        #{codigoAgregado.valor}
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                            <div class="corte"/>
+                            <br/><br/>
+                            <div class="corte"/>
+                            <ui:repeat value="#{codigoBean.formatoComparacionCodigo.getAtributo('archivos').atributos}" var="archivo" rendered="#{not empty codigoBean.formatoComparacionCodigo}">
+                                <p:panelGrid class="ui-datatable ui-widget tablaNormal">
+                                    <f:facet name="header">
+                                        <p:row>
+                                            <p:column rowspan="1" colspan="12" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                                #{archivo.atributo}
+                                            </p:column>
+                                        </p:row>
+                                    </f:facet>
+                                    <p:row>
+                                        <p:column rowspan="1" colspan="2" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['funcion']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['estado']}
+                                        </p:column>
+                                        <p:column rowspan="1" colspan="1" class="ui-datatable-header ui-widget-header ui-corner-top">
+                                            #{mensajes['comentarios']}
+                                        </p:column>
+                                    </p:row>
+
+                                    <ui:repeat value="#{archivo.atributos}" var="funcion">
+                                        <p:row>
+                                            <p:column rowspan="1" colspan="2">
+                                                #{funcion.atributo}
+                                            </p:column>
+                                            <c:set value="#{funcion.getSubAtributo('estado')}" var="estado"/>
+                                            <p:column rowspan="1" colspan="1">
+                                                #{estado.valor}
+                                            </p:column>
+                                            <c:set value="#{funcion.getSubAtributo('comentarios')}" var="comentarios"/>
+                                            <p:column rowspan="1" colspan="1">
+                                                #{comentarios.valor}
+                                            </p:column>
+                                        </p:row>
+                                    </ui:repeat>
+                                </p:panelGrid>
+                            </ui:repeat>
+                        </h:panelGroup>                                    
+                    </div>
+                </div>
+            </div>
+        </div>
+        <tsp:pie/>
+    </h:body>
+</html>
+

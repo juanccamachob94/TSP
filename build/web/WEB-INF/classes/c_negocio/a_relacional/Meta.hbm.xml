@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 28, 2017 1:24:52 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="c_negocio.a_relacional.Meta" table="meta" schema="public" optimistic-lock="version">
+        <composite-id name="id" class="c_negocio.a_relacional.MetaId">
+            <key-property name="rol" type="string">
+                <column name="rol" length="50" />
+            </key-property>
+            <key-property name="usuario" type="string">
+                <column name="usuario" length="11" />
+            </key-property>
+            <key-property name="descripcion" type="string">
+                <column name="descripcion" length="500" />
+            </key-property>
+            <key-property name="proyecto" type="string">
+                <column name="proyecto" length="500" />
+            </key-property>
+            <key-property name="NCiclo" type="byte">
+                <column name="n_ciclo" precision="2" scale="0" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="rlCl" class="c_negocio.a_relacional.RlCl" update="false" insert="false" fetch="select">
+            <column name="n_ciclo" precision="2" scale="0" not-null="true" />
+            <column name="proyecto" length="500" not-null="true" />
+            <column name="usuario" length="11" not-null="true" />
+            <column name="rol" length="50" not-null="true" />
+        </many-to-one>
+        <property name="lograda" type="java.lang.Boolean">
+            <column name="lograda" />
+        </property>
+        <property name="observacion" type="string">
+            <column name="observacion" length="500" />
+        </property>
+        <property name="automatica" type="boolean">
+            <column name="automatica" not-null="true">
+                <comment>True si el sistema la llena, false si la llena el usuario</comment>
+            </column>
+        </property>
+        <property name="tipo" type="string">
+            <column name="tipo" length="50" not-null="true">
+                <comment>integrante rol o equipo</comment>
+            </column>
+        </property>
+        <property name="fechaCreacion" type="timestamp">
+            <column name="fecha_creacion" length="29" not-null="true" />
+        </property>
+        <property name="valor" type="big_decimal">
+            <column name="valor" precision="7" />
+        </property>
+        <property name="unidadValor" type="string">
+            <column name="unidad_valor" length="50" />
+        </property>
+        <property name="comparativaValor" type="string">
+            <column name="comparativa_valor" length="50" />
+        </property>
+    </class>
+</hibernate-mapping>

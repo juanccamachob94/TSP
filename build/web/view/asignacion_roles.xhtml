@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:tsp="tsp/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>TSPSupport</title>
+    </h:head>
+    <h:body>
+        <ui:include src="./../resources/plantillas/menu_arriba.xhtml"/>
+
+        <div class="container contenedor row">
+            <tsp:menuIzq/>
+            <div class="col m9">
+                <p:messages autoUpdate="true" closable="true"/>
+                <div class="contenido">
+                    <tsp:encabezadoProyecto/>
+                    <div class="contenidoReal">
+                        <f:metadata>
+                            <f:viewAction action="#{lanzamientoBean.cargarAsignacionRoles}"/>
+                        </f:metadata>
+
+                        <h:form onkeypress="if (event.keyCode == 13)
+                                    return false;" id="formSeleccionRolesCiclo">
+                            <p:dataTable id="tablaSeleccionIntegrantes" class="tablaNormal" value="#{lanzamientoBean.rolesIntegrantes}" var="integrantesRol" rowIndexVar="indiceFila">
+                                <p:columnGroup type="header">
+                                    <p:row>
+                                        <p:column rowspan="1" colspan="1" headerText="#{mensajes['rolTSP']}"/>
+                                        <p:column rowspan="1" colspan="1" headerText="#{mensajes['integrantes']}"/>
+                                    </p:row>
+                                </p:columnGroup>
+                                <p:column>
+                                    #{lanzamientoBean.rolesTSP.get(indiceFila).nombre}
+                                    <h:panelGroup rendered="#{proyectoBean.proyectoSesion.faseActual eq mensajes['lanzamiento']}">
+                                        <h:panelGroup rendered="#{proyectoBean.poseeRolCicloActual('Instructor')}">
+                                            <h:commandLink action="#{lanzamientoBean.agregarNuevoListaRol(integrantesRol)}">
+                                                <i class="material-icons small iconoCelda">add</i>
+                                                <f:ajax render="@form" execute="@this"/>
+                                            </h:commandLink>
+                                        </h:panelGroup>
+                                    </h:panelGroup>
+                                </p:column>
+                                <p:column>
+                                    <table>
+                                        <tbody>
+                                            <ui:repeat id="repeatIntegrantesRol" value="#{integrantesRol}" var="integranteRol" varStatus="estado">
+                                                <tr>
+                                                    <td>
+                                                        <div class="col m6">
+                                                            <h:panelGroup id="pgConsultarIntegrante">
+                                                                <div class="m6">
+                                                                    <h:inputText class="browser-default" value="#{integranteRol.identificacion}" a:placeholder="#{mensajes['identificacionDelUsuario']}" style="border: solid silver 1px !important" disabled="#{empty integranteRol.nombre ? 'false':'true'}">
+                                                                        <f:ajax event="change" render="@this" execute="@this" listener="#{generalBean.actualizar}"/>
+                                                                    </h:inputText>
+                                                                </div>
+                                                                <div class="m6">
+                                                                    <h:commandButton value="Agregar" action="#{lanzamientoBean.agregarIntegrante(integrantesRol,integranteRol)}" class="boton" disabled="#{proyectoBean.poseeRolCicloActual('Instructor') ? 'false':'true'}">
+                                                                        <f:ajax render="pgConsultarIntegrante :formSeleccionRolesCiclo:tablaSeleccionIntegrantes:#{indiceFila}:repeatIntegrantesRol:#{estado.index}:informacionIntegranteRol" execute="pgConsultarIntegrante"/>
+                                                                    </h:commandButton>
+                                                                </div>
+                                                            </h:panelGroup>
+                                                        </div>
+                                                        <h:panelGroup id="informacionIntegranteRol">
+                                                            <div class="col m6">
+                                                                #{mensajes['nombre']}: #{integranteRol.nombre}
+                                                                <h:panelGroup rendered="#{proyectoBean.proyectoSesion.faseActual eq mensajes['lanzamiento']}">
+                                                                    <h:panelGroup rendered="#{proyectoBean.poseeRolCicloActual('Instructor')}">
+                                                                        <h:commandLink action="#{lanzamientoBean.eliminarIntegranteListaRol(integrantesRol,integranteRol)}" style="float: right">
+                                                                            <i class="material-icons small iconoCelda">clear</i>
+                                                                            <f:ajax render="@form" execute="@this"/>
+                                                                        </h:commandLink>
+                                                                    </h:panelGroup>
+                                                                </h:panelGroup>
+                                                                <div class="corte"/>
+                                                                #{mensajes['apellido']}: #{integranteRol.apellido}
+                                                                <div class="corte"/>
+                                                            </div>
+                                                        </h:panelGroup>
+                                                    </td>
+                                                </tr>
+                                            </ui:repeat>
+                                        </tbody>
+                                    </table>
+                                </p:column>
+                            </p:dataTable>
+                            <br/>
+                            <h:panelGroup rendered="#{proyectoBean.proyectoSesion.faseActual eq mensajes['lanzamiento']}">
+                                <h:panelGroup rendered="#{proyectoBean.poseeRolCicloActual('Instructor')}">
+                                    <h:commandButton binding="#{lanzamientoBean.btnAsignarRoles}" class="boton center-block" value="#{!lanzamientoBean.rolesIntegrantesRegistados ? mensajes['guardar']:mensajes['actualizar']} #{mensajes['asignacionDeRoles']}" action="#{lanzamientoBean.asignarRoles}">
+                                        <f:ajax render="formSeleccionRolesCiclo encabezadoProyectoSesion pgMenuIzquierda" execute="@form" onevent="PF('bloqueoRoles').show()"/>
+                                    </h:commandButton>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                            <tsp:carg objeto="formSeleccionRolesCiclo" elemento="bloqueoRoles"/>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <tsp:pie/>
+    </h:body>
+</html>
+

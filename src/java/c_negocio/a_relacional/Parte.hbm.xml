@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 25, 2017 3:30:34 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="c_negocio.a_relacional.Parte" table="parte" schema="public" optimistic-lock="version">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="ciclo" class="c_negocio.a_relacional.Ciclo" fetch="select">
+            <column name="n_ciclo" precision="2" scale="0" not-null="true" />
+            <column name="proyecto" length="500" not-null="true" />
+        </many-to-one>
+        <many-to-one name="parte" class="c_negocio.a_relacional.Parte" fetch="select">
+            <column name="padre" />
+        </many-to-one>
+        <property name="nombre" type="string">
+            <column name="nombre" length="150" not-null="true" />
+        </property>
+        <property name="descripcion" type="string">
+            <column name="descripcion" length="500" not-null="true" />
+        </property>
+        <property name="tipo" type="string">
+            <column name="tipo" length="50" not-null="true" />
+        </property>
+        <property name="estado" type="string">
+            <column name="estado" length="50" not-null="true" />
+        </property>
+        <property name="observacion" type="string">
+            <column name="observacion" length="500" />
+        </property>
+        <set name="partes" table="parte" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="padre" />
+            </key>
+            <one-to-many class="c_negocio.a_relacional.Parte" />
+        </set>
+    </class>
+</hibernate-mapping>
